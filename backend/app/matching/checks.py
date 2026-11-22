@@ -394,25 +394,35 @@ def c10(x: _Ctx) -> Check:
 
 
 # ---------------------------------------------------------------- terms helpers
-def governing_terms(x: _Ctx) -> tuple[Optional[int], str, bool]:
-    """(days, source, any_uncertain). Contract > PO > invoice."""
-    any_unc = False
+def governing_terms(x: _Ctx) -> tuple[Optional[int], str, bool, Optional[str]]:
+    """(days, source, any_uncertain, text_source). Contract > PO > invoice.
+
+    Terms text without a readable number of days counts as uncertain days.
+    """
+    any_unc, text_src = False, None
     for doc, src in ((x.contract, "contract"), (x.po, "po"), (x.inv, "invoice")):
         if doc is None:
             continue
         s = x.st(doc.payment_terms_days)
         if s == "known":
-            return int(doc.payment_terms_days.value), src, any_unc
+            return int(doc.payment_terms_days.value), src, any_unc, text_src
+        if x.st(doc.payment_terms_text) == "known":
+            text_src = text_src or src
+            any_unc = True
         any_unc = any_unc or s == "uncertain"
-    return None, "", any_unc
+    return None, "", any_unc, text_src
 
 
 # ---------------------------------------------------------------- C11
 def c11(x: _Ctx) -> Check:
-    days, src, unc = governing_terms(x)
+    days, src, unc, text_src = governing_terms(x)
     if days is not None:
         return _mk("C11", PASS, WARNING, f"Written payment terms found on the {src}: {days} days.",
                    [NODE[DocType(src)]], terms_days=days, source=src)
+    if text_src:
+        return _mk("C11", PASS, WARNING,
+                   f"Written payment terms found on the {text_src}, but the number of days is unclear.",
+                   [NODE[DocType(text_src)]], source=text_src)
     if unc:
         return _mk("C11", UNCERTAIN, WARNING, "Could not read the payment terms.", ["inv"])
     n = x.cfg["msmed"]["no_agreement_days"]
@@ -422,7 +432,7 @@ def c11(x: _Ctx) -> Check:
 
 # ---------------------------------------------------------------- C12
 def c12(x: _Ctx) -> Check:
-    days, src, unc = governing_terms(x)
+    days, src, unc, _ = governing_terms(x)
     limit = int(x.cfg["msmed"]["max_terms_days"])
     cls = x.cfg["supplier"]["enterprise_class"]
     if cls not in ("micro", "small"):
@@ -470,6 +480,6 @@ def c14(x: _Ctx, lookup: Optional[DuplicateLookup]) -> Check:
 # ---------------------------------------------------------------- entry point
 def run_checks(pkg: ExtractedPackage, *, duplicate_lookup: Optional[DuplicateLookup] = None,
                cfg: Optional[dict[str, Any]] = None) -> list[Check]:
-    x = _Ctx(pkg, cfg or get_config())
+    x = _Ctx(pkg, get_config() if cfg is None else cfg)
     return [c01(x), c02(x), c03(x), c04(x), c05(x), c06(x), c07(x), c08(x), c09(x),
             c10(x), c11(x), c12(x), c13(x), c14(x, duplicate_lookup)]

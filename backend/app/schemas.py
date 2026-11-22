@@ -12,7 +12,7 @@ from typing import Annotated, Any, Generic, Literal, Optional, TypeVar, Union
 
 from pydantic import BaseModel, Field
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"  # 1.1: DueDateResult.uncertain/msmed_applies, InterestEstimate.computable
 
 T = TypeVar("T")
 
@@ -245,10 +245,13 @@ class DueDateResult(BaseModel):
     acceptance_date: Optional[date]
     acceptance_basis: Literal["grn", "challan_received", "deemed", "unknown"]
     terms_days_applied: Optional[int]
-    terms_basis: Literal["written_terms", "written_terms_capped", "no_written_terms", "unknown"]
+    terms_basis: Literal["written_terms", "written_terms_capped", "no_written_terms",
+                         "written_terms_unreadable", "unknown"]
     due_date: Optional[date]
     reasoning: str
     estimated: bool = True
+    uncertain: bool = False  # True when an input (e.g. terms days) could not be read
+    msmed_applies: bool = True  # False for a medium (or larger) supplier
 
 
 class InterestEstimate(BaseModel):
@@ -257,7 +260,8 @@ class InterestEstimate(BaseModel):
     as_of: date
     days_late: int
     annual_rate_pct: float  # 3 x bank rate
-    interest: float
+    interest: Optional[float]  # None when not computable / not applicable
+    computable: bool = True
     formula: str
     note: str = "Estimated statutory interest (MSMED s.16). Not legal advice; verify the bank rate."
 

@@ -30,7 +30,8 @@ def tier_for(score: int, cfg: dict[str, Any]) -> RiskTier:
 
 
 def compute_score(checks: Iterable[Check], cfg: Optional[dict[str, Any]] = None) -> ScoreBreakdown:
-    cfg = cfg or get_config()
+    if cfg is None:
+        cfg = get_config()
     penalties: list[Penalty] = []
     for c in checks:
         pts = penalty_for(c, cfg)

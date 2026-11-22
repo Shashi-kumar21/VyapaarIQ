@@ -50,7 +50,8 @@ SEVERITY_RANK = {"blocker": 0, "warning": 1, "info": 2}
 
 def build_actions(checks: list[Check], due: Optional[DueDateResult], *,
                   today: Optional[date] = None, cfg: Optional[dict[str, Any]] = None) -> list[Action]:
-    cfg = cfg or get_config()
+    if cfg is None:
+        cfg = get_config()
     today = today or date.today()
     lead = int(cfg["actions"]["lead_days_before_due"])
     target = None
