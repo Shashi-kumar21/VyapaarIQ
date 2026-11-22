@@ -44,6 +44,13 @@ scoring:
     low_min: 85
     medium_min: 60
 
+buyer_profile:
+  min_history: 5
+  reliable_max_median_late: 5      # days
+  reliable_max_pct_over_30: 10     # %
+  slow_min_median_late: 20         # days
+  slow_min_pct_over_30: 40         # %
+
 followups:
   steps: [-7, -1, 3, 10, 25]       # days relative to due date
 

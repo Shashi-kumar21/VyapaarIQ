@@ -26,9 +26,9 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 ### A0 Architect
 - [x] T1.1 Write `backend/app/schemas.py`: Pydantic models for all doc types (§6), `Check`, `Action`, `Graph`, `Invoice` — **freeze by midday**
 - [ ] T1.2 Write `docs/api_contract.md` (§12) with example JSON for every endpoint
-- [ ] T1.3 `backend/app/db`: SQLModel tables (§5), `init_db()`, session helper
+- [x] T1.3 `backend/app/db`: SQLModel tables (§5), `init_db()`, session helper
 - [x] T1.4 `rules/config.yaml` skeleton: tolerances, penalties, thresholds, 45/15-day rules, e-way threshold, bank rate placeholder (marked VERIFY)
-- [ ] T1.5 FastAPI app skeleton with `/api/health`, CORS, routers stubbed with fixture responses so frontend can start immediately
+- [x] T1.5 FastAPI app skeleton with `/api/health`, CORS, routers stubbed with fixture responses so frontend can start immediately
 - [ ] T1.6 Message A1/A2/A3 when contracts are frozen
 
 ### A1 Document intelligence
@@ -82,12 +82,12 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 ## Day 3 — Intelligence engine
 
 ### A2
-- [ ] T3.1 `POST /api/packages`, `/process`, `GET /packages/{id}` wired to real extraction → checks → score → DB
+- [x] T3.1 `POST /api/packages`, `/process`, `GET /packages/{id}` wired to real extraction → checks → score → DB
 - [x] T3.2 `scoring/actions.py`: action templates per check, ranking by severity then deadline (§7 Actions)
-- [ ] T3.3 `GET /api/invoices`, `/invoices/{id}`, `/graph` returning real data
-- [ ] T3.4 Duplicate-invoice detection against DB (C14) end-to-end
+- [x] T3.3 `GET /api/invoices`, `/invoices/{id}`, `/graph` returning real data
+- [x] T3.4 Duplicate-invoice detection against DB (C14) end-to-end
 - [ ] T3.5 `seed.py`: supplier, 6 buyers, ~60 historical invoices with payment events (synthetic; flagged)
-- [ ] T3.6 `GET /api/buyers/{id}/profile` per §8 with min-history rule + tests
+- [x] T3.6 `GET /api/buyers/{id}/profile` per §8 with min-history rule + tests
 
 ### A1
 - [ ] T3.7 Run extraction over all packages; fix top 5 failure patterns (prompt tweaks, normalisation, layout handling)
@@ -112,7 +112,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [ ] T4.2 `POST /invoices/{id}/followups/generate`, `GET` list
 - [ ] T4.3 `forecast/cash_at_risk.py` + `GET /api/forecast` (§9) + tests
 - [ ] T4.4 `dispute/pack.py`: Markdown template → PDF (§11); `GET /invoices/{id}/dispute-pack`
-- [ ] T4.5 Error handling: corrupt PDF, empty upload, unsupported type, extractor failure → clear API errors, partial results kept
+- [x] T4.5 Error handling: corrupt PDF, empty upload, unsupported type, extractor failure → clear API errors, partial results kept
 
 ### A1
 - [ ] T4.6 Edge cases: rotated scans, multi-invoice PDF, two documents in one file, Hindi/mixed-language stamps (best effort; log what fails)

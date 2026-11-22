@@ -15,8 +15,9 @@ on credit (MSMED Act s.15/16 timelines). See [`BUILD_SPEC.md`](BUILD_SPEC.md) an
 | Checks C01–C14, readiness score, ranked actions, evidence graph | ✅ tested against ground truth |
 | Extraction: `text` (PyMuPDF + regex), `fixture`, `claude` (optional) | ✅ (claude path tested offline only) |
 | Synthetic generator: 28 packages / 133 PDFs, 5 phone-scan style | ✅ |
-| REST API, SQLite, seed data | 🚧 next |
-| React frontend, follow-ups, forecast, dispute pack, eval report | 🚧 planned |
+| REST API + SQLite (upload, process, invoices, graph, buyer profile) | ✅ tested |
+| Seed history, follow-ups, forecast, dispute pack | 🚧 next |
+| React frontend, eval report | 🚧 planned |
 
 ## Quick start (Windows PowerShell)
 
@@ -24,7 +25,8 @@ on credit (MSMED Act s.15/16 timelines). See [`BUILD_SPEC.md`](BUILD_SPEC.md) an
 py -3.13 -m venv .venv
 .\.venv\Scripts\pip install -r backend\requirements.txt
 .\.venv\Scripts\python samples\generate.py          # writes samples/out/ + ground_truth.json
-cd backend; ..\.venv\Scripts\python -m pytest       # 32 tests
+cd backend; ..\.venv\Scripts\python -m pytest       # 59 tests
+..\.venv\Scripts\uvicorn app.main:app --reload       # API on http://127.0.0.1:8000/docs
 ```
 
 macOS/Linux: same steps with `python3.11+ -m venv .venv` and `.venv/bin/...`.

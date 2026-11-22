@@ -1,0 +1,169 @@
+"""API routes. Errors are returned as ``{"detail": "<clear message>"}``."""
+
+from __future__ import annotations
+
+import json
+import os
+from datetime import date
+from typing import Optional
+
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
+from sqlmodel import Session, select
+
+from app.db.models import Buyer, Document, Invoice, Package, PaymentEvent
+from app.db.session import get_session
+from app.schemas import SCHEMA_VERSION
+from app.scoring.buyer_profile import compute_profile
+from app.services import PackageError, create_package, process_package
+
+router = APIRouter(prefix="/api")
+
+
+def _today() -> date:
+    """Demo clock: ``VYAPAARIQ_TODAY=YYYY-MM-DD`` pins 'today' for reproducible demos."""
+    v = os.environ.get("VYAPAARIQ_TODAY")
+    return date.fromisoformat(v) if v else date.today()
+
+
+@router.get("/health")
+def health():
+    return {"status": "ok", "schema_version": SCHEMA_VERSION,
+            "extractor": os.environ.get("EXTRACTOR", "text"), "today": _today().isoformat()}
+
+
+# ---------------------------------------------------------------- packages
+@router.post("/packages", status_code=201)
+async def upload_package(files: list[UploadFile] = File(default=[]),
+                         buyer_name: Optional[str] = Form(default=None),
+                         doc_types: Optional[str] = Form(default=None,
+                                                         description="JSON list, same order as files"),
+                         s: Session = Depends(get_session)):
+    payload = [(f.filename or "file", await f.read()) for f in files]
+    types = None
+    if doc_types:
+        try:
+            types = json.loads(doc_types)
+        except json.JSONDecodeError:
+            raise HTTPException(400, "doc_types must be a JSON list.")
+    try:
+        pkg = create_package(s, payload, buyer_name=buyer_name, doc_types=types)
+    except PackageError as exc:
+        raise HTTPException(400, str(exc))
+    return package_view(s, pkg)
+
+
+@router.post("/packages/{package_id}/process")
+def process(package_id: int, s: Session = Depends(get_session)):
+    if s.get(Package, package_id) is None:
+        raise HTTPException(404, "Package not found.")
+    try:
+        inv = process_package(s, package_id, today=_today())
+    except PackageError as exc:
+        raise HTTPException(422, str(exc))
+    return {"package_id": package_id, "invoice_id": inv.id, "status": "done",
+            "processing_ms": inv.processing_ms}
+
+
+@router.get("/packages/{package_id}")
+def get_package(package_id: int, s: Session = Depends(get_session)):
+    pkg = s.get(Package, package_id)
+    if pkg is None:
+        raise HTTPException(404, "Package not found.")
+    return package_view(s, pkg)
+
+
+def package_view(s: Session, pkg: Package) -> dict:
+    docs = s.exec(select(Document).where(Document.package_id == pkg.id)).all()
+    inv = s.exec(select(Invoice).where(Invoice.package_id == pkg.id)).first()
+    return {
+        "id": pkg.id, "status": pkg.status, "error": pkg.error, "created_at": pkg.created_at,
+        "invoice_id": inv.id if inv else None,
+        "documents": [{
+            "id": d.id, "filename": d.filename, "doc_type": d.doc_type, "doc_type_method": d.doc_type_method,
+            "extractor": d.extractor, "fallback": d.fallback, "extraction_conf": d.extraction_conf,
+            "page_count": d.page_count, "error": d.error,
+            "fields": json.loads(d.extracted_json) if d.extracted_json else None,
+        } for d in docs],
+    }
+
+
+# ---------------------------------------------------------------- invoices
+def _invoice_summary(s: Session, inv: Invoice) -> dict:
+    buyer = s.get(Buyer, inv.buyer_id) if inv.buyer_id else None
+    return {
+        "id": inv.id, "package_id": inv.package_id, "invoice_no": inv.invoice_no,
+        "invoice_date": inv.invoice_date, "buyer_id": inv.buyer_id, "buyer_name": buyer.name if buyer else None,
+        "amount_total": inv.amount_total, "due_date": inv.due_date, "status": inv.status,
+        "readiness_score": inv.readiness_score, "risk_tier": inv.risk_tier, "synthetic": inv.synthetic,
+    }
+
+
+@router.get("/invoices")
+def list_invoices(tier: Optional[str] = None, buyer_id: Optional[int] = None,
+                  status: Optional[str] = Query(default=None), include_history: bool = False,
+                  s: Session = Depends(get_session)):
+    q = select(Invoice)
+    if not include_history:
+        q = q.where(Invoice.synthetic == False)  # noqa: E712
+    if tier:
+        q = q.where(Invoice.risk_tier == tier)
+    if buyer_id:
+        q = q.where(Invoice.buyer_id == buyer_id)
+    if status:
+        q = q.where(Invoice.status == status)
+    rows = s.exec(q.order_by(Invoice.id.desc())).all()
+    return [_invoice_summary(s, r) for r in rows]
+
+
+def _get_invoice(s: Session, invoice_id: int) -> Invoice:
+    inv = s.get(Invoice, invoice_id)
+    if inv is None:
+        raise HTTPException(404, "Invoice not found.")
+    return inv
+
+
+@router.get("/invoices/{invoice_id}")
+def get_invoice(invoice_id: int, s: Session = Depends(get_session)):
+    inv = _get_invoice(s, invoice_id)
+    out = _invoice_summary(s, inv)
+    out["analysis"] = json.loads(inv.analysis_json) if inv.analysis_json else None
+    out["processing_ms"] = inv.processing_ms
+    if inv.package_id:
+        out["documents"] = package_view(s, s.get(Package, inv.package_id))["documents"]
+    return out
+
+
+@router.get("/invoices/{invoice_id}/graph")
+def get_graph(invoice_id: int, s: Session = Depends(get_session)):
+    inv = _get_invoice(s, invoice_id)
+    if not inv.analysis_json:
+        raise HTTPException(409, "Invoice has not been processed yet.")
+    return json.loads(inv.analysis_json)["graph"]
+
+
+# ---------------------------------------------------------------- buyers
+def _history(s: Session, buyer_id: int) -> list[tuple[date, date]]:
+    out = []
+    for inv in s.exec(select(Invoice).where(Invoice.buyer_id == buyer_id)).all():
+        pays = s.exec(select(PaymentEvent).where(PaymentEvent.invoice_id == inv.id)).all()
+        if inv.due_date and pays:
+            out.append((inv.due_date, max(p.paid_on for p in pays)))
+    return out
+
+
+@router.get("/buyers")
+def list_buyers(s: Session = Depends(get_session)):
+    rows = []
+    for b in s.exec(select(Buyer).order_by(Buyer.name)).all():
+        rows.append({"id": b.id, "name": b.name, "gstin": b.gstin, "synthetic": b.synthetic,
+                     "profile": compute_profile(_history(s, b.id)).model_dump()})
+    return rows
+
+
+@router.get("/buyers/{buyer_id}/profile")
+def buyer_profile(buyer_id: int, s: Session = Depends(get_session)):
+    b = s.get(Buyer, buyer_id)
+    if b is None:
+        raise HTTPException(404, "Buyer not found.")
+    return {"id": b.id, "name": b.name, "gstin": b.gstin, "synthetic": b.synthetic,
+            **compute_profile(_history(s, b.id)).model_dump()}
