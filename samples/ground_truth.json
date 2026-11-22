@@ -1,0 +1,6062 @@
+{
+ "version": 1,
+ "seed": 42,
+ "supplier": {
+  "name": "Shakti Precision Components Pvt Ltd",
+  "gstin": "27AAECS4821K1Z6",
+  "udyam": "UDYAM-MH-26-0048213",
+  "address": "Plot 14, MIDC Bhosari, Pune 411026, Maharashtra",
+  "enterprise_class": "small"
+ },
+ "buyers": [
+  {
+   "code": "KAA",
+   "name": "Kaveri Auto Assemblies Pvt Ltd",
+   "gstin": "27AABCK7712M1Z9"
+  },
+  {
+   "code": "NEW",
+   "name": "Narmada Engineering Works Ltd",
+   "gstin": "24AACCN3390P1Z3"
+  },
+  {
+   "code": "DAM",
+   "name": "Deccan Agro Machines Pvt Ltd",
+   "gstin": "36AAFCD5521Q1ZA"
+  },
+  {
+   "code": "SPV",
+   "name": "Sahyadri Pumps & Valves LLP",
+   "gstin": "27ABEFS8834R1Z7"
+  },
+  {
+   "code": "GEL",
+   "name": "Ganga Electricals Pvt Ltd",
+   "gstin": "09AAGCG1209L1ZK"
+  },
+  {
+   "code": "VIP",
+   "name": "Vindhya Infra Projects Ltd",
+   "gstin": "23AAHCV6650N1ZV"
+  }
+ ],
+ "packages": [
+  {
+   "package_id": "PKG01",
+   "buyer_code": "KAA",
+   "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+   "defects": [],
+   "files": [
+    {
+     "filename": "PKG01_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "e28ef63222f4cbe154548d05a39b6b9d825d9d57cdc685b5ff570bc8439ea928",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "KAA/PO/2627/1100",
+      "doc_date": "2026-08-20",
+      "buyer_name": "Kaveri Auto Assemblies Private Limited",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1100",
+      "po_no": "KAA/PO/2627/1100",
+      "po_date": "2026-08-20",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 18.5,
+        "amount": 740.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 420.0,
+        "amount": 16800.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 25.0,
+        "rate": 1850.0,
+        "amount": 46250.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 250.0,
+        "rate": 1250.0,
+        "amount": 312500.0
+       }
+      ],
+      "po_total": 376290.0,
+      "delivery_date": "2026-09-03",
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30
+     }
+    },
+    {
+     "filename": "PKG01_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "b54bc2cb8e92abce8d0800e987e1c55381302e57e18f60d78a616e38b3c17e98",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0101",
+      "doc_date": "2026-08-31",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1100",
+      "invoice_no": "SPC/26-27/0101",
+      "invoice_date": "2026-08-31",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 18.5,
+        "amount": 740.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 420.0,
+        "amount": 16800.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 25.0,
+        "rate": 1850.0,
+        "amount": 46250.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 250.0,
+        "rate": 1250.0,
+        "amount": 312500.0
+       }
+      ],
+      "taxable_value": 376290.0,
+      "cgst": 33866.1,
+      "sgst": 33866.1,
+      "igst": 0.0,
+      "total": 444022.2,
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30,
+      "due_date_text": null,
+      "irn": "6649d594a993afaf758e70db827f87a6299cd48e76ee963121946f63a14358e7",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG01_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "2a82e16e4bbc28e29a2780bf623652503d37ce5adaa40b15323eea5617cc1363",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0301",
+      "doc_date": "2026-08-31",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1100",
+      "challan_no": "DC/26-27/0301",
+      "challan_date": "2026-08-31",
+      "invoice_reference": "SPC/26-27/0101",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty": 40.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "qty": 40.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty": 25.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty": 250.0
+       }
+      ],
+      "vehicle_no": "MH12AB4000",
+      "received_by_name": "S. Kulkarni",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-01"
+     }
+    },
+    {
+     "filename": "PKG01_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "2e3f837bf4e0abbac274756ac1881b57741774701fac1e0a93e0516100714312",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "655050052120",
+      "doc_date": "2026-08-31",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": null,
+      "eway_no": "655050052120",
+      "generated_date": "2026-08-31",
+      "invoice_reference": "SPC/26-27/0101",
+      "value": 444022.2,
+      "vehicle_no": "MH12AB4000",
+      "valid_until": "2026-09-03"
+     }
+    },
+    {
+     "filename": "PKG01_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "821d927ae171161c0a241829ed7c041733211d00ba9808620ae86620ab873e20",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-KAA-7700",
+      "doc_date": "2026-09-02",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1100",
+      "grn_no": "GRN-KAA-7700",
+      "grn_date": "2026-09-02",
+      "invoice_reference": "SPC/26-27/0101",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty_received": 40.0,
+        "qty_accepted": 40.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "qty_received": 40.0,
+        "qty_accepted": 40.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty_received": 25.0,
+        "qty_accepted": 25.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty_received": 250.0,
+        "qty_accepted": 250.0
+       }
+      ],
+      "accepted_by": "Receiving Officer",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": false,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-02",
+    "due_date": "2026-10-02"
+   }
+  },
+  {
+   "package_id": "PKG02",
+   "buyer_code": "NEW",
+   "buyer_name": "Narmada Engineering Works Ltd",
+   "defects": [],
+   "files": [
+    {
+     "filename": "PKG02_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "01f446d9f14269a5d0d6ab22a53821aeb1d2afbbb29ea7f1e9abd46477c4669d",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "NEW/PO/2627/1107",
+      "doc_date": "2026-08-23",
+      "buyer_name": "Narmada Engineering Works Limited",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1107",
+      "po_no": "NEW/PO/2627/1107",
+      "po_date": "2026-08-23",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 200.0,
+        "rate": 2100.0,
+        "amount": 420000.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 250.0,
+        "rate": 1850.0,
+        "amount": 462500.0
+       }
+      ],
+      "po_total": 882500.0,
+      "delivery_date": "2026-09-06",
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21
+     }
+    },
+    {
+     "filename": "PKG02_invoice_scan.pdf",
+     "doc_type": "invoice",
+     "scan": true,
+     "sha256": "757a19295d67f37a9e1057a838e1ce0a7ccb32586e11178b63abc4bc175ddd3d",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0102",
+      "doc_date": "2026-09-04",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1107",
+      "invoice_no": "SPC/26-27/0102",
+      "invoice_date": "2026-09-04",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 200.0,
+        "rate": 2100.0,
+        "amount": 420000.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 250.0,
+        "rate": 1850.0,
+        "amount": 462500.0
+       }
+      ],
+      "taxable_value": 882500.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 158850.0,
+      "total": 1041350.0,
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21,
+      "due_date_text": null,
+      "irn": "b2a1d882a262a4dfd2da0db735719f65596ec48cde706abea812620035fcbfdd",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG02_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "e91a03b30dfa54c0df77dcc29fe2a38d5fc866856143fccf7ff5a2840bcf03cd",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0302",
+      "doc_date": "2026-09-05",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1107",
+      "challan_no": "DC/26-27/0302",
+      "challan_date": "2026-09-05",
+      "invoice_reference": "SPC/26-27/0102",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "qty": 200.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty": 250.0
+       }
+      ],
+      "vehicle_no": "MH12BC4037",
+      "received_by_name": "M. Reddy",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-06"
+     }
+    },
+    {
+     "filename": "PKG02_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "49c8d266dfe0c6851c66081751126a9b8a4f929fbc2c1d0f050ebf00244592e6",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "406404042870",
+      "doc_date": "2026-09-05",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": null,
+      "eway_no": "406404042870",
+      "generated_date": "2026-09-05",
+      "invoice_reference": "SPC/26-27/0102",
+      "value": 1041350.0,
+      "vehicle_no": "MH12BC4037",
+      "valid_until": "2026-09-08"
+     }
+    },
+    {
+     "filename": "PKG02_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "e6c607d9d4fb7d9228a6ffe1e6db3ac2d5bcc12e8dee199228a376a6cd20ccf4",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-NEW-7703",
+      "doc_date": "2026-09-08",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1107",
+      "grn_no": "GRN-NEW-7703",
+      "grn_date": "2026-09-08",
+      "invoice_reference": "SPC/26-27/0102",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "qty_received": 200.0,
+        "qty_accepted": 200.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty_received": 250.0,
+        "qty_accepted": 250.0
+       }
+      ],
+      "accepted_by": "Stores In-charge",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": false,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-08",
+    "due_date": "2026-09-29"
+   }
+  },
+  {
+   "package_id": "PKG03",
+   "buyer_code": "DAM",
+   "buyer_name": "Deccan Agro Machines Pvt Ltd",
+   "defects": [],
+   "files": [
+    {
+     "filename": "PKG03_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "101e9f3e7eca6e28d256944bf7b2cf89c79d02b7def21ff5f88f79e766520df9",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DAM/PO/2627/1114",
+      "doc_date": "2026-08-25",
+      "buyer_name": "Deccan Agro Machines Pvt. Ltd.",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1114",
+      "po_no": "DAM/PO/2627/1114",
+      "po_date": "2026-08-25",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 1850.0,
+        "amount": 277500.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 1250.0,
+        "amount": 50000.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 250.0,
+        "rate": 260.0,
+        "amount": 65000.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "hsn": "8413",
+        "unit": "Nos",
+        "qty": 120.0,
+        "rate": 3400.0,
+        "amount": 408000.0
+       }
+      ],
+      "po_total": 800500.0,
+      "delivery_date": "2026-09-08",
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45
+     }
+    },
+    {
+     "filename": "PKG03_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "416ea51a2b9a73ee17157a4f8b9605f18812863af5d9604ae8e92489bab50506",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0103",
+      "doc_date": "2026-09-02",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1114",
+      "invoice_no": "SPC/26-27/0103",
+      "invoice_date": "2026-09-02",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 1850.0,
+        "amount": 277500.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 1250.0,
+        "amount": 50000.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 250.0,
+        "rate": 260.0,
+        "amount": 65000.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "hsn": "8413",
+        "unit": "Nos",
+        "qty": 120.0,
+        "rate": 3400.0,
+        "amount": 408000.0
+       }
+      ],
+      "taxable_value": 800500.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 144090.0,
+      "total": 944590.0,
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45,
+      "due_date_text": null,
+      "irn": "eaca20543441728ce4453582f4a27755b90e65d8643ccfac0d68e0e896166274",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG03_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "2acaecc743e679e5a8dc9899c83e3e882f7bac00dbfb682e1081d259dee3f3e7",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0303",
+      "doc_date": "2026-09-03",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1114",
+      "challan_no": "DC/26-27/0303",
+      "challan_date": "2026-09-03",
+      "invoice_reference": "SPC/26-27/0103",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty": 150.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty": 40.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "qty": 250.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "qty": 120.0
+       }
+      ],
+      "vehicle_no": "MH12CD4074",
+      "received_by_name": "R. Patil",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-06"
+     }
+    },
+    {
+     "filename": "PKG03_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "e2acb66e32c1be554e555e5eca411e8f7368d1e4dd2a8cca7c7cf2d374b7a752",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "750400887118",
+      "doc_date": "2026-09-03",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": null,
+      "eway_no": "750400887118",
+      "generated_date": "2026-09-03",
+      "invoice_reference": "SPC/26-27/0103",
+      "value": 944590.0,
+      "vehicle_no": "MH12CD4074",
+      "valid_until": "2026-09-06"
+     }
+    },
+    {
+     "filename": "PKG03_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "b05d53fae8378f18ed66dda039ef203778a6beb96ce1e1cdc54bd4446b2bcde2",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-DAM-7706",
+      "doc_date": "2026-09-09",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1114",
+      "grn_no": "GRN-DAM-7706",
+      "grn_date": "2026-09-09",
+      "invoice_reference": "SPC/26-27/0103",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty_received": 150.0,
+        "qty_accepted": 150.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty_received": 40.0,
+        "qty_accepted": 40.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "qty_received": 250.0,
+        "qty_accepted": 250.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "qty_received": 120.0,
+        "qty_accepted": 120.0
+       }
+      ],
+      "accepted_by": "QC Supervisor",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": false,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-09",
+    "due_date": "2026-10-24"
+   }
+  },
+  {
+   "package_id": "PKG04",
+   "buyer_code": "SPV",
+   "buyer_name": "Sahyadri Pumps & Valves LLP",
+   "defects": [],
+   "files": [
+    {
+     "filename": "PKG04_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "aeaaab136028ec5e1988afd2299bf6995372440bb5e9f2964442217f57956bc6",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "SPV/PO/2627/1121",
+      "doc_date": "2026-08-27",
+      "buyer_name": "Sahyadri Pumps and Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1121",
+      "po_no": "SPV/PO/2627/1121",
+      "po_date": "2026-08-27",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 200.0,
+        "rate": 1850.0,
+        "amount": 370000.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 200.0,
+        "rate": 260.0,
+        "amount": 52000.0
+       }
+      ],
+      "po_total": 422000.0,
+      "delivery_date": "2026-09-10",
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45
+     }
+    },
+    {
+     "filename": "PKG04_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "9483c57e86973ce1d8fd9e5421dec81e0daaa2cacb1a96d3cad2b9f976ff3279",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0104",
+      "doc_date": "2026-09-03",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1121",
+      "invoice_no": "SPC/26-27/0104",
+      "invoice_date": "2026-09-03",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 200.0,
+        "rate": 1850.0,
+        "amount": 370000.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 200.0,
+        "rate": 260.0,
+        "amount": 52000.0
+       }
+      ],
+      "taxable_value": 422000.0,
+      "cgst": 37980.0,
+      "sgst": 37980.0,
+      "igst": 0.0,
+      "total": 497960.0,
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45,
+      "due_date_text": null,
+      "irn": "7c36f20faac7c50366b314e867cdbe1314b9238a9ca41261d2755f93f8640c34",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG04_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "96dfa0405e75f2bfdbd0ab1899093ea3b63b0e409c0f60fb4be4df57dc146132",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0304",
+      "doc_date": "2026-09-04",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1121",
+      "challan_no": "DC/26-27/0304",
+      "challan_date": "2026-09-04",
+      "invoice_reference": "SPC/26-27/0104",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty": 200.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "qty": 200.0
+       }
+      ],
+      "vehicle_no": "MH12DE4111",
+      "received_by_name": "R. Patil",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-07"
+     }
+    },
+    {
+     "filename": "PKG04_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "2f863267c4907c25136bc1fb7495f06ba61a5587d5038488238fa59e80ecdda2",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "727095351325",
+      "doc_date": "2026-09-04",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": null,
+      "eway_no": "727095351325",
+      "generated_date": "2026-09-04",
+      "invoice_reference": "SPC/26-27/0104",
+      "value": 497960.0,
+      "vehicle_no": "MH12DE4111",
+      "valid_until": "2026-09-07"
+     }
+    },
+    {
+     "filename": "PKG04_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "d8725b95a9dc26ad00f0fef85fdd2f395e2c6505a49c8574ade1fed2cee2bbba",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-SPV-7709",
+      "doc_date": "2026-09-10",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1121",
+      "grn_no": "GRN-SPV-7709",
+      "grn_date": "2026-09-10",
+      "invoice_reference": "SPC/26-27/0104",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty_received": 200.0,
+        "qty_accepted": 200.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "qty_received": 200.0,
+        "qty_accepted": 200.0
+       }
+      ],
+      "accepted_by": "Receiving Officer",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": false,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-10",
+    "due_date": "2026-10-25"
+   }
+  },
+  {
+   "package_id": "PKG05",
+   "buyer_code": "GEL",
+   "buyer_name": "Ganga Electricals Pvt Ltd",
+   "defects": [],
+   "files": [
+    {
+     "filename": "PKG05_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "e910cd5fbeb2f5c81b0484252e754b7fd5cb822a2d8c53ca85027d3db8d1de99",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GEL/PO/2627/1128",
+      "doc_date": "2026-08-31",
+      "buyer_name": "Ganga Electricals Private Limited",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1128",
+      "po_no": "GEL/PO/2627/1128",
+      "po_date": "2026-08-31",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 20.0,
+        "rate": 18.5,
+        "amount": 370.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "hsn": "8413",
+        "unit": "Nos",
+        "qty": 100.0,
+        "rate": 3400.0,
+        "amount": 340000.0
+       }
+      ],
+      "po_total": 340370.0,
+      "delivery_date": "2026-09-14",
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45
+     }
+    },
+    {
+     "filename": "PKG05_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "9a9e566a15c733107d39443cf2c3c0ff9f60074644998a625cc9f570d0905466",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0105",
+      "doc_date": "2026-09-08",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1128",
+      "invoice_no": "SPC/26-27/0105",
+      "invoice_date": "2026-09-08",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 20.0,
+        "rate": 18.5,
+        "amount": 370.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "hsn": "8413",
+        "unit": "Nos",
+        "qty": 100.0,
+        "rate": 3400.0,
+        "amount": 340000.0
+       }
+      ],
+      "taxable_value": 340370.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 61266.6,
+      "total": 401636.6,
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45,
+      "due_date_text": null,
+      "irn": "2f93a4811f3990fd0ef4dbdfcc7eb0fc9605f1780770a73d235c853bd99c329c",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG05_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "60214761d9e0bd93d29f3166a58908c9d7b446817ea8de4de797de2355a2967d",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0305",
+      "doc_date": "2026-09-08",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1128",
+      "challan_no": "DC/26-27/0305",
+      "challan_date": "2026-09-08",
+      "invoice_reference": "SPC/26-27/0105",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty": 20.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "qty": 100.0
+       }
+      ],
+      "vehicle_no": "MH12EF4148",
+      "received_by_name": "A. Shaikh",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-09"
+     }
+    },
+    {
+     "filename": "PKG05_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "e307eadf59a8f1fe0ca3791b89603aa69ae201725f12c99ac0917dac4768ae1d",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "769558280468",
+      "doc_date": "2026-09-08",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": null,
+      "eway_no": "769558280468",
+      "generated_date": "2026-09-08",
+      "invoice_reference": "SPC/26-27/0105",
+      "value": 401636.6,
+      "vehicle_no": "MH12EF4148",
+      "valid_until": "2026-09-11"
+     }
+    },
+    {
+     "filename": "PKG05_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "cd3163a58ec9396a8392686af4911f9a28831aff4700bc2afea35f947f2e641a",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-GEL-7712",
+      "doc_date": "2026-09-10",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1128",
+      "grn_no": "GRN-GEL-7712",
+      "grn_date": "2026-09-10",
+      "invoice_reference": "SPC/26-27/0105",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty_received": 20.0,
+        "qty_accepted": 20.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "qty_received": 100.0,
+        "qty_accepted": 100.0
+       }
+      ],
+      "accepted_by": "QC Supervisor",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": false,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-10",
+    "due_date": "2026-10-25"
+   }
+  },
+  {
+   "package_id": "PKG06",
+   "buyer_code": "VIP",
+   "buyer_name": "Vindhya Infra Projects Ltd",
+   "defects": [],
+   "files": [
+    {
+     "filename": "PKG06_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "ba697fb0af3b8d535d8dbcc8a4595207e006168d046a0e2f8fe38e9b2a351632",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "VIP/PO/2627/1135",
+      "doc_date": "2026-08-30",
+      "buyer_name": "Vindhya Infra Projects Limited",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1135",
+      "po_no": "VIP/PO/2627/1135",
+      "po_date": "2026-08-30",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 10.0,
+        "rate": 2100.0,
+        "amount": 21000.0
+       },
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 780.0,
+        "amount": 117000.0
+       }
+      ],
+      "po_total": 138000.0,
+      "delivery_date": "2026-09-13",
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30
+     }
+    },
+    {
+     "filename": "PKG06_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "53c73c05fa882aa0a0935c81c60aac80df898d0f7b0f12382d20e67cc0d5a6bb",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0106",
+      "doc_date": "2026-09-09",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1135",
+      "invoice_no": "SPC/26-27/0106",
+      "invoice_date": "2026-09-09",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 10.0,
+        "rate": 2100.0,
+        "amount": 21000.0
+       },
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 780.0,
+        "amount": 117000.0
+       }
+      ],
+      "taxable_value": 138000.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 24840.0,
+      "total": 162840.0,
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30,
+      "due_date_text": null,
+      "irn": "a74987d9c115d3dd40a6fa59ff8050474282649ac8ace69deaf47a4b4311ac5b",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG06_challan_scan.pdf",
+     "doc_type": "challan",
+     "scan": true,
+     "sha256": "6db939c740a6e0dd451305f4f2e9a8ef65cb20af54b875c2c70152b0d31e6e79",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0306",
+      "doc_date": "2026-09-09",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1135",
+      "challan_no": "DC/26-27/0306",
+      "challan_date": "2026-09-09",
+      "invoice_reference": "SPC/26-27/0106",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "qty": 10.0
+       },
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "qty": 150.0
+       }
+      ],
+      "vehicle_no": "MH12FG4185",
+      "received_by_name": "M. Reddy",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-11"
+     }
+    },
+    {
+     "filename": "PKG06_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "090fc5d177dc525a8afdfced7c496a07d4ca8298325a59ef0946bfafcc56e666",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "779042879979",
+      "doc_date": "2026-09-09",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": null,
+      "eway_no": "779042879979",
+      "generated_date": "2026-09-09",
+      "invoice_reference": "SPC/26-27/0106",
+      "value": 162840.0,
+      "vehicle_no": "MH12FG4185",
+      "valid_until": "2026-09-12"
+     }
+    },
+    {
+     "filename": "PKG06_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "ee07dda7626c053d6fd1bcd5e1f0567dfca3f050b020e5fa404a6b4ffa28187d",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-VIP-7715",
+      "doc_date": "2026-09-14",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1135",
+      "grn_no": "GRN-VIP-7715",
+      "grn_date": "2026-09-14",
+      "invoice_reference": "SPC/26-27/0106",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "qty_received": 10.0,
+        "qty_accepted": 10.0
+       },
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "qty_received": 150.0,
+        "qty_accepted": 150.0
+       }
+      ],
+      "accepted_by": "Receiving Officer",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": false,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-14",
+    "due_date": "2026-10-14"
+   }
+  },
+  {
+   "package_id": "PKG07",
+   "buyer_code": "KAA",
+   "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+   "defects": [
+    "missing_grn"
+   ],
+   "files": [
+    {
+     "filename": "PKG07_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "2fd4585d62c5419c6d937df108febc053ed63b10ca3cb68930cf39801fcad2fa",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "KAA/PO/2627/1142",
+      "doc_date": "2026-09-04",
+      "buyer_name": "Kaveri Auto Assemblies Private Limited",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1142",
+      "po_no": "KAA/PO/2627/1142",
+      "po_date": "2026-09-04",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 50.0,
+        "rate": 18.5,
+        "amount": 925.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 10.0,
+        "rate": 1850.0,
+        "amount": 18500.0
+       }
+      ],
+      "po_total": 19425.0,
+      "delivery_date": "2026-09-18",
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30
+     }
+    },
+    {
+     "filename": "PKG07_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "11e8646185eafe25f90dd0150a485bf3ad713d5f2c0f8d1229e62c24dead0624",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0107",
+      "doc_date": "2026-09-10",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1142",
+      "invoice_no": "SPC/26-27/0107",
+      "invoice_date": "2026-09-10",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 50.0,
+        "rate": 18.5,
+        "amount": 925.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 10.0,
+        "rate": 1850.0,
+        "amount": 18500.0
+       }
+      ],
+      "taxable_value": 19425.0,
+      "cgst": 1748.25,
+      "sgst": 1748.25,
+      "igst": 0.0,
+      "total": 22921.5,
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30,
+      "due_date_text": null,
+      "irn": "1754b50a044ad339ce30e54862a5476ccce69e7e639abc5e01f95357165f9e35",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG07_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "c789c2d57eedf226432bf1d255564000572d79b3a6d7309641b71f3611468536",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0307",
+      "doc_date": "2026-09-11",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1142",
+      "challan_no": "DC/26-27/0307",
+      "challan_date": "2026-09-11",
+      "invoice_reference": "SPC/26-27/0107",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty": 50.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty": 10.0
+       }
+      ],
+      "vehicle_no": "MH12GH4222",
+      "received_by_name": "M. Reddy",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-13"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "missing",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "challan_received",
+    "acceptance_date": "2026-09-13",
+    "due_date": "2026-10-13"
+   }
+  },
+  {
+   "package_id": "PKG08",
+   "buyer_code": "NEW",
+   "buyer_name": "Narmada Engineering Works Ltd",
+   "defects": [
+    "missing_grn"
+   ],
+   "files": [
+    {
+     "filename": "PKG08_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "177fc6145494d221e62f8bf326b0f3b00f35c6b326c691058877e822782aa5e6",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "NEW/PO/2627/1149",
+      "doc_date": "2026-09-05",
+      "buyer_name": "Narmada Engineering Works Limited",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1149",
+      "po_no": "NEW/PO/2627/1149",
+      "po_date": "2026-09-05",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 2100.0,
+        "amount": 315000.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 40.0,
+        "rate": 260.0,
+        "amount": 10400.0
+       }
+      ],
+      "po_total": 325400.0,
+      "delivery_date": "2026-09-19",
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45
+     }
+    },
+    {
+     "filename": "PKG08_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "f65e7a681364e2836530f84d5efaad364e1c75ac09177accc48f5ea6024c9605",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0108",
+      "doc_date": "2026-09-13",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1149",
+      "invoice_no": "SPC/26-27/0108",
+      "invoice_date": "2026-09-13",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 2100.0,
+        "amount": 315000.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 40.0,
+        "rate": 260.0,
+        "amount": 10400.0
+       }
+      ],
+      "taxable_value": 325400.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 58572.0,
+      "total": 383972.0,
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45,
+      "due_date_text": null,
+      "irn": "09848e560f832679df809048f4bc0237e0011f456768de6f1fad23b2a0bd020b",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG08_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "82451e70ec163e3b45c5bcf1cf1104374dcf4085cd3abe62db66f82becd36760",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0308",
+      "doc_date": "2026-09-14",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1149",
+      "challan_no": "DC/26-27/0308",
+      "challan_date": "2026-09-14",
+      "invoice_reference": "SPC/26-27/0108",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "qty": 150.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "qty": 40.0
+       }
+      ],
+      "vehicle_no": "MH12HI4259",
+      "received_by_name": "M. Reddy",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-15"
+     }
+    },
+    {
+     "filename": "PKG08_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "18e9408327cae52f0dc1b5e508bc72111da3a34212434a018367ba0fc8d7080a",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "263811579305",
+      "doc_date": "2026-09-14",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": null,
+      "eway_no": "263811579305",
+      "generated_date": "2026-09-14",
+      "invoice_reference": "SPC/26-27/0108",
+      "value": 383972.0,
+      "vehicle_no": "MH12HI4259",
+      "valid_until": "2026-09-17"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "missing",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "challan_received",
+    "acceptance_date": "2026-09-15",
+    "due_date": "2026-10-30"
+   }
+  },
+  {
+   "package_id": "PKG09",
+   "buyer_code": "DAM",
+   "buyer_name": "Deccan Agro Machines Pvt Ltd",
+   "defects": [
+    "missing_challan"
+   ],
+   "files": [
+    {
+     "filename": "PKG09_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "748faca8a4a1f7ad300dbfa532e4f1fa0b30e56b515f002699b333df1b879eaa",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DAM/PO/2627/1156",
+      "doc_date": "2026-09-06",
+      "buyer_name": "Deccan Agro Machines Pvt. Ltd.",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1156",
+      "po_no": "DAM/PO/2627/1156",
+      "po_date": "2026-09-06",
+      "line_items": [
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 10.0,
+        "rate": 260.0,
+        "amount": 2600.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 80.0,
+        "rate": 2100.0,
+        "amount": 168000.0
+       },
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 780.0,
+        "amount": 31200.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 250.0,
+        "rate": 1250.0,
+        "amount": 312500.0
+       }
+      ],
+      "po_total": 514300.0,
+      "delivery_date": "2026-09-20",
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21
+     }
+    },
+    {
+     "filename": "PKG09_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "288cbd2fb5e940637b803bbf6df733b91fb98f17ad6945a50ec16f399194f901",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0109",
+      "doc_date": "2026-09-13",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1156",
+      "invoice_no": "SPC/26-27/0109",
+      "invoice_date": "2026-09-13",
+      "line_items": [
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 10.0,
+        "rate": 260.0,
+        "amount": 2600.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 80.0,
+        "rate": 2100.0,
+        "amount": 168000.0
+       },
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 780.0,
+        "amount": 31200.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 250.0,
+        "rate": 1250.0,
+        "amount": 312500.0
+       }
+      ],
+      "taxable_value": 514300.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 92574.0,
+      "total": 606874.0,
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21,
+      "due_date_text": null,
+      "irn": "eae355a6930a297d49e8a360407cff160bbb4dd04040efc888bb1265248ef8f3",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG09_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "4cdf2cb7ed234d80f87974db9d32af9c566fc8fc256f669154a16d7df4c95610",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "379371541035",
+      "doc_date": "2026-09-14",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": null,
+      "eway_no": "379371541035",
+      "generated_date": "2026-09-14",
+      "invoice_reference": "SPC/26-27/0109",
+      "value": 606874.0,
+      "vehicle_no": "MH14ZX5008",
+      "valid_until": "2026-09-17"
+     }
+    },
+    {
+     "filename": "PKG09_grn_scan.pdf",
+     "doc_type": "grn",
+     "scan": true,
+     "sha256": "b7fa8fe6deb13d4d7ff1bd6a291473cc4fea85ad0c384071798184a0be5c87c5",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-DAM-7724",
+      "doc_date": "2026-09-19",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1156",
+      "grn_no": "GRN-DAM-7724",
+      "grn_date": "2026-09-19",
+      "invoice_reference": "SPC/26-27/0109",
+      "line_items": [
+       {
+        "desc": "Gasket Set GS-12",
+        "qty_received": 10.0,
+        "qty_accepted": 10.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty_received": 80.0,
+        "qty_accepted": 80.0
+       },
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "qty_received": 40.0,
+        "qty_accepted": 40.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty_received": 250.0,
+        "qty_accepted": 250.0
+       }
+      ],
+      "accepted_by": "Stores In-charge",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "missing",
+     "C06": "missing",
+     "C07": "missing",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-19",
+    "due_date": "2026-10-10"
+   }
+  },
+  {
+   "package_id": "PKG10",
+   "buyer_code": "SPV",
+   "buyer_name": "Sahyadri Pumps & Valves LLP",
+   "defects": [
+    "missing_challan"
+   ],
+   "files": [
+    {
+     "filename": "PKG10_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "629266986d2a07816938bb3f7e5ef9afa39b742f33b707ec519d3ee20e0be3f4",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "SPV/PO/2627/1163",
+      "doc_date": "2026-09-07",
+      "buyer_name": "Sahyadri Pumps and Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1163",
+      "po_no": "SPV/PO/2627/1163",
+      "po_date": "2026-09-07",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 420.0,
+        "amount": 63000.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 18.5,
+        "amount": 740.0
+       }
+      ],
+      "po_total": 63740.0,
+      "delivery_date": "2026-09-21",
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30
+     }
+    },
+    {
+     "filename": "PKG10_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "8fe51f4254194c96f292898135fb54297d3ab4156bf49d262ea81c0c04e47b8d",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0110",
+      "doc_date": "2026-09-17",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1163",
+      "invoice_no": "SPC/26-27/0110",
+      "invoice_date": "2026-09-17",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 420.0,
+        "amount": 63000.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 18.5,
+        "amount": 740.0
+       }
+      ],
+      "taxable_value": 63740.0,
+      "cgst": 5736.6,
+      "sgst": 5736.6,
+      "igst": 0.0,
+      "total": 75213.2,
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30,
+      "due_date_text": null,
+      "irn": "13e65229902f868e0a6cb835bd14fd4f5478debb0a061e19ca26f28f0e65589a",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG10_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "a2d267d2ed79fdd3fd33360b1aa6147f5b9a5e7b16dc618d1a4b7328ddc9f59b",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "895212380095",
+      "doc_date": "2026-09-17",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": null,
+      "eway_no": "895212380095",
+      "generated_date": "2026-09-17",
+      "invoice_reference": "SPC/26-27/0110",
+      "value": 75213.2,
+      "vehicle_no": "MH14ZX5009",
+      "valid_until": "2026-09-20"
+     }
+    },
+    {
+     "filename": "PKG10_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "1f558aed3fbc9f7f05b17850d6fb41c7a94ac60c27cb879c6d48701a0261cdd4",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-SPV-7727",
+      "doc_date": "2026-09-23",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1163",
+      "grn_no": "GRN-SPV-7727",
+      "grn_date": "2026-09-23",
+      "invoice_reference": "SPC/26-27/0110",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "qty_received": 150.0,
+        "qty_accepted": 150.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty_received": 40.0,
+        "qty_accepted": 40.0
+       }
+      ],
+      "accepted_by": "QC Supervisor",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "missing",
+     "C06": "missing",
+     "C07": "missing",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-23",
+    "due_date": "2026-10-23"
+   }
+  },
+  {
+   "package_id": "PKG11",
+   "buyer_code": "GEL",
+   "buyer_name": "Ganga Electricals Pvt Ltd",
+   "defects": [
+    "qty_short"
+   ],
+   "files": [
+    {
+     "filename": "PKG11_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "589feccaa1f3353de2c3d293ce0ef80fdab4268f6627cf251e6f9a55aadd375d",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GEL/PO/2627/1170",
+      "doc_date": "2026-09-12",
+      "buyer_name": "Ganga Electricals Private Limited",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1170",
+      "po_no": "GEL/PO/2627/1170",
+      "po_date": "2026-09-12",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 50.0,
+        "rate": 2100.0,
+        "amount": 105000.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 120.0,
+        "rate": 420.0,
+        "amount": 50400.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 120.0,
+        "rate": 1850.0,
+        "amount": 222000.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 10.0,
+        "rate": 1250.0,
+        "amount": 12500.0
+       }
+      ],
+      "po_total": 389900.0,
+      "delivery_date": "2026-09-26",
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30
+     }
+    },
+    {
+     "filename": "PKG11_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "eb49a61baf1ab92360fbe5fa9f12ad41fa40eddce7482f0feb155985710d9d07",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0111",
+      "doc_date": "2026-09-22",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1170",
+      "invoice_no": "SPC/26-27/0111",
+      "invoice_date": "2026-09-22",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 50.0,
+        "rate": 2100.0,
+        "amount": 105000.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 120.0,
+        "rate": 420.0,
+        "amount": 50400.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 120.0,
+        "rate": 1850.0,
+        "amount": 222000.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 10.0,
+        "rate": 1250.0,
+        "amount": 12500.0
+       }
+      ],
+      "taxable_value": 389900.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 70182.0,
+      "total": 460082.0,
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30,
+      "due_date_text": null,
+      "irn": "a33d8572027b329f11b755a4d6663580799be2327b59eaaa1d7499dd76b5363c",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG11_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "3a71becad87cd1f03cffa5fe54dbeb003808675824247f4fd358fc7a1b5fb5ae",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0311",
+      "doc_date": "2026-09-23",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1170",
+      "challan_no": "DC/26-27/0311",
+      "challan_date": "2026-09-23",
+      "invoice_reference": "SPC/26-27/0111",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "qty": 40.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "qty": 120.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty": 120.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty": 10.0
+       }
+      ],
+      "vehicle_no": "MH12KL4370",
+      "received_by_name": "S. Kulkarni",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-25"
+     }
+    },
+    {
+     "filename": "PKG11_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "5413c147422e2bdc153c7ae062ff608f781694b4dee7836341daf7ae6cac5515",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "981531253833",
+      "doc_date": "2026-09-23",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": null,
+      "eway_no": "981531253833",
+      "generated_date": "2026-09-23",
+      "invoice_reference": "SPC/26-27/0111",
+      "value": 460082.0,
+      "vehicle_no": "MH12KL4370",
+      "valid_until": "2026-09-26"
+     }
+    },
+    {
+     "filename": "PKG11_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "7cdfc259364a933888b7b529e0b540975709b2a2a620de8c2d6ecfb9fe3207dc",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-GEL-7730",
+      "doc_date": "2026-09-26",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1170",
+      "grn_no": "GRN-GEL-7730",
+      "grn_date": "2026-09-26",
+      "invoice_reference": "SPC/26-27/0111",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "qty_received": 40.0,
+        "qty_accepted": 40.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "qty_received": 120.0,
+        "qty_accepted": 120.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty_received": 120.0,
+        "qty_accepted": 120.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty_received": 10.0,
+        "qty_accepted": 10.0
+       }
+      ],
+      "accepted_by": "QC Supervisor",
+      "remarks": "Accepted qty as received"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "fail",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-26",
+    "due_date": "2026-10-26"
+   }
+  },
+  {
+   "package_id": "PKG12",
+   "buyer_code": "VIP",
+   "buyer_name": "Vindhya Infra Projects Ltd",
+   "defects": [
+    "qty_short"
+   ],
+   "files": [
+    {
+     "filename": "PKG12_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "3a8ce3892d180c6f20b120aea9bad2ed55b11fa14afdebcaf3139e134df235f1",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "VIP/PO/2627/1177",
+      "doc_date": "2026-09-14",
+      "buyer_name": "Vindhya Infra Projects Limited",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1177",
+      "po_no": "VIP/PO/2627/1177",
+      "po_date": "2026-09-14",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 250.0,
+        "rate": 420.0,
+        "amount": 105000.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 60.0,
+        "rate": 1850.0,
+        "amount": 111000.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 100.0,
+        "rate": 1250.0,
+        "amount": 125000.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 120.0,
+        "rate": 18.5,
+        "amount": 2220.0
+       }
+      ],
+      "po_total": 343220.0,
+      "delivery_date": "2026-09-28",
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21
+     }
+    },
+    {
+     "filename": "PKG12_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "8439d24945c9e2aa4b5df3caaf6930be9ba008876dab8eb6fde98df3608e6b61",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0112",
+      "doc_date": "2026-09-26",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1177",
+      "invoice_no": "SPC/26-27/0112",
+      "invoice_date": "2026-09-26",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 250.0,
+        "rate": 420.0,
+        "amount": 105000.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 60.0,
+        "rate": 1850.0,
+        "amount": 111000.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 100.0,
+        "rate": 1250.0,
+        "amount": 125000.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 120.0,
+        "rate": 18.5,
+        "amount": 2220.0
+       }
+      ],
+      "taxable_value": 343220.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 61779.6,
+      "total": 404999.6,
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21,
+      "due_date_text": null,
+      "irn": "fc01f8c78e74e86b5beab4b036d867c13e8a4c8256144337d393539706da3d48",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG12_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "aba83116747f3ea634cfaab20a561a2264ad5e71aae03c08d707a9dd87ead02b",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0312",
+      "doc_date": "2026-09-27",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1177",
+      "challan_no": "DC/26-27/0312",
+      "challan_date": "2026-09-27",
+      "invoice_reference": "SPC/26-27/0112",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "qty": 200.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty": 60.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty": 100.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty": 120.0
+       }
+      ],
+      "vehicle_no": "MH12LM4407",
+      "received_by_name": "M. Reddy",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-28"
+     }
+    },
+    {
+     "filename": "PKG12_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "652090859437a83dc4dff4e0b9d6da8938ca35cacaf2e4dedecf0bdf42a30745",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "360739891477",
+      "doc_date": "2026-09-27",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": null,
+      "eway_no": "360739891477",
+      "generated_date": "2026-09-27",
+      "invoice_reference": "SPC/26-27/0112",
+      "value": 404999.6,
+      "vehicle_no": "MH12LM4407",
+      "valid_until": "2026-09-30"
+     }
+    },
+    {
+     "filename": "PKG12_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "543c25fe435a268503bac0bfd8273267bac5301e08a33528010c64da1aa36f2e",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-VIP-7733",
+      "doc_date": "2026-09-30",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1177",
+      "grn_no": "GRN-VIP-7733",
+      "grn_date": "2026-09-30",
+      "invoice_reference": "SPC/26-27/0112",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "qty_received": 200.0,
+        "qty_accepted": 200.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty_received": 60.0,
+        "qty_accepted": 60.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty_received": 100.0,
+        "qty_accepted": 100.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty_received": 120.0,
+        "qty_accepted": 120.0
+       }
+      ],
+      "accepted_by": "Stores In-charge",
+      "remarks": "Accepted qty as received"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "fail",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-30",
+    "due_date": "2026-10-21"
+   }
+  },
+  {
+   "package_id": "PKG13",
+   "buyer_code": "KAA",
+   "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+   "defects": [
+    "invoice_gt_po"
+   ],
+   "files": [
+    {
+     "filename": "PKG13_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "e619015a0d39124f754e716473465fbc0bc9eccf5fef4b7573a9090b7f6f583a",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "KAA/PO/2627/1184",
+      "doc_date": "2026-09-14",
+      "buyer_name": "Kaveri Auto Assemblies Private Limited",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1184",
+      "po_no": "KAA/PO/2627/1184",
+      "po_date": "2026-09-14",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 50.0,
+        "rate": 18.5,
+        "amount": 925.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 100.0,
+        "rate": 2100.0,
+        "amount": 210000.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 25.0,
+        "rate": 1250.0,
+        "amount": 31250.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 50.0,
+        "rate": 1850.0,
+        "amount": 92500.0
+       }
+      ],
+      "po_total": 334675.0,
+      "delivery_date": "2026-09-28",
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45
+     }
+    },
+    {
+     "filename": "PKG13_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "1517d1fec5a78826bdcd6cd02823794734b1f852007df4e3fce26eda814f412d",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0113",
+      "doc_date": "2026-09-19",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1184",
+      "invoice_no": "SPC/26-27/0113",
+      "invoice_date": "2026-09-19",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 50.0,
+        "rate": 18.5,
+        "amount": 925.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 100.0,
+        "rate": 2268.0,
+        "amount": 226800.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 25.0,
+        "rate": 1250.0,
+        "amount": 31250.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 50.0,
+        "rate": 1850.0,
+        "amount": 92500.0
+       }
+      ],
+      "taxable_value": 351475.0,
+      "cgst": 31632.75,
+      "sgst": 31632.75,
+      "igst": 0.0,
+      "total": 414740.5,
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45,
+      "due_date_text": null,
+      "irn": "4996e75eea6bd0cc5b30ab2a136470a32a859456b02dafd72e90e8633b2b288b",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG13_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "5eae35a26cd23510d89b0ea5346fa1132715daada60a72cfe0f925fcc562bd4c",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0313",
+      "doc_date": "2026-09-19",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1184",
+      "challan_no": "DC/26-27/0313",
+      "challan_date": "2026-09-19",
+      "invoice_reference": "SPC/26-27/0113",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty": 50.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty": 100.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty": 25.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty": 50.0
+       }
+      ],
+      "vehicle_no": "MH12MN4444",
+      "received_by_name": "S. Kulkarni",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-21"
+     }
+    },
+    {
+     "filename": "PKG13_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "74ca6d18be536fd9abb1204882a5e7d36ac2cd83b8aa7c5d52145068f37a04ff",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "317334054933",
+      "doc_date": "2026-09-19",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": null,
+      "eway_no": "317334054933",
+      "generated_date": "2026-09-19",
+      "invoice_reference": "SPC/26-27/0113",
+      "value": 414740.5,
+      "vehicle_no": "MH12MN4444",
+      "valid_until": "2026-09-22"
+     }
+    },
+    {
+     "filename": "PKG13_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "c9cf21bd7a85ddc3266963ea91c09ac4f785a714e0934cba61894c6cfe2a2192",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-KAA-7736",
+      "doc_date": "2026-09-22",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1184",
+      "grn_no": "GRN-KAA-7736",
+      "grn_date": "2026-09-22",
+      "invoice_reference": "SPC/26-27/0113",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty_received": 50.0,
+        "qty_accepted": 50.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty_received": 100.0,
+        "qty_accepted": 100.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty_received": 25.0,
+        "qty_accepted": 25.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty_received": 50.0,
+        "qty_accepted": 50.0
+       }
+      ],
+      "accepted_by": "Stores In-charge",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "fail",
+     "C03": "fail",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-22",
+    "due_date": "2026-11-06"
+   }
+  },
+  {
+   "package_id": "PKG14",
+   "buyer_code": "NEW",
+   "buyer_name": "Narmada Engineering Works Ltd",
+   "defects": [
+    "invoice_gt_po"
+   ],
+   "files": [
+    {
+     "filename": "PKG14_po_scan.pdf",
+     "doc_type": "po",
+     "scan": true,
+     "sha256": "d24d477232e861d6bc8f11df4b5f1429a61d0b5204d0f7fffce8ade9ae4368dc",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "NEW/PO/2627/1191",
+      "doc_date": "2026-09-18",
+      "buyer_name": "Narmada Engineering Works Limited",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1191",
+      "po_no": "NEW/PO/2627/1191",
+      "po_date": "2026-09-18",
+      "line_items": [
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 25.0,
+        "rate": 780.0,
+        "amount": 19500.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 250.0,
+        "rate": 1250.0,
+        "amount": 312500.0
+       }
+      ],
+      "po_total": 332000.0,
+      "delivery_date": "2026-10-02",
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30
+     }
+    },
+    {
+     "filename": "PKG14_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "2b7206352b513698f20dd818f4c7b51fd46bdc974666ae9f9879cf19f0baf153",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0114",
+      "doc_date": "2026-09-23",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1191",
+      "invoice_no": "SPC/26-27/0114",
+      "invoice_date": "2026-09-23",
+      "line_items": [
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 25.0,
+        "rate": 780.0,
+        "amount": 19500.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 250.0,
+        "rate": 1350.0,
+        "amount": 337500.0
+       }
+      ],
+      "taxable_value": 357000.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 64260.0,
+      "total": 421260.0,
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30,
+      "due_date_text": null,
+      "irn": "d2abb76c2abbdba2196bb5bc5031dc15a7fd905bf8d58cb97851d1486d8c1a55",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG14_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "6681cbf333305b402b0927544c92f8925a4044367f94566593bb68a08a6ef93c",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0314",
+      "doc_date": "2026-09-24",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1191",
+      "challan_no": "DC/26-27/0314",
+      "challan_date": "2026-09-24",
+      "invoice_reference": "SPC/26-27/0114",
+      "line_items": [
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "qty": 25.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty": 250.0
+       }
+      ],
+      "vehicle_no": "MH12NO4481",
+      "received_by_name": "R. Patil",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-27"
+     }
+    },
+    {
+     "filename": "PKG14_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "094d008240fafb7b4f22d76ed294ffb666c21072ce1a1476d9391706be3594d7",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "751797195325",
+      "doc_date": "2026-09-24",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": null,
+      "eway_no": "751797195325",
+      "generated_date": "2026-09-24",
+      "invoice_reference": "SPC/26-27/0114",
+      "value": 421260.0,
+      "vehicle_no": "MH12NO4481",
+      "valid_until": "2026-09-27"
+     }
+    },
+    {
+     "filename": "PKG14_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "a3d731e34eff5477be14a51704eb149d8657159ba7a9eea81e0050a19b2905c8",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-NEW-7739",
+      "doc_date": "2026-09-28",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1191",
+      "grn_no": "GRN-NEW-7739",
+      "grn_date": "2026-09-28",
+      "invoice_reference": "SPC/26-27/0114",
+      "line_items": [
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "qty_received": 25.0,
+        "qty_accepted": 25.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty_received": 250.0,
+        "qty_accepted": 250.0
+       }
+      ],
+      "accepted_by": "Receiving Officer",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "fail",
+     "C03": "fail",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-28",
+    "due_date": "2026-10-28"
+   }
+  },
+  {
+   "package_id": "PKG15",
+   "buyer_code": "DAM",
+   "buyer_name": "Deccan Agro Machines Pvt Ltd",
+   "defects": [
+    "party_mismatch"
+   ],
+   "files": [
+    {
+     "filename": "PKG15_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "3d9ea421cc105df46bc93039a30833a4ace31c04316391292e8279f6ff1ca9a1",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DAM/PO/2627/1198",
+      "doc_date": "2026-09-18",
+      "buyer_name": "Deccan Agro Machines Pvt. Ltd.",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1198",
+      "po_no": "DAM/PO/2627/1198",
+      "po_date": "2026-09-18",
+      "line_items": [
+       {
+        "desc": "Pump Impeller 150mm",
+        "hsn": "8413",
+        "unit": "Nos",
+        "qty": 80.0,
+        "rate": 3400.0,
+        "amount": 272000.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 2100.0,
+        "amount": 315000.0
+       }
+      ],
+      "po_total": 587000.0,
+      "delivery_date": "2026-10-02",
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45
+     }
+    },
+    {
+     "filename": "PKG15_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "d68b5968ef112af5c6b7dff756f041c3c29cee33074a28c34e55eb647d6a14e3",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0115",
+      "doc_date": "2026-09-25",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD8521Q1Z4",
+      "po_reference": "DAM/PO/2627/1198",
+      "invoice_no": "SPC/26-27/0115",
+      "invoice_date": "2026-09-25",
+      "line_items": [
+       {
+        "desc": "Pump Impeller 150mm",
+        "hsn": "8413",
+        "unit": "Nos",
+        "qty": 80.0,
+        "rate": 3400.0,
+        "amount": 272000.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 2100.0,
+        "amount": 315000.0
+       }
+      ],
+      "taxable_value": 587000.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 105660.0,
+      "total": 692660.0,
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45,
+      "due_date_text": null,
+      "irn": "31048dec310e23e5049dd148708c921a1ea46e797db1fdbf8ec5bb29f1b690fc",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG15_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "12d73b496aee958cb4ee7e4ff42345e7af21b4a0ae7fa14a676d425ab37f2190",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0315",
+      "doc_date": "2026-09-25",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1198",
+      "challan_no": "DC/26-27/0315",
+      "challan_date": "2026-09-25",
+      "invoice_reference": "SPC/26-27/0115",
+      "line_items": [
+       {
+        "desc": "Pump Impeller 150mm",
+        "qty": 80.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty": 150.0
+       }
+      ],
+      "vehicle_no": "MH12OP4518",
+      "received_by_name": "M. Reddy",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-27"
+     }
+    },
+    {
+     "filename": "PKG15_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "1028aee2ac61b797a1ff663a1cc7567d0d0a9b21e93cbcf73a7a53b246bf4ba8",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "716864825097",
+      "doc_date": "2026-09-25",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": null,
+      "eway_no": "716864825097",
+      "generated_date": "2026-09-25",
+      "invoice_reference": "SPC/26-27/0115",
+      "value": 692660.0,
+      "vehicle_no": "MH12OP4518",
+      "valid_until": "2026-09-28"
+     }
+    },
+    {
+     "filename": "PKG15_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "2e9a3f04d92078979c2a23cea540a4a4dafdf183014a143791218c434513157d",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-DAM-7742",
+      "doc_date": "2026-09-30",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1198",
+      "grn_no": "GRN-DAM-7742",
+      "grn_date": "2026-09-30",
+      "invoice_reference": "SPC/26-27/0115",
+      "line_items": [
+       {
+        "desc": "Pump Impeller 150mm",
+        "qty_received": 80.0,
+        "qty_accepted": 80.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty_received": 150.0,
+        "qty_accepted": 150.0
+       }
+      ],
+      "accepted_by": "QC Supervisor",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "fail",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-09-30",
+    "due_date": "2026-11-14"
+   }
+  },
+  {
+   "package_id": "PKG16",
+   "buyer_code": "SPV",
+   "buyer_name": "Sahyadri Pumps & Valves LLP",
+   "defects": [
+    "party_mismatch"
+   ],
+   "files": [
+    {
+     "filename": "PKG16_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "e9a1235418e563d9c98a15ac85534e459258bed56456e0ec511cb2859a6889ef",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "SPV/PO/2627/1205",
+      "doc_date": "2026-09-22",
+      "buyer_name": "Sahyadri Pumps and Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1205",
+      "po_no": "SPV/PO/2627/1205",
+      "po_date": "2026-09-22",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 120.0,
+        "rate": 2100.0,
+        "amount": 252000.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "hsn": "8413",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 3400.0,
+        "amount": 510000.0
+       }
+      ],
+      "po_total": 762000.0,
+      "delivery_date": "2026-10-06",
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30
+     }
+    },
+    {
+     "filename": "PKG16_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "884d991d5f2a06f2290d2ca4988c0e63725f9e2ce1e7c7db6a569a0b3ffc9b16",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0116",
+      "doc_date": "2026-09-28",
+      "buyer_name": "Sahyadri Motors & Traders Pvt Ltd",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1205",
+      "invoice_no": "SPC/26-27/0116",
+      "invoice_date": "2026-09-28",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 120.0,
+        "rate": 2100.0,
+        "amount": 252000.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "hsn": "8413",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 3400.0,
+        "amount": 510000.0
+       }
+      ],
+      "taxable_value": 762000.0,
+      "cgst": 68580.0,
+      "sgst": 68580.0,
+      "igst": 0.0,
+      "total": 899160.0,
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30,
+      "due_date_text": null,
+      "irn": "b63ed8d392e30c5b3bc4dc2b8bb250c273eea7676673c577eab2777e6c0bc1d1",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG16_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "92eded903b010e48c525d77e08f8cfb4fbb458777fd7c0742cad2c8065fe8422",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0316",
+      "doc_date": "2026-09-29",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1205",
+      "challan_no": "DC/26-27/0316",
+      "challan_date": "2026-09-29",
+      "invoice_reference": "SPC/26-27/0116",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "qty": 120.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "qty": 150.0
+       }
+      ],
+      "vehicle_no": "MH12PQ4555",
+      "received_by_name": "R. Patil",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-09-30"
+     }
+    },
+    {
+     "filename": "PKG16_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "ff8032dd0796545d3cb181dde6b78363be5bb90e7506a40469d268e31e72b0ef",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "907530671089",
+      "doc_date": "2026-09-29",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": null,
+      "eway_no": "907530671089",
+      "generated_date": "2026-09-29",
+      "invoice_reference": "SPC/26-27/0116",
+      "value": 899160.0,
+      "vehicle_no": "MH12PQ4555",
+      "valid_until": "2026-10-02"
+     }
+    },
+    {
+     "filename": "PKG16_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "68d861ff1383deb512c698226ac74888189ba0cb966e848253d42504d2558590",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-SPV-7745",
+      "doc_date": "2026-10-03",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1205",
+      "grn_no": "GRN-SPV-7745",
+      "grn_date": "2026-10-03",
+      "invoice_reference": "SPC/26-27/0116",
+      "line_items": [
+       {
+        "desc": "Gear Blank 60T",
+        "qty_received": 120.0,
+        "qty_accepted": 120.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "qty_received": 150.0,
+        "qty_accepted": 150.0
+       }
+      ],
+      "accepted_by": "QC Supervisor",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "fail",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-10-03",
+    "due_date": "2026-11-02"
+   }
+  },
+  {
+   "package_id": "PKG17",
+   "buyer_code": "GEL",
+   "buyer_name": "Ganga Electricals Pvt Ltd",
+   "defects": [
+    "missing_po_ref"
+   ],
+   "files": [
+    {
+     "filename": "PKG17_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "c32ff0b0d8bb1e93e3543d99e78b408daeba69650d9288178847d0f075f2cc7d",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GEL/PO/2627/1212",
+      "doc_date": "2026-09-21",
+      "buyer_name": "Ganga Electricals Private Limited",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1212",
+      "po_no": "GEL/PO/2627/1212",
+      "po_date": "2026-09-21",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 60.0,
+        "rate": 18.5,
+        "amount": 1110.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 100.0,
+        "rate": 260.0,
+        "amount": 26000.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 60.0,
+        "rate": 1250.0,
+        "amount": 75000.0
+       }
+      ],
+      "po_total": 102110.0,
+      "delivery_date": "2026-10-05",
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45
+     }
+    },
+    {
+     "filename": "PKG17_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "efb18fdf1507a8d202efa47329efba17f52e3546924cb12dc8742c2254ec4e6c",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0117",
+      "doc_date": "2026-09-30",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": null,
+      "invoice_no": "SPC/26-27/0117",
+      "invoice_date": "2026-09-30",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 60.0,
+        "rate": 18.5,
+        "amount": 1110.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 100.0,
+        "rate": 260.0,
+        "amount": 26000.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 60.0,
+        "rate": 1250.0,
+        "amount": 75000.0
+       }
+      ],
+      "taxable_value": 102110.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 18379.8,
+      "total": 120489.8,
+      "payment_terms_text": "Net 45 days from date of acceptance of goods",
+      "payment_terms_days": 45,
+      "due_date_text": null,
+      "irn": "1cbe7376535ef3b237b5ba6339de919904a748bd5463dba2389c21cc4c80cc5d",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG17_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "1b0ac9aaa17de5a856e4dac8ae444b4c316935893a36d925832c4215492d0868",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0317",
+      "doc_date": "2026-10-01",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1212",
+      "challan_no": "DC/26-27/0317",
+      "challan_date": "2026-10-01",
+      "invoice_reference": "SPC/26-27/0117",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty": 60.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "qty": 100.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty": 60.0
+       }
+      ],
+      "vehicle_no": "MH12QR4592",
+      "received_by_name": "R. Patil",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-10-02"
+     }
+    },
+    {
+     "filename": "PKG17_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "6349dc1067ac7e121e51349747fb394981be0eaca4fbcde16133dcd1db3af104",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "493948266720",
+      "doc_date": "2026-10-01",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": null,
+      "eway_no": "493948266720",
+      "generated_date": "2026-10-01",
+      "invoice_reference": "SPC/26-27/0117",
+      "value": 120489.8,
+      "vehicle_no": "MH12QR4592",
+      "valid_until": "2026-10-04"
+     }
+    },
+    {
+     "filename": "PKG17_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "6948440a14344513ffec590bb4299eaa1842b07d3bd3ac1b0b555e04cb59b780",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-GEL-7748",
+      "doc_date": "2026-10-06",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1212",
+      "grn_no": "GRN-GEL-7748",
+      "grn_date": "2026-10-06",
+      "invoice_reference": "SPC/26-27/0117",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty_received": 60.0,
+        "qty_accepted": 60.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "qty_received": 100.0,
+        "qty_accepted": 100.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty_received": 60.0,
+        "qty_accepted": 60.0
+       }
+      ],
+      "accepted_by": "QC Supervisor",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "fail",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-10-06",
+    "due_date": "2026-11-20"
+   }
+  },
+  {
+   "package_id": "PKG18",
+   "buyer_code": "VIP",
+   "buyer_name": "Vindhya Infra Projects Ltd",
+   "defects": [
+    "missing_po_ref"
+   ],
+   "files": [
+    {
+     "filename": "PKG18_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "e98c9f922c90cae96653dbf230248a5b66f36e11ebe032a6bff0d7ff301ab2d7",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "VIP/PO/2627/1219",
+      "doc_date": "2026-09-23",
+      "buyer_name": "Vindhya Infra Projects Limited",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1219",
+      "po_no": "VIP/PO/2627/1219",
+      "po_date": "2026-09-23",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 20.0,
+        "rate": 18.5,
+        "amount": 370.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 2100.0,
+        "amount": 84000.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 200.0,
+        "rate": 420.0,
+        "amount": 84000.0
+       }
+      ],
+      "po_total": 168370.0,
+      "delivery_date": "2026-10-07",
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21
+     }
+    },
+    {
+     "filename": "PKG18_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "3693002e8d11f8bac13a0ea594db46774a58084f4195f4bb70f73a8c7228d1aa",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0118",
+      "doc_date": "2026-09-30",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": null,
+      "invoice_no": "SPC/26-27/0118",
+      "invoice_date": "2026-09-30",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 20.0,
+        "rate": 18.5,
+        "amount": 370.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 2100.0,
+        "amount": 84000.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 200.0,
+        "rate": 420.0,
+        "amount": 84000.0
+       }
+      ],
+      "taxable_value": 168370.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 30306.6,
+      "total": 198676.6,
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21,
+      "due_date_text": null,
+      "irn": "fc3139b4904059bafa8b7d74e65ea91208325d8148c602d9e50de21c41dfb524",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG18_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "2033a0bc5d10563ea51c8ba441c2d66492e2cc72d308101cdb80ff48f3d98c40",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0318",
+      "doc_date": "2026-10-01",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1219",
+      "challan_no": "DC/26-27/0318",
+      "challan_date": "2026-10-01",
+      "invoice_reference": "SPC/26-27/0118",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty": 20.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty": 40.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "qty": 200.0
+       }
+      ],
+      "vehicle_no": "MH12RS4629",
+      "received_by_name": "A. Shaikh",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-10-04"
+     }
+    },
+    {
+     "filename": "PKG18_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "a18571ff09ac11566d56675ac1d60ea1f0ac9ec732873396f65072110752d879",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "818267913416",
+      "doc_date": "2026-10-01",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": null,
+      "eway_no": "818267913416",
+      "generated_date": "2026-10-01",
+      "invoice_reference": "SPC/26-27/0118",
+      "value": 198676.6,
+      "vehicle_no": "MH12RS4629",
+      "valid_until": "2026-10-04"
+     }
+    },
+    {
+     "filename": "PKG18_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "68564a5abdb99658d433be9986ce062b50e46da28155efc5e8d7f385523af1a1",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-VIP-7751",
+      "doc_date": "2026-10-05",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1219",
+      "grn_no": "GRN-VIP-7751",
+      "grn_date": "2026-10-05",
+      "invoice_reference": "SPC/26-27/0118",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty_received": 20.0,
+        "qty_accepted": 20.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty_received": 40.0,
+        "qty_accepted": 40.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "qty_received": 200.0,
+        "qty_accepted": 200.0
+       }
+      ],
+      "accepted_by": "QC Supervisor",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "fail",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-10-05",
+    "due_date": "2026-10-26"
+   }
+  },
+  {
+   "package_id": "PKG19",
+   "buyer_code": "KAA",
+   "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+   "defects": [
+    "terms_gt_45"
+   ],
+   "files": [
+    {
+     "filename": "PKG19_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "5338d142ed10a9aab92a43de959906de37ad41682df7431df72bcbf5b735e6c6",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "KAA/PO/2627/1226",
+      "doc_date": "2026-09-26",
+      "buyer_name": "Kaveri Auto Assemblies Private Limited",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1226",
+      "po_no": "KAA/PO/2627/1226",
+      "po_date": "2026-09-26",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 1850.0,
+        "amount": 74000.0
+       },
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 20.0,
+        "rate": 780.0,
+        "amount": 15600.0
+       }
+      ],
+      "po_total": 89600.0,
+      "delivery_date": "2026-10-10",
+      "payment_terms_text": "Net 60 days from date of acceptance of goods",
+      "payment_terms_days": 60
+     }
+    },
+    {
+     "filename": "PKG19_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "8bf936691e6686c1bcfaefca87b8ccb4c9b0a06a1c3a0d8df439e79cd282696d",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0119",
+      "doc_date": "2026-10-02",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1226",
+      "invoice_no": "SPC/26-27/0119",
+      "invoice_date": "2026-10-02",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 1850.0,
+        "amount": 74000.0
+       },
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 20.0,
+        "rate": 780.0,
+        "amount": 15600.0
+       }
+      ],
+      "taxable_value": 89600.0,
+      "cgst": 8064.0,
+      "sgst": 8064.0,
+      "igst": 0.0,
+      "total": 105728.0,
+      "payment_terms_text": "Net 60 days from date of acceptance of goods",
+      "payment_terms_days": 60,
+      "due_date_text": null,
+      "irn": "25b891b08fe7e9a945ecbbb0736db5aff01cd2f01af4219da661144c71e74a9c",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG19_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "9ddf69251553fa7d9153e4d580aebb86ff28afb3b74433f66901a7c7e66bc158",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0319",
+      "doc_date": "2026-10-03",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1226",
+      "challan_no": "DC/26-27/0319",
+      "challan_date": "2026-10-03",
+      "invoice_reference": "SPC/26-27/0119",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty": 40.0
+       },
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "qty": 20.0
+       }
+      ],
+      "vehicle_no": "MH12ST4666",
+      "received_by_name": "R. Patil",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-10-05"
+     }
+    },
+    {
+     "filename": "PKG19_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "d05055c2da6a1e2c759af750ac1407e729f37179aa134233d95ad1d99bb95488",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "240124946498",
+      "doc_date": "2026-10-03",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": null,
+      "eway_no": "240124946498",
+      "generated_date": "2026-10-03",
+      "invoice_reference": "SPC/26-27/0119",
+      "value": 105728.0,
+      "vehicle_no": "MH12ST4666",
+      "valid_until": "2026-10-06"
+     }
+    },
+    {
+     "filename": "PKG19_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "e9dbe01ed7a165c0cdcb67c5d0058e2e9752111cf245687cccd3b92963ee4916",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-KAA-7754",
+      "doc_date": "2026-10-08",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1226",
+      "grn_no": "GRN-KAA-7754",
+      "grn_date": "2026-10-08",
+      "invoice_reference": "SPC/26-27/0119",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty_received": 40.0,
+        "qty_accepted": 40.0
+       },
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "qty_received": 20.0,
+        "qty_accepted": 20.0
+       }
+      ],
+      "accepted_by": "Stores In-charge",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "fail",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": false,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-10-08",
+    "due_date": "2026-11-22"
+   }
+  },
+  {
+   "package_id": "PKG20",
+   "buyer_code": "NEW",
+   "buyer_name": "Narmada Engineering Works Ltd",
+   "defects": [
+    "terms_gt_45"
+   ],
+   "files": [
+    {
+     "filename": "PKG20_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "2847c91205abe0a158eacff974a16e1958fb8dff8cb1c93117afcf1da2dbaefb",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "NEW/PO/2627/1233",
+      "doc_date": "2026-09-30",
+      "buyer_name": "Narmada Engineering Works Limited",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1233",
+      "po_no": "NEW/PO/2627/1233",
+      "po_date": "2026-09-30",
+      "line_items": [
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 10.0,
+        "rate": 780.0,
+        "amount": 7800.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 100.0,
+        "rate": 420.0,
+        "amount": 42000.0
+       }
+      ],
+      "po_total": 49800.0,
+      "delivery_date": "2026-10-14",
+      "payment_terms_text": "Net 90 days from date of acceptance of goods",
+      "payment_terms_days": 90
+     }
+    },
+    {
+     "filename": "PKG20_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "fb072b6bfb2fd5af4a7e1e524bef8763a1dc690fdb9d346fe545e8cf8fe080eb",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0120",
+      "doc_date": "2026-10-12",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1233",
+      "invoice_no": "SPC/26-27/0120",
+      "invoice_date": "2026-10-12",
+      "line_items": [
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 10.0,
+        "rate": 780.0,
+        "amount": 7800.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 100.0,
+        "rate": 420.0,
+        "amount": 42000.0
+       }
+      ],
+      "taxable_value": 49800.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 8964.0,
+      "total": 58764.0,
+      "payment_terms_text": "Net 90 days from date of acceptance of goods",
+      "payment_terms_days": 90,
+      "due_date_text": null,
+      "irn": "550863ebecc31bee323adda6107ae8c05b6328be1f80e02c74cc96c76e648b4b",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG20_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "7a3b2919af18663e2d94e35ced5e55063a0d4ee33630cc47030d7b7c3735a7d0",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0320",
+      "doc_date": "2026-10-12",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1233",
+      "challan_no": "DC/26-27/0320",
+      "challan_date": "2026-10-12",
+      "invoice_reference": "SPC/26-27/0120",
+      "line_items": [
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "qty": 10.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "qty": 100.0
+       }
+      ],
+      "vehicle_no": "MH12TU4703",
+      "received_by_name": "M. Reddy",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-10-13"
+     }
+    },
+    {
+     "filename": "PKG20_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "7890aac8855118c6fde363e36a62c05900caf14330e2eccfc7d53aaa38a7e151",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "658864733413",
+      "doc_date": "2026-10-12",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": null,
+      "eway_no": "658864733413",
+      "generated_date": "2026-10-12",
+      "invoice_reference": "SPC/26-27/0120",
+      "value": 58764.0,
+      "vehicle_no": "MH12TU4703",
+      "valid_until": "2026-10-15"
+     }
+    },
+    {
+     "filename": "PKG20_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "fe1d05db6998955ce4628cd58faf9174dfab43839e853890a2aee4acbb6006fb",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-NEW-7757",
+      "doc_date": "2026-10-17",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1233",
+      "grn_no": "GRN-NEW-7757",
+      "grn_date": "2026-10-17",
+      "invoice_reference": "SPC/26-27/0120",
+      "line_items": [
+       {
+        "desc": "Coupling Sleeve CS-50",
+        "qty_received": 10.0,
+        "qty_accepted": 10.0
+       },
+       {
+        "desc": "MS Flange 4 inch",
+        "qty_received": 100.0,
+        "qty_accepted": 100.0
+       }
+      ],
+      "accepted_by": "Receiving Officer",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "fail",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": false,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-10-17",
+    "due_date": "2026-12-01"
+   }
+  },
+  {
+   "package_id": "PKG21",
+   "buyer_code": "DAM",
+   "buyer_name": "Deccan Agro Machines Pvt Ltd",
+   "defects": [
+    "no_stamp"
+   ],
+   "files": [
+    {
+     "filename": "PKG21_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "f9d6d74927eaa59f4d00e5c1b7049b95c4b07ec765369cac05e67e54ec129bd3",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DAM/PO/2627/1240",
+      "doc_date": "2026-09-29",
+      "buyer_name": "Deccan Agro Machines Pvt. Ltd.",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1240",
+      "po_no": "DAM/PO/2627/1240",
+      "po_date": "2026-09-29",
+      "line_items": [
+       {
+        "desc": "Pump Impeller 150mm",
+        "hsn": "8413",
+        "unit": "Nos",
+        "qty": 20.0,
+        "rate": 3400.0,
+        "amount": 68000.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 2100.0,
+        "amount": 84000.0
+       }
+      ],
+      "po_total": 152000.0,
+      "delivery_date": "2026-10-13",
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30
+     }
+    },
+    {
+     "filename": "PKG21_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "90f9a2783f10d226d735d091c0a822ce33d15eddd00089d4938d76ad45fa6f59",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0121",
+      "doc_date": "2026-10-06",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1240",
+      "invoice_no": "SPC/26-27/0121",
+      "invoice_date": "2026-10-06",
+      "line_items": [
+       {
+        "desc": "Pump Impeller 150mm",
+        "hsn": "8413",
+        "unit": "Nos",
+        "qty": 20.0,
+        "rate": 3400.0,
+        "amount": 68000.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 2100.0,
+        "amount": 84000.0
+       }
+      ],
+      "taxable_value": 152000.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 27360.0,
+      "total": 179360.0,
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30,
+      "due_date_text": null,
+      "irn": "f671e409b589768301eaded268abdfd1175de8305640ba722bd9ef4b9cb4b3e0",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG21_challan_scan.pdf",
+     "doc_type": "challan",
+     "scan": true,
+     "sha256": "50f641951305d0f2afaf6bd55984473156253b3d30d184933e6ea2418868c2a8",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0321",
+      "doc_date": "2026-10-07",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1240",
+      "challan_no": "DC/26-27/0321",
+      "challan_date": "2026-10-07",
+      "invoice_reference": "SPC/26-27/0121",
+      "line_items": [
+       {
+        "desc": "Pump Impeller 150mm",
+        "qty": 20.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty": 40.0
+       }
+      ],
+      "vehicle_no": "MH12UV4740",
+      "received_by_name": null,
+      "received_stamp_present": false,
+      "received_signature_present": false,
+      "received_date": null
+     }
+    },
+    {
+     "filename": "PKG21_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "2dab72505927a9436fe590e0a6e220ab3e6b6eccc472482c6b49455736d2fa0d",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "764889619297",
+      "doc_date": "2026-10-07",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": null,
+      "eway_no": "764889619297",
+      "generated_date": "2026-10-07",
+      "invoice_reference": "SPC/26-27/0121",
+      "value": 179360.0,
+      "vehicle_no": "MH12UV4740",
+      "valid_until": "2026-10-10"
+     }
+    },
+    {
+     "filename": "PKG21_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "229d247929153aa3398680225ec1870e09489fc3b987c344a5549da7454a63d1",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-DAM-7760",
+      "doc_date": "2026-10-11",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1240",
+      "grn_no": "GRN-DAM-7760",
+      "grn_date": "2026-10-11",
+      "invoice_reference": "SPC/26-27/0121",
+      "line_items": [
+       {
+        "desc": "Pump Impeller 150mm",
+        "qty_received": 20.0,
+        "qty_accepted": 20.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty_received": 40.0,
+        "qty_accepted": 40.0
+       }
+      ],
+      "accepted_by": "Stores In-charge",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "fail",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": false,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-10-11",
+    "due_date": "2026-11-10"
+   }
+  },
+  {
+   "package_id": "PKG22",
+   "buyer_code": "SPV",
+   "buyer_name": "Sahyadri Pumps & Valves LLP",
+   "defects": [
+    "no_stamp"
+   ],
+   "files": [
+    {
+     "filename": "PKG22_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "80ffecf50e1882f5a280cd3c4b8e9775467922f47d64ee7766443e8c63e5f8aa",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "SPV/PO/2627/1247",
+      "doc_date": "2026-10-04",
+      "buyer_name": "Sahyadri Pumps and Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1247",
+      "po_no": "SPV/PO/2627/1247",
+      "po_date": "2026-10-04",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 80.0,
+        "rate": 18.5,
+        "amount": 1480.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 60.0,
+        "rate": 260.0,
+        "amount": 15600.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 60.0,
+        "rate": 2100.0,
+        "amount": 126000.0
+       }
+      ],
+      "po_total": 143080.0,
+      "delivery_date": "2026-10-18",
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21
+     }
+    },
+    {
+     "filename": "PKG22_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "10f38f9fd1bf8b2856df5ce4fcb12438b5468520db3da95711aa7aed7835e42c",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0122",
+      "doc_date": "2026-10-13",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1247",
+      "invoice_no": "SPC/26-27/0122",
+      "invoice_date": "2026-10-13",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 80.0,
+        "rate": 18.5,
+        "amount": 1480.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 60.0,
+        "rate": 260.0,
+        "amount": 15600.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 60.0,
+        "rate": 2100.0,
+        "amount": 126000.0
+       }
+      ],
+      "taxable_value": 143080.0,
+      "cgst": 12877.2,
+      "sgst": 12877.2,
+      "igst": 0.0,
+      "total": 168834.4,
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21,
+      "due_date_text": null,
+      "irn": "56755a8fd2d8d18b486e0c217ea43a8ac52df425e49fe9f6cbd43c33c2909fe6",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG22_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "907bbecf7e88ac2a9ae719396ecd32b915ea39793733c7a1c84730bbd7a0de3b",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0322",
+      "doc_date": "2026-10-14",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1247",
+      "challan_no": "DC/26-27/0322",
+      "challan_date": "2026-10-14",
+      "invoice_reference": "SPC/26-27/0122",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty": 80.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "qty": 60.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty": 60.0
+       }
+      ],
+      "vehicle_no": "MH12VW4777",
+      "received_by_name": null,
+      "received_stamp_present": false,
+      "received_signature_present": false,
+      "received_date": null
+     }
+    },
+    {
+     "filename": "PKG22_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "d9157bc1b5d298297f3464d669e98833325dd9a8c75447fdd5e84d6131f81c60",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "730780999216",
+      "doc_date": "2026-10-14",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": null,
+      "eway_no": "730780999216",
+      "generated_date": "2026-10-14",
+      "invoice_reference": "SPC/26-27/0122",
+      "value": 168834.4,
+      "vehicle_no": "MH12VW4777",
+      "valid_until": "2026-10-17"
+     }
+    },
+    {
+     "filename": "PKG22_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "ddb22233b2059bfef3858f5de074e7cd71831591bbf3307723380f8221d17091",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-SPV-7763",
+      "doc_date": "2026-10-18",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1247",
+      "grn_no": "GRN-SPV-7763",
+      "grn_date": "2026-10-18",
+      "invoice_reference": "SPC/26-27/0122",
+      "line_items": [
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty_received": 80.0,
+        "qty_accepted": 80.0
+       },
+       {
+        "desc": "Gasket Set GS-12",
+        "qty_received": 60.0,
+        "qty_accepted": 60.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty_received": 60.0,
+        "qty_accepted": 60.0
+       }
+      ],
+      "accepted_by": "Receiving Officer",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "fail",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": false,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-10-18",
+    "due_date": "2026-11-08"
+   }
+  },
+  {
+   "package_id": "PKG23",
+   "buyer_code": "GEL",
+   "buyer_name": "Ganga Electricals Pvt Ltd",
+   "defects": [
+    "duplicate_invoice"
+   ],
+   "files": [
+    {
+     "filename": "PKG23_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "4109f9b3a4591931b1c442df87d133e7a8c7f32d53300eecf85a12d68810cb8f",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GEL/PO/2627/1254",
+      "doc_date": "2026-10-06",
+      "buyer_name": "Ganga Electricals Private Limited",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1254",
+      "po_no": "GEL/PO/2627/1254",
+      "po_date": "2026-10-06",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 420.0,
+        "amount": 63000.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 20.0,
+        "rate": 2100.0,
+        "amount": 42000.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 50.0,
+        "rate": 1250.0,
+        "amount": 62500.0
+       }
+      ],
+      "po_total": 167500.0,
+      "delivery_date": "2026-10-20",
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21
+     }
+    },
+    {
+     "filename": "PKG23_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "d3d7adcfab598273371bdbc5ae88068966f66119ebb3fa3f0bcf53c4fbc1530e",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0117",
+      "doc_date": "2026-10-13",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1254",
+      "invoice_no": "SPC/26-27/0117",
+      "invoice_date": "2026-10-13",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 420.0,
+        "amount": 63000.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 20.0,
+        "rate": 2100.0,
+        "amount": 42000.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 50.0,
+        "rate": 1250.0,
+        "amount": 62500.0
+       }
+      ],
+      "taxable_value": 167500.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 30150.0,
+      "total": 197650.0,
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21,
+      "due_date_text": null,
+      "irn": "1cbe7376535ef3b237b5ba6339de919904a748bd5463dba2389c21cc4c80cc5d",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG23_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "9e763b0d14cbc2098e4dbd1976950b8e28ae56f215348d7d538bef21bd51af9f",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0323",
+      "doc_date": "2026-10-14",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1254",
+      "challan_no": "DC/26-27/0323",
+      "challan_date": "2026-10-14",
+      "invoice_reference": "SPC/26-27/0117",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "qty": 150.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty": 20.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty": 50.0
+       }
+      ],
+      "vehicle_no": "MH12WX4814",
+      "received_by_name": "R. Patil",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-10-15"
+     }
+    },
+    {
+     "filename": "PKG23_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "ba47430abe91c88f63828fd51f198a6650b2d40f46604183a135116327febef6",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "964475260519",
+      "doc_date": "2026-10-14",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": null,
+      "eway_no": "964475260519",
+      "generated_date": "2026-10-14",
+      "invoice_reference": "SPC/26-27/0117",
+      "value": 197650.0,
+      "vehicle_no": "MH12WX4814",
+      "valid_until": "2026-10-17"
+     }
+    },
+    {
+     "filename": "PKG23_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "65f4db9b8f8f89cc4509d8056f860225a6e0e1076b865f06c7e6af8aef4b2b77",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-GEL-7766",
+      "doc_date": "2026-10-19",
+      "buyer_name": "Ganga Electricals Pvt Ltd",
+      "buyer_gstin": "09AAGCG1209L1ZK",
+      "po_reference": "GEL/PO/2627/1254",
+      "grn_no": "GRN-GEL-7766",
+      "grn_date": "2026-10-19",
+      "invoice_reference": "SPC/26-27/0117",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "qty_received": 150.0,
+        "qty_accepted": 150.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty_received": 20.0,
+        "qty_accepted": 20.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty_received": 50.0,
+        "qty_accepted": 50.0
+       }
+      ],
+      "accepted_by": "Receiving Officer",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "fail"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-10-19",
+    "due_date": "2026-11-09"
+   }
+  },
+  {
+   "package_id": "PKG24",
+   "buyer_code": "VIP",
+   "buyer_name": "Vindhya Infra Projects Ltd",
+   "defects": [
+    "duplicate_invoice"
+   ],
+   "files": [
+    {
+     "filename": "PKG24_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "620ccfcc3eee8d9de91afcf4f2d649e0dc13418c3a181cbf441bd91745fcc063",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "VIP/PO/2627/1261",
+      "doc_date": "2026-10-07",
+      "buyer_name": "Vindhya Infra Projects Limited",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1261",
+      "po_no": "VIP/PO/2627/1261",
+      "po_date": "2026-10-07",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 10.0,
+        "rate": 420.0,
+        "amount": 4200.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 25.0,
+        "rate": 18.5,
+        "amount": 462.5
+       }
+      ],
+      "po_total": 4662.5,
+      "delivery_date": "2026-10-21",
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30
+     }
+    },
+    {
+     "filename": "PKG24_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "b41ae82aa6a4fadf14e25387cb021eaf166ae49baaff33999cafb99e38f9b7d3",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0118",
+      "doc_date": "2026-10-19",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1261",
+      "invoice_no": "SPC/26-27/0118",
+      "invoice_date": "2026-10-19",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 10.0,
+        "rate": 420.0,
+        "amount": 4200.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 25.0,
+        "rate": 18.5,
+        "amount": 462.5
+       }
+      ],
+      "taxable_value": 4662.5,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 839.25,
+      "total": 5501.75,
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30,
+      "due_date_text": null,
+      "irn": "fc3139b4904059bafa8b7d74e65ea91208325d8148c602d9e50de21c41dfb524",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG24_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "5dab13390c03a6c01298db6e76d7751a47fc61ee8de4045f87c38a8dfd702202",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0324",
+      "doc_date": "2026-10-19",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1261",
+      "challan_no": "DC/26-27/0324",
+      "challan_date": "2026-10-19",
+      "invoice_reference": "SPC/26-27/0118",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "qty": 10.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty": 25.0
+       }
+      ],
+      "vehicle_no": "MH12XY4851",
+      "received_by_name": "S. Kulkarni",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-10-20"
+     }
+    },
+    {
+     "filename": "PKG24_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "12333215fd0b74fc83850621fd4b2d971b09ff866631a5376154231bfd550a00",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-VIP-7769",
+      "doc_date": "2026-10-21",
+      "buyer_name": "Vindhya Infra Projects Ltd",
+      "buyer_gstin": "23AAHCV6650N1ZV",
+      "po_reference": "VIP/PO/2627/1261",
+      "grn_no": "GRN-VIP-7769",
+      "grn_date": "2026-10-21",
+      "invoice_reference": "SPC/26-27/0118",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "qty_received": 10.0,
+        "qty_accepted": 10.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty_received": 25.0,
+        "qty_accepted": 25.0
+       }
+      ],
+      "accepted_by": "Receiving Officer",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "fail"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-10-21",
+    "due_date": "2026-11-20"
+   }
+  },
+  {
+   "package_id": "PKG25",
+   "buyer_code": "KAA",
+   "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+   "defects": [
+    "wrong_gst_math"
+   ],
+   "files": [
+    {
+     "filename": "PKG25_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "b8d1a53175a62143241a75198d092569c6a93a3ba3b09c57368ba72d108f8aa6",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "KAA/PO/2627/1268",
+      "doc_date": "2026-10-09",
+      "buyer_name": "Kaveri Auto Assemblies Private Limited",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1268",
+      "po_no": "KAA/PO/2627/1268",
+      "po_date": "2026-10-09",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 80.0,
+        "rate": 1850.0,
+        "amount": 148000.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 80.0,
+        "rate": 18.5,
+        "amount": 1480.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 200.0,
+        "rate": 1250.0,
+        "amount": 250000.0
+       }
+      ],
+      "po_total": 399480.0,
+      "delivery_date": "2026-10-23",
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30
+     }
+    },
+    {
+     "filename": "PKG25_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "abad9c8c7ebe6f0e3399c0d24cc8946b5cdda04f9c169b3aa4716b5a91416fad",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0125",
+      "doc_date": "2026-10-15",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1268",
+      "invoice_no": "SPC/26-27/0125",
+      "invoice_date": "2026-10-15",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 80.0,
+        "rate": 1850.0,
+        "amount": 148000.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 80.0,
+        "rate": 18.5,
+        "amount": 1480.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 200.0,
+        "rate": 1250.0,
+        "amount": 250000.0
+       }
+      ],
+      "taxable_value": 399480.0,
+      "cgst": 35953.2,
+      "sgst": 35953.2,
+      "igst": 0.0,
+      "total": 470186.4,
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30,
+      "due_date_text": null,
+      "irn": "361a5dcf1996e5aa9137c4f90816fc7465c39d0027f29cd19fc0ee7f4f032f85",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG25_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "ec680b1fb29aaf1c0286e07abd9206cc20a7753de44560ccdee94b84a53be000",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0325",
+      "doc_date": "2026-10-16",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1268",
+      "challan_no": "DC/26-27/0325",
+      "challan_date": "2026-10-16",
+      "invoice_reference": "SPC/26-27/0125",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty": 80.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty": 80.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty": 200.0
+       }
+      ],
+      "vehicle_no": "MH12YB4888",
+      "received_by_name": "A. Shaikh",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-10-19"
+     }
+    },
+    {
+     "filename": "PKG25_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "3850e9fa85cb22e2f81222ebd63a2070081333eaf6d1efd1b5149d74701b4987",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "175170855409",
+      "doc_date": "2026-10-16",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": null,
+      "eway_no": "175170855409",
+      "generated_date": "2026-10-16",
+      "invoice_reference": "SPC/26-27/0125",
+      "value": 471386.4,
+      "vehicle_no": "MH12YB4888",
+      "valid_until": "2026-10-19"
+     }
+    },
+    {
+     "filename": "PKG25_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "1f770e21ce47a170a25d18068cb7ae37a2a511384b386f719a9cb644eb71abc7",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-KAA-7772",
+      "doc_date": "2026-10-22",
+      "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+      "buyer_gstin": "27AABCK7712M1Z9",
+      "po_reference": "KAA/PO/2627/1268",
+      "grn_no": "GRN-KAA-7772",
+      "grn_date": "2026-10-22",
+      "invoice_reference": "SPC/26-27/0125",
+      "line_items": [
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty_received": 80.0,
+        "qty_accepted": 80.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty_received": 80.0,
+        "qty_accepted": 80.0
+       },
+       {
+        "desc": "Bearing Housing BH-208",
+        "qty_received": 200.0,
+        "qty_accepted": 200.0
+       }
+      ],
+      "accepted_by": "Stores In-charge",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "fail",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-10-22",
+    "due_date": "2026-11-21"
+   }
+  },
+  {
+   "package_id": "PKG26",
+   "buyer_code": "NEW",
+   "buyer_name": "Narmada Engineering Works Ltd",
+   "defects": [
+    "wrong_gst_math"
+   ],
+   "files": [
+    {
+     "filename": "PKG26_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "3fc9ca8e49684cbeea6b05dc4cee2df864c57b1c5c09a9b391ba72352b3cbee0",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "NEW/PO/2627/1275",
+      "doc_date": "2026-10-09",
+      "buyer_name": "Narmada Engineering Works Limited",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1275",
+      "po_no": "NEW/PO/2627/1275",
+      "po_date": "2026-10-09",
+      "line_items": [
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 80.0,
+        "rate": 260.0,
+        "amount": 20800.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 100.0,
+        "rate": 2100.0,
+        "amount": 210000.0
+       }
+      ],
+      "po_total": 230800.0,
+      "delivery_date": "2026-10-23",
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21
+     }
+    },
+    {
+     "filename": "PKG26_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "a886d6a79cb73d9d41f458b04eafa46b9ff0acfa0e8fd867989cffd1aeb9951b",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0126",
+      "doc_date": "2026-10-15",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1275",
+      "invoice_no": "SPC/26-27/0126",
+      "invoice_date": "2026-10-15",
+      "line_items": [
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 80.0,
+        "rate": 260.0,
+        "amount": 20800.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 100.0,
+        "rate": 2100.0,
+        "amount": 210000.0
+       }
+      ],
+      "taxable_value": 230800.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 41544.0,
+      "total": 271144.0,
+      "payment_terms_text": "Net 21 days from date of acceptance of goods",
+      "payment_terms_days": 21,
+      "due_date_text": null,
+      "irn": "c6308c5106d995ba9fc6d83dda82982b2a77a390d1888cce07771bb7c7175ee9",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG26_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "67cf3f39c1b6672bd587bf4a0889053cbd646ece1111f4f894994b14b412a7fd",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0326",
+      "doc_date": "2026-10-15",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1275",
+      "challan_no": "DC/26-27/0326",
+      "challan_date": "2026-10-15",
+      "invoice_reference": "SPC/26-27/0126",
+      "line_items": [
+       {
+        "desc": "Gasket Set GS-12",
+        "qty": 80.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty": 100.0
+       }
+      ],
+      "vehicle_no": "MH12ZC4925",
+      "received_by_name": "R. Patil",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-10-16"
+     }
+    },
+    {
+     "filename": "PKG26_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "9fca917aff55f15ca2c8f5ff41ad96a1b2a637c179c7fe7b33c28a08f2d0cb6f",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "157111129193",
+      "doc_date": "2026-10-15",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": null,
+      "eway_no": "157111129193",
+      "generated_date": "2026-10-15",
+      "invoice_reference": "SPC/26-27/0126",
+      "value": 272344.0,
+      "vehicle_no": "MH12ZC4925",
+      "valid_until": "2026-10-18"
+     }
+    },
+    {
+     "filename": "PKG26_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "323386854dd8b282df2ff02c5219829eab7a188607c2b1ff8df480aa296f9566",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-NEW-7775",
+      "doc_date": "2026-10-20",
+      "buyer_name": "Narmada Engineering Works Ltd",
+      "buyer_gstin": "24AACCN3390P1Z3",
+      "po_reference": "NEW/PO/2627/1275",
+      "grn_no": "GRN-NEW-7775",
+      "grn_date": "2026-10-20",
+      "invoice_reference": "SPC/26-27/0126",
+      "line_items": [
+       {
+        "desc": "Gasket Set GS-12",
+        "qty_received": 80.0,
+        "qty_accepted": 80.0
+       },
+       {
+        "desc": "Gear Blank 60T",
+        "qty_received": 100.0,
+        "qty_accepted": 100.0
+       }
+      ],
+      "accepted_by": "Stores In-charge",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "fail",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-10-20",
+    "due_date": "2026-11-10"
+   }
+  },
+  {
+   "package_id": "PKG27",
+   "buyer_code": "DAM",
+   "buyer_name": "Deccan Agro Machines Pvt Ltd",
+   "defects": [
+    "missing_grn",
+    "no_stamp"
+   ],
+   "files": [
+    {
+     "filename": "PKG27_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "e19a9f1f2a150afb965c65730ce38958e5ec2da948f13677d26fa2b0d28eecf9",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DAM/PO/2627/1282",
+      "doc_date": "2026-10-12",
+      "buyer_name": "Deccan Agro Machines Pvt. Ltd.",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1282",
+      "po_no": "DAM/PO/2627/1282",
+      "po_date": "2026-10-12",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 120.0,
+        "rate": 420.0,
+        "amount": 50400.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "hsn": "8413",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 3400.0,
+        "amount": 510000.0
+       }
+      ],
+      "po_total": 560400.0,
+      "delivery_date": "2026-10-26",
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30
+     }
+    },
+    {
+     "filename": "PKG27_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "c8355049f190205a19b2fd03455b41a022b125d076dc3c604fc0a7874d431d13",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0127",
+      "doc_date": "2026-10-17",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1282",
+      "invoice_no": "SPC/26-27/0127",
+      "invoice_date": "2026-10-17",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "hsn": "7307",
+        "unit": "Nos",
+        "qty": 120.0,
+        "rate": 420.0,
+        "amount": 50400.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "hsn": "8413",
+        "unit": "Nos",
+        "qty": 150.0,
+        "rate": 3400.0,
+        "amount": 510000.0
+       }
+      ],
+      "taxable_value": 560400.0,
+      "cgst": 0.0,
+      "sgst": 0.0,
+      "igst": 100872.0,
+      "total": 661272.0,
+      "payment_terms_text": "Net 30 days from date of acceptance of goods",
+      "payment_terms_days": 30,
+      "due_date_text": null,
+      "irn": "27bb7d018427126f971c58d8e6dd6f847955b5449da7a7017d77ac1c8b41ed98",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG27_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "dc1378eb0695c6b2b4a008f243a59e515366624e35cf55853def837233d82324",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0327",
+      "doc_date": "2026-10-18",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": "DAM/PO/2627/1282",
+      "challan_no": "DC/26-27/0327",
+      "challan_date": "2026-10-18",
+      "invoice_reference": "SPC/26-27/0127",
+      "line_items": [
+       {
+        "desc": "MS Flange 4 inch",
+        "qty": 120.0
+       },
+       {
+        "desc": "Pump Impeller 150mm",
+        "qty": 150.0
+       }
+      ],
+      "vehicle_no": "MH12AD4962",
+      "received_by_name": null,
+      "received_stamp_present": false,
+      "received_signature_present": false,
+      "received_date": null
+     }
+    },
+    {
+     "filename": "PKG27_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "cc6f8fcd510247f069f3e6af7516561b68d4b0fda04072174b01fadd2cabc572",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "514802332878",
+      "doc_date": "2026-10-18",
+      "buyer_name": "Deccan Agro Machines Pvt Ltd",
+      "buyer_gstin": "36AAFCD5521Q1ZA",
+      "po_reference": null,
+      "eway_no": "514802332878",
+      "generated_date": "2026-10-18",
+      "invoice_reference": "SPC/26-27/0127",
+      "value": 661272.0,
+      "vehicle_no": "MH12AD4962",
+      "valid_until": "2026-10-21"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "pass",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "fail",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "missing",
+     "C11": "pass",
+     "C12": "pass",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "deemed",
+    "acceptance_date": "2026-11-02",
+    "due_date": "2026-12-02"
+   }
+  },
+  {
+   "package_id": "PKG28",
+   "buyer_code": "SPV",
+   "buyer_name": "Sahyadri Pumps & Valves LLP",
+   "defects": [
+    "terms_gt_45",
+    "missing_po_ref"
+   ],
+   "files": [
+    {
+     "filename": "PKG28_po.pdf",
+     "doc_type": "po",
+     "scan": false,
+     "sha256": "f3c38e94d3c4feecdc050d85c008e47353f8a0e64ae8a4fa60abebf3adcb543f",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "SPV/PO/2627/1289",
+      "doc_date": "2026-10-16",
+      "buyer_name": "Sahyadri Pumps and Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1289",
+      "po_no": "SPV/PO/2627/1289",
+      "po_date": "2026-10-16",
+      "line_items": [
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 50.0,
+        "rate": 260.0,
+        "amount": 13000.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 250.0,
+        "rate": 1850.0,
+        "amount": 462500.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 18.5,
+        "amount": 740.0
+       }
+      ],
+      "po_total": 476240.0,
+      "delivery_date": "2026-10-30",
+      "payment_terms_text": "Net 60 days from date of acceptance of goods",
+      "payment_terms_days": 60
+     }
+    },
+    {
+     "filename": "PKG28_invoice.pdf",
+     "doc_type": "invoice",
+     "scan": false,
+     "sha256": "affb8dbb807df042d245e837b8c0ac4ccf9612c1b6bb053df4eff0faadb4316f",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": "UDYAM-MH-26-0048213",
+      "doc_no": "SPC/26-27/0128",
+      "doc_date": "2026-10-21",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": null,
+      "invoice_no": "SPC/26-27/0128",
+      "invoice_date": "2026-10-21",
+      "line_items": [
+       {
+        "desc": "Gasket Set GS-12",
+        "hsn": "4016",
+        "unit": "Set",
+        "qty": 50.0,
+        "rate": 260.0,
+        "amount": 13000.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "hsn": "8483",
+        "unit": "Nos",
+        "qty": 250.0,
+        "rate": 1850.0,
+        "amount": 462500.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "hsn": "7318",
+        "unit": "Nos",
+        "qty": 40.0,
+        "rate": 18.5,
+        "amount": 740.0
+       }
+      ],
+      "taxable_value": 476240.0,
+      "cgst": 42861.6,
+      "sgst": 42861.6,
+      "igst": 0.0,
+      "total": 561963.2,
+      "payment_terms_text": "Net 60 days from date of acceptance of goods",
+      "payment_terms_days": 60,
+      "due_date_text": null,
+      "irn": "b86d0de9c759d05ed22408e37da9f01d2a6457007dfbf96010c0c1cc74734f3b",
+      "bank_details_present": true
+     }
+    },
+    {
+     "filename": "PKG28_challan.pdf",
+     "doc_type": "challan",
+     "scan": false,
+     "sha256": "c9e908b109fbabf20a852384e410519ee8592c5a70228db093e13d26b3ade8f9",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "DC/26-27/0328",
+      "doc_date": "2026-10-21",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1289",
+      "challan_no": "DC/26-27/0328",
+      "challan_date": "2026-10-21",
+      "invoice_reference": "SPC/26-27/0128",
+      "line_items": [
+       {
+        "desc": "Gasket Set GS-12",
+        "qty": 50.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty": 250.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty": 40.0
+       }
+      ],
+      "vehicle_no": "MH12BE4999",
+      "received_by_name": "S. Kulkarni",
+      "received_stamp_present": true,
+      "received_signature_present": true,
+      "received_date": "2026-10-23"
+     }
+    },
+    {
+     "filename": "PKG28_eway.pdf",
+     "doc_type": "eway",
+     "scan": false,
+     "sha256": "3152104f651fa5dfebda5c1d4630b34b197b1b15aad3eaf0518d6a027e4c20d4",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "462254813145",
+      "doc_date": "2026-10-21",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": null,
+      "eway_no": "462254813145",
+      "generated_date": "2026-10-21",
+      "invoice_reference": "SPC/26-27/0128",
+      "value": 561963.2,
+      "vehicle_no": "MH12BE4999",
+      "valid_until": "2026-10-24"
+     }
+    },
+    {
+     "filename": "PKG28_grn.pdf",
+     "doc_type": "grn",
+     "scan": false,
+     "sha256": "8e06429c3115e41bc8d87f746de92bb53b618c77bebded77d2fcfff4dc4f46e8",
+     "fields": {
+      "supplier_name": "Shakti Precision Components Pvt Ltd",
+      "supplier_gstin": "27AAECS4821K1Z6",
+      "supplier_udyam": null,
+      "doc_no": "GRN-SPV-7781",
+      "doc_date": "2026-10-27",
+      "buyer_name": "Sahyadri Pumps & Valves LLP",
+      "buyer_gstin": "27ABEFS8834R1Z7",
+      "po_reference": "SPV/PO/2627/1289",
+      "grn_no": "GRN-SPV-7781",
+      "grn_date": "2026-10-27",
+      "invoice_reference": "SPC/26-27/0128",
+      "line_items": [
+       {
+        "desc": "Gasket Set GS-12",
+        "qty_received": 50.0,
+        "qty_accepted": 50.0
+       },
+       {
+        "desc": "CNC Machined Shaft 40mm",
+        "qty_received": 250.0,
+        "qty_accepted": 250.0
+       },
+       {
+        "desc": "SS Hex Bolt M12x50",
+        "qty_received": 40.0,
+        "qty_accepted": 40.0
+       }
+      ],
+      "accepted_by": "Stores In-charge",
+      "remarks": "Accepted"
+     }
+    }
+   ],
+   "expected": {
+    "checks": {
+     "C01": "fail",
+     "C02": "pass",
+     "C03": "pass",
+     "C04": "pass",
+     "C05": "pass",
+     "C06": "pass",
+     "C07": "pass",
+     "C08": "pass",
+     "C09": "pass",
+     "C10": "pass",
+     "C11": "pass",
+     "C12": "fail",
+     "C13": "pass",
+     "C14": "pass"
+    },
+    "has_blocker": true,
+    "acceptance_basis": "grn",
+    "acceptance_date": "2026-10-27",
+    "due_date": "2026-12-11"
+   }
+  }
+ ]
+}

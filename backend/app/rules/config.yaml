@@ -1,0 +1,51 @@
+# VyapaarIQ rule configuration. All legal/rate values are informational and
+# must be verified before a demo. Values marked VERIFY are placeholders.
+
+supplier:
+  enterprise_class: small          # micro | small | medium (MSMED s.15/16 apply to micro & small)
+
+msmed:
+  max_terms_days: 45               # s.15: agreed period may not exceed 45 days from acceptance
+  no_agreement_days: 15            # s.15: no written agreement -> 15 days from acceptance
+  # VERIFY: s.2(b) treats the *delivery date* as deemed acceptance once 15 days
+  # pass without written objection. The spec asks for delivery + 15; keep it
+  # configurable and always label the result "deemed / estimated".
+  deemed_acceptance_offset_days: 15
+  interest_multiplier: 3           # s.16: 3x bank rate, compounded monthly
+
+rbi:
+  bank_rate_pct: 5.50              # VERIFY against the current RBI bank rate before the demo
+  as_of: "2026-01-01"              # VERIFY
+
+tolerances:
+  po_value_pct: 1.0                # C02: invoice taxable may exceed PO total by <= 1%
+  gst_math_inr: 1.0                # C02: |taxable + GST - total| <= Rs 1
+  line_qty_pct: 0.0                # C03: qty mismatch tolerance
+  line_rate_pct: 0.5               # C03: rate mismatch tolerance
+  line_blocker_pct: 10.0           # C03: deviation above this is a blocker, else warning
+  party_fuzzy_ratio: 0.90          # C04: normalised name similarity threshold
+  challan_after_invoice_days: 7    # C08: challan may trail invoice by <= N days
+
+eway:
+  threshold_inr: 50000             # C09: goods value above this needs an e-way bill
+
+extraction:
+  uncertain_below: 0.60            # field confidence below this makes dependent checks uncertain
+
+scoring:
+  penalties:
+    blocker: 25
+    warning: 10
+    info: 0
+    uncertain: 5
+  overrides:
+    C10: 30                        # acceptance missing is the killer case
+  tiers:
+    low_min: 85
+    medium_min: 60
+
+followups:
+  steps: [-7, -1, 3, 10, 25]       # days relative to due date
+
+actions:
+  lead_days_before_due: 7
