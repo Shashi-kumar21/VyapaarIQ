@@ -20,6 +20,7 @@ invoice and cross-checks them. It shows the gaps and works out the MSMED Act tim
 - Full UI run-through of all packages and the bug log: [`docs/bugs.md`](docs/bugs.md)
 - Release checks for `v0.1-demo` (tests, secrets, dependency audit): [`docs/release.md`](docs/release.md)
 - Shareable hosted demo on Render (password-protected, synthetic data): [`docs/deploy.md`](docs/deploy.md)
+- **New here? Start with the tutorial:** [`docs/tutorial.md`](docs/tutorial.md), which covers how everything works, with definitions and references
 - Rules for contributors and AI agents: [`CLAUDE.md`](CLAUDE.md)
 
 ---
