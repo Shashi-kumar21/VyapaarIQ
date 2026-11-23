@@ -13,7 +13,8 @@ from typing import Optional
 
 from sqlmodel import Session, select
 
-from app.db.models import ActionRow, Buyer, CheckResult, Document, Invoice, Package, Supplier
+from app.db.models import (ActionRow, Buyer, CheckResult, Document, Followup, Invoice, Package,
+                           PaymentEvent, Supplier)
 from app.db.session import DATA_DIR
 from app.extraction.base import InputFile, classify, extract_file
 from app.extraction.pdf_text import UnreadableFileError, read_document
@@ -196,3 +197,119 @@ def process_package(s: Session, package_id: int, *, mode: Optional[str] = None,
     s.commit()
     s.refresh(inv)
     return inv
+
+
+# ---------------------------------------------------------------- history / forecast
+def buyer_history(s: Session, buyer_id: int) -> list[tuple[date, date]]:
+    """[(due_date, last paid_on)] for this buyer's paid invoices (seeded + real)."""
+    out = []
+    for inv in s.exec(select(Invoice).where(Invoice.buyer_id == buyer_id)).all():
+        pays = s.exec(select(PaymentEvent).where(PaymentEvent.invoice_id == inv.id)).all()
+        if inv.due_date and pays:
+            out.append((inv.due_date, max(p.paid_on for p in pays)))
+    return out
+
+
+def cash_forecast(s: Session, today: date, days: int) -> dict:
+    from app.forecast.cash_at_risk import OpenInvoice, forecast
+    from app.scoring.buyer_profile import compute_profile
+
+    medians: dict[int, Optional[float]] = {}
+    names: dict[int, str] = {}
+    rows = []
+    q = select(Invoice).where(Invoice.status == "open", Invoice.synthetic == False)  # noqa: E712
+    for inv in s.exec(q).all():
+        if inv.amount_total is None:
+            continue
+        bid = inv.buyer_id
+        if bid is not None and bid not in medians:
+            medians[bid] = compute_profile(buyer_history(s, bid)).median_days_late
+            b = s.get(Buyer, bid)
+            names[bid] = b.name if b else None
+        rows.append(OpenInvoice(id=inv.id, invoice_no=inv.invoice_no, buyer_id=bid,
+                                buyer_name=names.get(bid), amount=inv.amount_total, due_date=inv.due_date,
+                                risk_tier=inv.risk_tier, buyer_median_late=medians.get(bid)))
+    return forecast(rows, today, days)
+
+
+def supplier_info(s: Session, inv: Invoice) -> dict:
+    """Supplier row if seeded, else the supplier named on the invoice itself."""
+    sup = s.exec(select(Supplier)).first()
+    if sup is not None:
+        return sup.model_dump()
+    fields = {}
+    if inv.package_id:
+        for doc in s.exec(select(Document).where(Document.package_id == inv.package_id,
+                                                 Document.doc_type == "invoice")).all():
+            fields = json.loads(doc.extracted_json) if doc.extracted_json else {}
+            break
+    val = lambda k: (fields.get(k) or {}).get("value")  # noqa: E731
+    return {"name": val("supplier_name"), "gstin": val("supplier_gstin"), "udyam_no": val("supplier_udyam")}
+
+
+# ---------------------------------------------------------------- follow-ups
+def _attachments(s: Session, inv: Invoice) -> list[str]:
+    from app.dispute.pack import DOC_LABELS
+
+    if not inv.package_id:
+        return []
+    out = []
+    for doc in s.exec(select(Document).where(Document.package_id == inv.package_id)).all():
+        if doc.error or doc.doc_type == "other":
+            continue
+        no = None
+        if doc.extracted_json:
+            no = (json.loads(doc.extracted_json).get("doc_no") or {}).get("value")
+        out.append(DOC_LABELS.get(doc.doc_type, doc.doc_type) + (f" {no}" if no else ""))
+    return out
+
+
+def generate_followups(s: Session, invoice_id: int, *, tone: str, channel: str) -> list[Followup]:
+    """Replace this invoice's drafts for ``channel`` + ``tone`` with a fresh set. Never sends."""
+    from app.followups.drafts import FollowupContext, build_followups, buyer_requests
+
+    inv = s.get(Invoice, invoice_id)
+    if inv is None:
+        raise LookupError("Invoice not found.")
+    if not inv.analysis_json:
+        raise PackageError("Invoice has not been processed yet.")
+    if inv.due_date is None:
+        raise PackageError("No due date could be determined for this invoice; "
+                           "resolve acceptance and payment terms first.")
+    a = json.loads(inv.analysis_json)
+    buyer = s.get(Buyer, inv.buyer_id) if inv.buyer_id else None
+    supplier = supplier_info(s, inv)
+    missing = buyer_requests([c["check_id"] for c in a.get("checks", [])
+                              if c["status"] in ("fail", "missing") and c["severity"] != "info"])
+    ctx = FollowupContext(
+        invoice_no=inv.invoice_no or f"#{inv.id}", amount=inv.amount_total, due_date=inv.due_date,
+        due_reasoning=a.get("due", {}).get("reasoning", ""),
+        buyer_name=(buyer.name if buyer else a.get("buyer_name")) or "Buyer",
+        supplier_name=supplier.get("name") or "the supplier",
+        msmed_applies=a.get("due", {}).get("msmed_applies", True),
+        missing=missing, attachments=_attachments(s, inv))
+    drafts = build_followups(ctx, tone=tone, channel=channel)
+    q = select(Followup).where(Followup.invoice_id == inv.id, Followup.tone == tone, Followup.channel == channel)
+    for old in s.exec(q).all():
+        s.delete(old)
+    rows = [Followup(invoice_id=inv.id, step=dr.step, send_on=dr.send_on, channel=dr.channel, tone=dr.tone,
+                     draft_text=dr.text, status="draft") for dr in drafts]
+    s.add_all(rows)
+    s.commit()
+    for r in rows:
+        s.refresh(r)
+    return rows
+
+
+# ---------------------------------------------------------------- dispute pack
+def dispute_pack(s: Session, invoice_id: int, today: date, invoice_view: dict):
+    from app.dispute.pack import build_pack
+
+    inv = s.get(Invoice, invoice_id)
+    if inv is None:
+        raise LookupError("Invoice not found.")
+    if not inv.analysis_json:
+        raise PackageError("Invoice has not been processed yet.")
+    return build_pack(invoice=invoice_view, analysis=json.loads(inv.analysis_json),
+                      documents=invoice_view.get("documents") or [],
+                      supplier=supplier_info(s, inv), today=today)

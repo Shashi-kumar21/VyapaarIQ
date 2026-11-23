@@ -86,7 +86,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T3.2 `scoring/actions.py`: action templates per check, ranking by severity then deadline (§7 Actions)
 - [x] T3.3 `GET /api/invoices`, `/invoices/{id}`, `/graph` returning real data
 - [x] T3.4 Duplicate-invoice detection against DB (C14) end-to-end
-- [ ] T3.5 `seed.py`: supplier, 6 buyers, ~60 historical invoices with payment events (synthetic; flagged)
+- [x] T3.5 `seed.py`: supplier, 6 buyers, ~60 historical invoices with payment events (synthetic; flagged)
 - [x] T3.6 `GET /api/buyers/{id}/profile` per §8 with min-history rule + tests
 
 ### A1
@@ -108,10 +108,10 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 ## Day 4 — Complete application
 
 ### A2
-- [ ] T4.1 `followups`: generate D−7 / D−1 / D+3 / D+10 / D+25 drafts, friendly/firm tones; deterministic templates, LLM polish optional (§10)
-- [ ] T4.2 `POST /invoices/{id}/followups/generate`, `GET` list
-- [ ] T4.3 `forecast/cash_at_risk.py` + `GET /api/forecast` (§9) + tests
-- [ ] T4.4 `dispute/pack.py`: Markdown template → PDF (§11); `GET /invoices/{id}/dispute-pack`
+- [x] T4.1 `followups`: generate D−7 / D−1 / D+3 / D+10 / D+25 drafts, friendly/firm tones; deterministic templates, LLM polish optional (§10)
+- [x] T4.2 `POST /invoices/{id}/followups/generate`, `GET` list
+- [x] T4.3 `forecast/cash_at_risk.py` + `GET /api/forecast` (§9) + tests
+- [x] T4.4 `dispute/pack.py`: Markdown template → PDF (§11); `GET /invoices/{id}/dispute-pack`
 - [x] T4.5 Error handling: corrupt PDF, empty upload, unsupported type, extractor failure → clear API errors, partial results kept
 
 ### A1

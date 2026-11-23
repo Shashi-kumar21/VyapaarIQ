@@ -8,13 +8,15 @@ from datetime import date
 from typing import Optional
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
+from fastapi.responses import Response
 from sqlmodel import Session, select
 
-from app.db.models import Buyer, Document, Invoice, Package, PaymentEvent
+from app.db.models import Buyer, Document, Followup, Invoice, Package
 from app.db.session import get_session
 from app.schemas import SCHEMA_VERSION
 from app.scoring.buyer_profile import compute_profile
-from app.services import PackageError, create_package, process_package
+from app.services import (PackageError, buyer_history, cash_forecast, create_package, dispute_pack,
+                          generate_followups, process_package)
 
 router = APIRouter(prefix="/api")
 
@@ -141,22 +143,78 @@ def get_graph(invoice_id: int, s: Session = Depends(get_session)):
     return json.loads(inv.analysis_json)["graph"]
 
 
+# ---------------------------------------------------------------- follow-ups
+def _followup_view(f: Followup) -> dict:
+    return {"id": f.id, "invoice_id": f.invoice_id, "step": f.step,
+            "step_label": f"D{f.step:+d}", "send_on": f.send_on, "channel": f.channel, "tone": f.tone,
+            "draft_text": f.draft_text, "status": f.status}
+
+
+@router.post("/invoices/{invoice_id}/followups/generate")
+def followups_generate(invoice_id: int, tone: str = Query(default="friendly", pattern="^(friendly|firm)$"),
+                       channel: str = Query(default="email", pattern="^(email|whatsapp)$"),
+                       s: Session = Depends(get_session)):
+    _get_invoice(s, invoice_id)
+    try:
+        rows = generate_followups(s, invoice_id, tone=tone, channel=channel)
+    except PackageError as exc:
+        raise HTTPException(409, str(exc))
+    return {"invoice_id": invoice_id, "note": "Drafts only. Nothing is sent.",
+            "followups": [_followup_view(f) for f in rows]}
+
+
+@router.get("/invoices/{invoice_id}/followups")
+def followups_list(invoice_id: int, tone: Optional[str] = None, channel: Optional[str] = None,
+                   s: Session = Depends(get_session)):
+    _get_invoice(s, invoice_id)
+    q = select(Followup).where(Followup.invoice_id == invoice_id)
+    if tone:
+        q = q.where(Followup.tone == tone)
+    if channel:
+        q = q.where(Followup.channel == channel)
+    rows = s.exec(q.order_by(Followup.tone, Followup.channel, Followup.step)).all()
+    return [_followup_view(f) for f in rows]
+
+
+# ---------------------------------------------------------------- dispute pack
+@router.get("/invoices/{invoice_id}/dispute-pack")
+def get_dispute_pack(invoice_id: int, format: str = Query(default="pdf", pattern="^(pdf|md)$"),
+                     s: Session = Depends(get_session)):
+    from app.dispute.pack import to_markdown, to_pdf
+
+    view = get_invoice(invoice_id, s)
+    try:
+        pack = dispute_pack(s, invoice_id, _today(), view)
+    except PackageError as exc:
+        raise HTTPException(409, str(exc))
+    stem = "evidence-pack-" + "".join(c if c.isalnum() else "-" for c in (view["invoice_no"] or str(invoice_id)))
+    if format == "pdf":
+        try:
+            return Response(to_pdf(pack), media_type="application/pdf",
+                            headers={"Content-Disposition": f'attachment; filename="{stem}.pdf"',
+                                     "X-Pack-Format": "pdf"})
+        except Exception:  # noqa: BLE001 - spec §11: fall back to Markdown if PDF fails
+            pass
+    return Response(to_markdown(pack), media_type="text/markdown; charset=utf-8",
+                    headers={"Content-Disposition": f'attachment; filename="{stem}.md"',
+                             "X-Pack-Format": "md" if format == "md" else "md-fallback"})
+
+
+# ---------------------------------------------------------------- forecast
+@router.get("/forecast")
+def get_forecast(days: int = Query(default=30), s: Session = Depends(get_session)):
+    if days not in (30, 60):
+        raise HTTPException(400, "days must be 30 or 60.")
+    return cash_forecast(s, _today(), days)
+
+
 # ---------------------------------------------------------------- buyers
-def _history(s: Session, buyer_id: int) -> list[tuple[date, date]]:
-    out = []
-    for inv in s.exec(select(Invoice).where(Invoice.buyer_id == buyer_id)).all():
-        pays = s.exec(select(PaymentEvent).where(PaymentEvent.invoice_id == inv.id)).all()
-        if inv.due_date and pays:
-            out.append((inv.due_date, max(p.paid_on for p in pays)))
-    return out
-
-
 @router.get("/buyers")
 def list_buyers(s: Session = Depends(get_session)):
     rows = []
     for b in s.exec(select(Buyer).order_by(Buyer.name)).all():
         rows.append({"id": b.id, "name": b.name, "gstin": b.gstin, "synthetic": b.synthetic,
-                     "profile": compute_profile(_history(s, b.id)).model_dump()})
+                     "profile": compute_profile(buyer_history(s, b.id)).model_dump()})
     return rows
 
 
@@ -166,4 +224,4 @@ def buyer_profile(buyer_id: int, s: Session = Depends(get_session)):
     if b is None:
         raise HTTPException(404, "Buyer not found.")
     return {"id": b.id, "name": b.name, "gstin": b.gstin, "synthetic": b.synthetic,
-            **compute_profile(_history(s, b.id)).model_dump()}
+            **compute_profile(buyer_history(s, b.id)).model_dump()}
