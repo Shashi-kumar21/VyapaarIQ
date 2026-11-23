@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+/* Status colours shared by chips, graph nodes and banners (§13 UI rules). */
+@theme {
+  --color-ok: #15803d;
+  --color-warn: #b45309;
+  --color-bad: #b91c1c;
+  --color-unsure: #d97706;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+}
