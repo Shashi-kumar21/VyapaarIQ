@@ -20,13 +20,14 @@ function BackendStatus() {
       alive = false
     }
   }, [])
-  if (state.status === 'checking') return <span className="text-slate-400">Checking backend…</span>
+  if (state.status === 'checking') return <span className="text-slate-400">Checking…</span>
   if (state.status === 'down') {
-    return <span className="text-bad" title={state.message}>Backend unreachable</span>
+    return <span className="text-bad font-medium" title={state.message}>● Backend unreachable</span>
   }
   return (
-    <span className="text-slate-500">
-      API ok · extractor <b>{state.extractor}</b> · today {state.today}
+    <span className="text-slate-500" title={`extractor ${state.extractor} · today ${state.today}`}>
+      <span className="text-ok">●</span> API ok
+      <span className="hidden md:inline"> · extractor <b>{state.extractor}</b> · today {state.today}</span>
     </span>
   )
 }
@@ -40,9 +41,9 @@ export default function Layout() {
         legal figures are estimates, not legal advice — verify before use
       </div>
       <header className="bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-6">
+        <div className="max-w-6xl mx-auto px-4 py-2 sm:h-14 flex flex-wrap items-center gap-x-6 gap-y-1">
           <span className="font-semibold text-lg tracking-tight">VyapaarIQ</span>
-          <nav className="flex gap-1 text-sm">
+          <nav className="flex gap-1 text-sm order-3 sm:order-none w-full sm:w-auto">
             {NAV.map((n) => (
               <NavLink
                 key={n.to}
@@ -56,7 +57,8 @@ export default function Layout() {
               </NavLink>
             ))}
           </nav>
-          <div className="ml-auto text-xs hidden sm:block"><BackendStatus /></div>
+          {/* Visible at every width (compact on phones); a dead API must be obvious in the demo. */}
+          <div className="ml-auto text-xs"><BackendStatus /></div>
         </div>
       </header>
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6">

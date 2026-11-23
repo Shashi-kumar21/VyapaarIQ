@@ -1,10 +1,24 @@
 // Display helpers. Amounts arrive as plain INR numbers from the API (docs/api_contract.md).
 
+/**
+ * Round half to even, like Python's format() used by the backend (app/fmt.py), so the UI
+ * and the dispute pack never disagree by a rupee: 22922.5 -> 22922, 22923.5 -> 22924.
+ */
+export function roundHalfEven(x, digits = 0) {
+  const f = 10 ** digits
+  const scaled = x * f
+  const floor = Math.floor(scaled)
+  const diff = scaled - floor
+  if (Math.abs(diff - 0.5) < 1e-9) return (floor % 2 === 0 ? floor : floor + 1) / f
+  return Math.round(scaled) / f
+}
+
 /** Indian digit grouping, whole rupees: 240000 -> "₹2,40,000"; null -> "—". */
 export function inr(value, { paise = false } = {}) {
   if (value === null || value === undefined || Number.isNaN(Number(value))) return '—'
   const n = Number(value)
-  const text = Math.abs(n).toFixed(paise ? 2 : 0)
+  const digits = paise ? 2 : 0
+  const text = roundHalfEven(Math.abs(n), digits).toFixed(digits)
   const [whole, frac] = text.split('.')
   let grouped = whole
   if (whole.length > 3) {
