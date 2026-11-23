@@ -1,12 +1,11 @@
-# React + Vite
+# VyapaarIQ frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite + Tailwind v4. Pages per BUILD_SPEC §13; API per `docs/api_contract.md`.
 
-Currently, two official plugins are available:
+```powershell
+cd frontend; npm install; npm run dev   # http://localhost:5173 (backend on :8000)
+npm test                                 # unit tests (vitest)
+npm run lint; npm run build
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+`VITE_API_BASE` (see `.env.example`) points at the backend; default `http://localhost:8000`.
