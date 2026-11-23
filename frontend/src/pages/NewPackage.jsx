@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { Card } from '../components/ui.jsx'
 import { api } from '../lib/api.js'
 import { ALLOWED, DOC_TYPES, fileProblem } from '../lib/upload.js'

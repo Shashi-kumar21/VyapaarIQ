@@ -37,6 +37,16 @@ Pre-release checks run by DEV on 2026-11-23 against `main` at `f5a9a26` (after P
 **Next step after the demo:** upgrade to React Router 7 and Vitest 5 in one PR, then repeat the
 run-through.
 
+## After v0.1-demo: dependency upgrade (D-39)
+
+Done in the first post-demo PR, **after** the tag:
+
+- `react-router-dom` 6.30.6 is replaced by **`react-router` 7.18.5**. In v7, `react-router-dom` only re-exports `react-router`. The v6 `future` flags are removed, because their behaviour is now the default.
+- **`vitest` 5.1.0** (from 3.2.7).
+- Both versions are more than two weeks old, and both contain the advisory fixes.
+- `npm audit`: **0 vulnerabilities**.
+- Verified with vitest 40, eslint and build. The full run-through gave 28/28, exit 0, with no console errors or warnings. Routes, the 404 page, deep links and the back button were also checked in the browser.
+
 ## Tagging (owner)
 
 ```powershell

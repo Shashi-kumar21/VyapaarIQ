@@ -56,6 +56,8 @@ A second full run after the fixes was clean: 28/28, no issues.
 | B-6 | P2 | A3 | Dashboard invoice table at 375 px | Only Invoice and Buyer are visible. Amount, due date, score and tier are reached by scrolling the table sideways; the page itself does not overflow. A card layout on phones would read better |
 | B-7 | P2 | A3 | Dashboard chart at 375 px | The small chart still shows above the table. It could be hidden on phones while the table is open |
 | B-8 | P2 | A2 | Top actions | Actions whose target date is already past show "due by 23 Nov 2026" (today), because the target is clamped to today. This is intended (do it now), but "overdue since …" would say more |
+| B-9 | P2 | A3 | Buyers, trend column | On Windows "↘ improving" renders as a blue emoji, while "↗ worsening" renders as plain text. The glyphs should match (an SVG icon or a text-presentation selector) |
+| B-10 | P2 | A3 | `/invoices/<seeded id>` (typed by hand) | A seeded history invoice shows "Something went wrong · This invoice has not been processed yet" with a useless **Try again**. The UI has no link to it; a calm "not processed" state would be better |
 
 ## Not a bug (checked)
 
