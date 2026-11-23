@@ -136,7 +136,8 @@ instead of guessing.
   - The bank rate (5.75 %) was confirmed on the RBI's own release.
   - MSMED ss.2(b), 15 and 16 were checked against the Act text.
   - s.37(2)(g) is supported by every source found.
-  - The ODR launch and cut-over dates were confirmed.
+  - The ODR portal launch (27 Jun 2025) is confirmed. The 15 Oct 2025 cut-over for new cases comes
+    only from a summary of the Ministry's annual report, so treat it as likely, not confirmed.
 
   Still open: the current ODR filing steps, any 2026 MSMED amendment, and a direct read of the
   official ITA 2025 text. **Verify before real use.**
