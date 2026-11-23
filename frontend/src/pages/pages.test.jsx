@@ -1,7 +1,6 @@
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { within } from '@testing-library/react' // separate line: keeps the router import line untouched
 import { api } from '../lib/api.js'
 import { fileProblem } from '../lib/upload.js'
 import Dashboard from './Dashboard.jsx'
