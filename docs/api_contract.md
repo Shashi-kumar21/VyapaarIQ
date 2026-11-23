@@ -160,8 +160,8 @@ This is the invoice summary (same keys as the list), plus `processing_ms`, `docu
             "reasoning": "No GRN; acceptance 2026-09-13 taken from the received date on the delivery challan. Written terms of 30 days applied. Due date 2026-10-13 (estimated).",
             "estimated": true, "uncertain": false, "msmed_applies": true},
     "interest": {"principal": 22921.5, "due_date": "2026-10-13", "as_of": "2026-11-23", "days_late": 41,
-                 "annual_rate_pct": 16.5, "interest": 432.32, "computable": true,
-                 "formula": "P x (1 + 16.50%/12)^1 x (1 + 16.50%/12 x 11/30) - P; rate = 3 x RBI bank rate 5.5%",
+                 "annual_rate_pct": 17.25, "interest": 452.05, "computable": true,
+                 "formula": "P x (1 + 17.25%/12)^1 x (1 + 17.25%/12 x 11/30) - P; rate = 3 x RBI bank rate 5.75%",
                  "note": "Estimated statutory interest (MSMED s.16). Not legal advice; verify the bank rate."},
     "actions": [
       {"priority": 1, "check_id": "C10",

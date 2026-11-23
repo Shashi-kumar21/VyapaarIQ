@@ -7,15 +7,24 @@ supplier:
 msmed:
   max_terms_days: 45               # s.15: agreed period may not exceed 45 days from acceptance
   no_agreement_days: 15            # s.15: no written agreement -> 15 days from acceptance
-  # VERIFY: s.2(b) treats the *delivery date* as deemed acceptance once 15 days
-  # pass without written objection. The spec asks for delivery + 15; keep it
-  # configurable and always label the result "deemed / estimated".
-  deemed_acceptance_offset_days: 15
+  # MSMED s.2(b): with no written objection within 15 days of delivery, the day of
+  # *actual delivery* is the day of deemed acceptance -> offset 0 (owner decision
+  # 2026-11-23, was 15; see docs/references.md D-11). Result is always labelled
+  # "deemed / estimated". VERIFY against the Act before real use.
+  deemed_acceptance_offset_days: 0
   interest_multiplier: 3           # s.16: 3x bank rate, compounded monthly
 
 rbi:
-  bank_rate_pct: 5.50              # VERIFY against the current RBI bank rate before the demo
-  as_of: "2026-01-01"              # VERIFY
+  # Bank Rate = MSF rate = repo + 25 bps. Repo raised to 5.50% on 2026-10-07 (secondary
+  # sources; docs/references.md R-1). VERIFY on rbi.org.in before the demo.
+  bank_rate_pct: 5.75
+  as_of: "2026-10-07"
+
+# Statute references printed in follow-up drafts (text only; never used in a calculation).
+legal_refs:
+  # Income-tax Act, 2025 (in force 2026-04-01) moved old s.43B(h) to s.37(2)(g).
+  # VERIFY the numbering against the Act text (one source says 55(h)); references.md R-4.
+  buyer_deduction_rule: "section 37(2)(g) of the Income-tax Act, 2025 (earlier section 43B(h) of the 1961 Act)"
 
 tolerances:
   po_value_pct: 1.0                # C02: invoice taxable may exceed PO total by <= 1%

@@ -144,7 +144,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 ### A2
 - [ ] T5.4 Backend tests green; add regression tests for each bug fixed this week
 - [ ] T5.5 Performance pass: package processing < 60 s; cache LLM calls; avoid re-extracting unchanged files
-- [ ] T5.6 Review rule config values against current law/portal process (MSMED s.15/16, 43B(h), ODR portal route, RBI bank rate); update `config.yaml` and the dispute-pack wording
+- [x] T5.6 Review rule config values against current law/portal process (MSMED s.15/16, 43B(h), ODR portal route, RBI bank rate); update `config.yaml` and the dispute-pack wording
 
 ### A3
 - [ ] T5.7 UI polish: spacing, typography, status colours, mobile-width sanity, consistent INR formatting
