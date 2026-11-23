@@ -5,7 +5,7 @@ import { api } from '../lib/api.js'
 import InvoiceDetail from './InvoiceDetail.jsx'
 
 vi.mock('../lib/api.js', () => ({
-  api: { getInvoice: vi.fn(), health: vi.fn(), disputePackUrl: (id, f) => `http://x/api/invoices/${id}/dispute-pack?format=${f}` },
+  api: { getInvoice: vi.fn(), health: vi.fn(), listFollowups: vi.fn(), generateFollowups: vi.fn(), disputePack: vi.fn() },
 }))
 
 // Shape taken from the real /api/invoices/{id} response for PKG07 (GRN missing), trimmed.
@@ -26,6 +26,7 @@ const INVOICE = {
       { check_id: 'C01', name: 'Invoice ↔ PO reference', status: 'pass', severity: 'blocker', detail: 'PO matches.' },
       { check_id: 'C10', name: 'GRN / acceptance', status: 'missing', severity: 'blocker', detail: 'No GRN in package.' },
       { check_id: 'C07', name: 'Receiving evidence', status: 'uncertain', severity: 'warning', detail: 'Stamp unreadable.' },
+      { check_id: 'C03', name: 'Line items vs PO', status: 'missing', severity: 'info', detail: 'Skipped: no PO in the package (see C01).' },
     ],
     score: { score: 65, tier: 'Medium', note: 'Illustrative readiness score, not a prediction of buyer payment.',
       penalties: [{ check_id: 'C10', status: 'missing', severity: 'blocker', points: 30 },
@@ -99,9 +100,12 @@ describe('Invoice detail', () => {
   it('lists failing checks first, then actions with the score breakdown', async () => {
     api.getInvoice.mockResolvedValue(INVOICE)
     const { container } = renderInvoice()
-    await screen.findByText('2 of 3 checks need attention.')
+    await screen.findByText('2 of 4 checks need attention.') // the skipped C03 is not counted
     const order = [...container.querySelectorAll('[data-check]')].map((el) => el.getAttribute('data-check'))
-    expect(order).toEqual(['C10', 'C07', 'C01'])
+    expect(order).toEqual(['C10', 'C07', 'C03', 'C01'])
+    const c03 = container.querySelector('[data-check="C03"]')
+    expect(within(c03).getByText('skipped')).toBeTruthy()
+    expect(within(c03).queryByText('info')).toBeNull()
     fireEvent.click(screen.getByRole('tab', { name: 'Actions & score' }))
     expect(screen.getByText('Request GRN / acceptance acknowledgement')).toBeTruthy()
     expect(screen.getByText('−30')).toBeTruthy()

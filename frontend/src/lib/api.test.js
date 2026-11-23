@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { API_BASE, ApiError, api, errorMessage } from './api.js'
+import { API_BASE, ApiError, api, blobText, errorMessage } from './api.js'
 
 afterEach(() => vi.unstubAllGlobals())
 
@@ -34,6 +34,27 @@ describe('api client', () => {
     expect(err).toBeInstanceOf(ApiError)
     expect(err.status).toBe(0)
     expect(err.message).toMatch(/Cannot reach the backend/)
+  })
+
+  it('fetches the dispute pack as a blob with the server filename and format', async () => {
+    const headers = new Map([
+      ['content-disposition', 'attachment; filename="evidence-pack-SPC-26-27-0107.md"'],
+      ['x-pack-format', 'md-fallback'],
+    ])
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true, headers: { get: (k) => headers.get(k) ?? null }, blob: async () => new Blob(['# pack']),
+    }))
+    const pack = await api.disputePack(61, 'pdf')
+    expect(pack.filename).toBe('evidence-pack-SPC-26-27-0107.md')
+    expect(pack.format).toBe('md-fallback')
+    expect(await blobText(pack.blob)).toBe('# pack')
+  })
+
+  it('turns a dispute-pack 409 into a readable error', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false, status: 409, json: async () => ({ detail: 'Invoice has not been processed yet.' }),
+    }))
+    await expect(api.disputePack(5)).rejects.toMatchObject({ status: 409, message: 'Invoice has not been processed yet.' })
   })
 
   it('sends doc_types only when at least one type is chosen', async () => {
