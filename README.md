@@ -155,6 +155,7 @@ Copy [`.env.example`](.env.example) to `.env` and set only what you need. Never 
 | `VYAPAARIQ_TODAY` | today | Pins "today" (`YYYY-MM-DD`) for reproducible demos. It affects due dates, interest, forecast and past drafts. |
 | `CORS_ORIGINS` | `http://localhost:5173,http://127.0.0.1:5173` | Comma-separated origins allowed to call the API. |
 | `GROUND_TRUTH` | `samples/ground_truth.json` | Ground-truth file used by the `fixture` extractor. |
+| `VYAPAARIQ_LOG_LEVEL` | `INFO` | App log level (case-insensitive; an unknown name falls back to INFO with a warning). At `INFO` each processed package logs one line: ids, document count, extractor and time in ms. Document text is never logged. |
 | `VITE_API_BASE` | `http://localhost:8000` | Frontend: base URL of the API. |
 
 ### Extractor modes
@@ -330,6 +331,15 @@ The suite covers the rule functions (due date, interest, score), every check aga
 ground-truth packages in `fixture` mode, the `text` extractor (exact on digital PDFs and
 `uncertain`, never wrong, on scans), the LLM client offline, the full REST API, follow-ups, the
 forecast, the dispute pack, and confidence gating.
+
+```powershell
+cd frontend; npm test; npm run lint                       # vitest unit/component tests + eslint
+.\.venv\Scripts\python eval\run_eval.py                    # from the repo root: rewrites eval/report.md
+```
+
+`eval/run_eval.py` measures field accuracy, check precision/recall, due dates and processing time
+in `text` and `fixture` mode (`--modes claude` needs an API key). A manual browser run-through of
+all 28 packages is in `frontend/scripts/ui_runthrough.mjs` (see `docs/bugs.md`).
 
 ## Design principles
 

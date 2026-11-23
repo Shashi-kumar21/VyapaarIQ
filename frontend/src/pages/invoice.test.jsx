@@ -12,7 +12,7 @@ vi.mock('../lib/api.js', () => ({
 const f = (value, confidence = 1, source_page = 1) => ({ value, confidence, source_page })
 const INVOICE = {
   id: 61, invoice_no: 'SPC/26-27/0107', invoice_date: '2026-09-10', buyer_name: 'Kaveri Auto Assemblies Pvt Ltd',
-  amount_total: 22921.5, due_date: '2026-10-13', readiness_score: 70, risk_tier: 'Medium',
+  amount_total: 22921.5, due_date: '2026-10-13', readiness_score: 70, risk_tier: 'Medium', processing_ms: 1234,
   documents: [
     { id: 2, filename: 'PKG07_invoice.pdf', doc_type: 'invoice', extractor: 'text', fallback: false,
       extraction_conf: 0.84, error: null,
@@ -78,6 +78,7 @@ describe('Invoice detail', () => {
     expect(screen.getByText('13 Oct 2026')).toBeTruthy()
     expect(screen.getByText('from challan received date')).toBeTruthy()
     expect(screen.getAllByText('demo fallback').length).toBeGreaterThan(0)
+    expect(screen.getByText('processed in 1.2 s')).toBeTruthy() // T3.10
     expect(screen.getByText('₹452')).toBeTruthy()
     expect(screen.getByText(/Not legal advice/)).toBeTruthy()
   })

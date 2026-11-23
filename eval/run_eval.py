@@ -87,7 +87,7 @@ def run_mode(gt: dict, mode: str) -> dict:
     fields: dict[str, Counter] = defaultdict(Counter)
     field_failures: list[str] = []
     checks: dict[str, Counter] = defaultdict(Counter)
-    check_failures: list[str] = []
+    check_failures: list[dict] = []
     pkg_rows: list[dict] = []
     seen: set[tuple[str, str]] = set()
 
@@ -141,8 +141,13 @@ def run_mode(gt: dict, mode: str) -> dict:
                 c["tn"] += 1
             if g != want:
                 wrong_checks.append(f"{cid} want {want} got {g}")
+        scan_docs = [f["doc_type"] for f in pkg["files"] if f["scan"]]
         if wrong_checks:
-            check_failures.append(f"{pid} {pkg['defects'] or ['clean']}: " + "; ".join(wrong_checks))
+            check_failures.append({"package": pid, "scan_docs": scan_docs,
+                                   "abstained": all(got[c] == "uncertain" for c in got
+                                                    if got[c] != pkg["expected"]["checks"].get(c)),
+                                   "text": f"{pid} {pkg['defects'] or ['clean']}{_scan_tag(scan_docs)}: "
+                                           + "; ".join(wrong_checks)})
 
         # package-level
         flagged = any(got[c] in POSITIVE and sev[c] == "blocker" for c in got)
@@ -151,7 +156,7 @@ def run_mode(gt: dict, mode: str) -> dict:
         verdict = "blocker" if flagged else "uncertain" if unsure_blocker else "clean"
         exp = pkg["expected"]
         pkg_rows.append({
-            "package": pid, "defects": pkg["defects"], "scan": any(f["scan"] for f in pkg["files"]),
+            "package": pid, "defects": pkg["defects"], "scan": bool(scan_docs), "scan_docs": scan_docs,
             "expected_blocker": exp["has_blocker"], "predicted_blocker": flagged, "uncertain_blocker": unsure_blocker,
             "verdict": verdict,
             "due_expected": exp["due_date"], "due_got": a.due.due_date.isoformat() if a.due.due_date else None,
@@ -161,6 +166,10 @@ def run_mode(gt: dict, mode: str) -> dict:
     return {"mode": mode, "threshold": thr, "fields": {k: dict(v) for k, v in fields.items()},
             "field_failures": field_failures, "checks": {k: dict(v) for k, v in checks.items()},
             "check_failures": check_failures, "packages": pkg_rows}
+
+
+def _scan_tag(scan_docs: list) -> str:
+    return f" (scanned: {', '.join(scan_docs)})" if scan_docs else ""
 
 
 # ---------------------------------------------------------------- summary + report
@@ -290,12 +299,20 @@ def write_report(results: list[dict], path: Path) -> str:
         L += ["### Failure cases", ""]
         if not (r["check_failures"] or r["field_failures"] or bad_due):
             L += ["None.", ""]
+        # the note is only true if every difference is an abstention (uncertain / no due date) on a scan
+        failing = ([(x["scan_docs"], x["abstained"]) for x in r["check_failures"]]
+                   + [(p["scan_docs"], p["due_got"] is None) for p in bad_due])
+        if failing and all(scans and abstained for scans, abstained in failing):
+            L += ["Every package below has a **scanned** document. With no OCR in this mode the scan is "
+                  "read as `uncertain` (needs a human check) and is never guessed, so these are abstentions, "
+                  "not wrong answers. Reading scans needs the `claude` extractor (references D-36).", ""]
         if r["check_failures"]:
-            L += ["**Checks that differ from the ground truth:**", ""] + [f"- {x}" for x in r["check_failures"]] + [""]
+            L += ["**Checks that differ from the ground truth:**", ""] + [
+                f"- {x['text']}" for x in r["check_failures"]] + [""]
         if bad_due:
             L += ["**Due dates that differ:**", ""] + [
-                f"- {p['package']} {p['defects'] or ['clean']}: want {p['due_expected']} ({p['basis_expected']}), "
-                f"got {p['due_got']} ({p['basis_got']})" for p in bad_due] + [""]
+                f"- {p['package']} {p['defects'] or ['clean']}{_scan_tag(p['scan_docs'])}: want {p['due_expected']} "
+                f"({p['basis_expected']}), got {p['due_got']} ({p['basis_got']})" for p in bad_due] + [""]
         if r["field_failures"]:
             shown = r["field_failures"][:40]
             L += ["**Field errors (wrong, missed or spurious):**", ""] + [f"- {x}" for x in shown]

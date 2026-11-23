@@ -92,3 +92,22 @@ def test_truncated_irn_is_not_trusted(ground_truth):
 def test_received_by_ignores_stamp_text_on_the_same_line(ground_truth):
     ch = _extract("PKG03", "challan")
     assert ch.received_by_name.value == "R. Patil"
+
+
+def test_text_mode_failures_are_all_tagged_scans(ev, gt, tmp_path):
+    """T5.3 / D-36: every text-mode difference is a scanned document, and the report says so."""
+    r = ev.run_mode(gt, "text")
+    assert r["check_failures"] and all(x["scan_docs"] for x in r["check_failures"])
+    out = tmp_path / "report.md"
+    ev.write_report([r], out)
+    report = out.read_text(encoding="utf-8")
+    assert "(scanned: " in report and "these are abstentions" in report
+
+
+def test_abstention_note_needs_every_difference_to_be_an_abstention(ev, gt, tmp_path):
+    """QA #15 nit: a confident wrong answer on a scanned package must not get the abstention note."""
+    r = ev.run_mode(gt, "text")
+    r["check_failures"][0]["abstained"] = False  # pretend one scan was read confidently and wrongly
+    out = tmp_path / "report.md"
+    ev.write_report([r], out)
+    assert "these are abstentions" not in out.read_text(encoding="utf-8")
