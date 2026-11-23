@@ -44,8 +44,8 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 
 ### A3 Frontend & QA
 - [x] T1.14 Vite + React + Tailwind scaffold, routing for 4 pages (§13), API client with base URL env
-- [ ] T1.15 Dashboard page with mocked data; INR formatting helper (₹2,40,000)
-- [ ] T1.16 New-package upload page (drag-and-drop, file list, doc-type dropdown, Process button wired to stub)
+- [x] T1.15 Dashboard page with mocked data; INR formatting helper (₹2,40,000)
+- [x] T1.16 New-package upload page (drag-and-drop, file list, doc-type dropdown, Process button wired to stub)
 
 **Gate 1:** `uvicorn` serves stub API; frontend shows mocked dashboard + upload page; 10 sample packages exist; due-date/interest/score unit tests pass.
 
@@ -96,9 +96,9 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [ ] T3.10 Processing-time logging per package
 
 ### A3
-- [ ] T3.11 Wire upload → process → redirect to invoice detail with progress states (uploading / extracting / checking / done / failed)
+- [x] T3.11 Wire upload → process → redirect to invoice detail with progress states (uploading / extracting / checking / done / failed)
 - [ ] T3.12 Actions tab (ranked list, due-by, rationale) and score breakdown panel (each penalty listed)
-- [ ] T3.13 Dashboard on real `/invoices` data: tiers, open receivables, top actions
+- [x] T3.13 Dashboard on real `/invoices` data: tiers, open receivables, top actions
 - [ ] T3.14 Buyers page with reliability numbers (labelled synthetic demo data)
 
 **Gate 3:** Upload a package in the UI → real graph, checks, score, actions. Clean package scores ≥85; "GRN missing" package shows blocker + correct action.
