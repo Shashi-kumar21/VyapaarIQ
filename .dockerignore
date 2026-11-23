@@ -1,0 +1,15 @@
+# Keep the image small and free of local data and secrets.
+.git
+.venv
+**/__pycache__
+**/*.pyc
+.pytest_cache
+**/.env
+**/.env.*
+backend/data
+**/*.db
+samples/out
+frontend/node_modules
+frontend/dist
+eval/results.json
+docs

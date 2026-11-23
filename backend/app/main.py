@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import router
 from app.db.session import init_db
+from app.deploy import add_basic_auth, bootstrap_demo, mount_frontend
 
 
 # App log lines (e.g. per-package processing time, T3.10) at INFO in the uvicorn terminal.
@@ -41,6 +42,8 @@ if not _app_log.handlers:
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     init_db()
+    if os.environ.get("DEMO_BOOTSTRAP") == "1":  # hosted demo only (docs/deploy.md)
+        bootstrap_demo()
     yield
 
 
@@ -55,3 +58,7 @@ app.add_middleware(
     expose_headers=["Content-Disposition", "X-Pack-Format"],
 )
 app.include_router(router)
+
+# Hosted demo (docs/deploy.md): each is a no-op unless its env var is set.
+add_basic_auth(app)
+mount_frontend(app, os.environ.get("STATIC_DIR"))
