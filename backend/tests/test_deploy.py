@@ -63,6 +63,23 @@ def test_custom_user(monkeypatch):
     assert c.get("/api/invoices", headers=_auth("judge", "p")).status_code == 200
 
 
+def test_hsts_on_every_response_and_non_http_scopes(monkeypatch):
+    monkeypatch.setenv("DEMO_PASSWORD", "p")
+    app = _mini_app()
+    add_basic_auth(app)
+    c = TestClient(app)
+    for r in (c.get("/api/health"), c.get("/api/invoices"), c.get("/api/invoices", headers=_auth("demo", "p"))):
+        assert r.headers["strict-transport-security"] == "max-age=31536000"
+    with TestClient(app):  # lifespan still runs through the gate
+        pass
+    from starlette.websockets import WebSocketDisconnect
+
+    with pytest.raises(WebSocketDisconnect) as e:  # no websocket gets past the gate
+        with c.websocket_connect("/ws"):
+            pass
+    assert e.value.code == 1008
+
+
 def test_middleware_compares_both_parts():
     m = BasicAuthMiddleware(app=None, user="u", password="p")
     ok = lambda u, p: m._ok(("Basic " + base64.b64encode(f"{u}:{p}".encode()).decode()).encode())  # noqa: E731

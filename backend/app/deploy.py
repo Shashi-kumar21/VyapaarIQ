@@ -28,6 +28,8 @@ from sqlmodel import select
 log = logging.getLogger("vyapaariq.deploy")
 
 OPEN_PATHS = {"/api/health"}
+# Basic auth is only safe over HTTPS; the host terminates TLS, so tell browsers to stay on it.
+HSTS = (b"strict-transport-security", b"max-age=31536000")
 REPO = Path(__file__).resolve().parents[2]
 
 
@@ -52,14 +54,28 @@ class BasicAuthMiddleware:
         return secrets.compare_digest(user, self.user) & secrets.compare_digest(pwd, self.password)
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
-        if scope["type"] != "http" or scope.get("path") in OPEN_PATHS or scope.get("method") == "OPTIONS":
+        kind = scope["type"]
+        if kind == "lifespan":  # startup/shutdown events, not a request
             await self.app(scope, receive, send)
+            return
+        if kind != "http":  # the app has no websockets: refuse anything else (QA #24)
+            if kind == "websocket":
+                await send({"type": "websocket.close", "code": 1008})
+            return
+
+        async def send_hsts(message):
+            if message["type"] == "http.response.start":
+                message = {**message, "headers": [*message.get("headers", []), HSTS]}
+            await send(message)
+
+        if scope.get("path") in OPEN_PATHS or scope.get("method") == "OPTIONS":
+            await self.app(scope, receive, send_hsts)
             return
         headers = dict(scope.get("headers") or [])
         if self._ok(headers.get(b"authorization")):
-            await self.app(scope, receive, send)
+            await self.app(scope, receive, send_hsts)
             return
-        await send({"type": "http.response.start", "status": 401, "headers": [
+        await send_hsts({"type": "http.response.start", "status": 401, "headers": [
             (b"www-authenticate", b'Basic realm="VyapaarIQ demo", charset="UTF-8"'),
             (b"content-type", b"text/plain; charset=utf-8")]})
         await send({"type": "http.response.body", "body": b"Login required for the VyapaarIQ demo."})

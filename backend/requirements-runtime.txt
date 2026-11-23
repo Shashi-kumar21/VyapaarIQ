@@ -1,0 +1,12 @@
+# Runtime dependencies of the API (what the hosted image installs; docs/deploy.md).
+# Development adds tests and the optional Claude client: see requirements.txt.
+fastapi>=0.115
+uvicorn[standard]>=0.30
+sqlmodel>=0.0.22
+pydantic>=2.7
+pymupdf>=1.24
+reportlab>=4.0
+pyyaml>=6.0
+rapidfuzz>=3.9
+python-multipart>=0.0.9
+pillow>=10.0
