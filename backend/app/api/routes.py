@@ -11,9 +11,9 @@ from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, Upload
 from fastapi.responses import Response
 from sqlmodel import Session, select
 
-from app.db.models import Buyer, Document, Followup, Invoice, Package
+from app.db.models import ActionRow, Buyer, CheckResult, Document, Followup, Invoice, Package
 from app.db.session import get_session
-from app.schemas import SCHEMA_VERSION
+from app.schemas import SCHEMA_VERSION, DocType
 from app.scoring.buyer_profile import compute_profile
 from app.services import (PackageError, buyer_history, cash_forecast, create_package, dispute_pack,
                           generate_followups, process_package)
@@ -46,7 +46,12 @@ async def upload_package(files: list[UploadFile] = File(default=[]),
         try:
             types = json.loads(doc_types)
         except json.JSONDecodeError:
-            raise HTTPException(400, "doc_types must be a JSON list.")
+            types = None
+        valid = {t.value for t in DocType}
+        if (not isinstance(types, list) or len(types) > len(payload)
+                or any(t is not None and t not in valid for t in types)):
+            raise HTTPException(400, "doc_types must be a JSON list with at most one entry per file; "
+                                     f"each entry is null or one of {sorted(valid)}.")
     try:
         pkg = create_package(s, payload, buyer_name=buyer_name, doc_types=types)
     except PackageError as exc:
@@ -115,6 +120,33 @@ def list_invoices(tier: Optional[str] = None, buyer_id: Optional[int] = None,
         q = q.where(Invoice.status == status)
     rows = s.exec(q.order_by(Invoice.id.desc())).all()
     return [_invoice_summary(s, r) for r in rows]
+
+
+@router.get("/actions")
+def top_actions(limit: int = Query(default=5, ge=1, le=50), s: Session = Depends(get_session)):
+    """Open actions across open, non-synthetic invoices, ranked like build_actions:
+    severity (blocker, warning, info; an uncertain check ranks half a step lower), then due_by."""
+    from app.scoring.actions import SEVERITY_RANK
+
+    open_ids = {i.id: i for i in s.exec(select(Invoice).where(Invoice.status == "open",
+                                                              Invoice.synthetic == False)).all()}  # noqa: E712
+    rows = []
+    for a in s.exec(select(ActionRow).where(ActionRow.status == "open")).all():
+        inv = open_ids.get(a.invoice_id)
+        if inv is None:
+            continue
+        chk = s.exec(select(CheckResult).where(CheckResult.invoice_id == a.invoice_id,
+                                               CheckResult.check_id == a.check_id)).first()
+        sev = chk.severity if chk else "info"
+        rank = SEVERITY_RANK.get(sev, 3) + (0.5 if chk and chk.status == "uncertain" else 0)
+        rows.append(((rank, a.due_by or date.max, a.invoice_id, a.priority), {
+            "invoice_id": a.invoice_id, "invoice_no": inv.invoice_no,
+            "buyer_name": _invoice_summary(s, inv)["buyer_name"], "risk_tier": inv.risk_tier,
+            "check_id": a.check_id, "severity": sev, "check_status": chk.status if chk else None,
+            "title": a.title, "rationale": a.rationale, "due_by": a.due_by, "owner_role": a.owner_role,
+            "priority_in_invoice": a.priority}))
+    rows.sort(key=lambda kv: kv[0])
+    return [r for _, r in rows[:limit]]
 
 
 def _get_invoice(s: Session, invoice_id: int) -> Invoice:

@@ -25,7 +25,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 
 ### A0 Architect
 - [x] T1.1 Write `backend/app/schemas.py`: Pydantic models for all doc types (§6), `Check`, `Action`, `Graph`, `Invoice` — **freeze by midday**
-- [ ] T1.2 Write `docs/api_contract.md` (§12) with example JSON for every endpoint
+- [x] T1.2 Write `docs/api_contract.md` (§12) with example JSON for every endpoint
 - [x] T1.3 `backend/app/db`: SQLModel tables (§5), `init_db()`, session helper
 - [x] T1.4 `rules/config.yaml` skeleton: tolerances, penalties, thresholds, 45/15-day rules, e-way threshold, bank rate placeholder (marked VERIFY)
 - [x] T1.5 FastAPI app skeleton with `/api/health`, CORS, routers stubbed with fixture responses so frontend can start immediately

@@ -105,6 +105,8 @@ def build_graph(pkg: ExtractedPackage, checks: list[Check], cfg: Optional[dict[s
             n_status, e_status = "uncertain", "uncertain"
 
         no_text = _doc_no_text(doc, thr)
+        if UNSURE in no_text and n_status == "ok":
+            n_status = "uncertain"  # same rule as the invoice node; the edge keeps the checks' verdict
         label = LABELS[node_id] + (f" {no_text}" if no_text else "")
         nodes.append(GraphNode(id=node_id, type=node_id, label=label, status=n_status,
                                doc_no=_doc_no(doc, thr)))
