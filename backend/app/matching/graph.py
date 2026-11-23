@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
+from app.fmt import inr
+from app.rules.config import get_config
 from app.schemas import (
     BaseDoc,
     Check,
@@ -27,20 +29,8 @@ LABELS = {"po": "Purchase order", "challan": "Delivery challan", "eway": "E-way 
           "grn": "GRN / acceptance", "contract": "Contract"}
 
 
-def _inr(x: Optional[float]) -> str:
-    if x is None:
-        return ""
-    whole = f"{x:.0f}"
-    if len(whole) > 3:
-        head, tail = whole[:-3], whole[-3:]
-        groups = []
-        while len(head) > 2:
-            groups.insert(0, head[-2:])
-            head = head[:-2]
-        if head:
-            groups.insert(0, head)
-        whole = ",".join(groups + [tail])
-    return f"₹{whole}"
+UNSURE = "? (verify)"
+DOC_NO_KEYS = ("invoice_no", "po_no", "challan_no", "eway_no", "grn_no", "doc_no")
 
 
 def doc_confidence(d: BaseDoc) -> float:
@@ -49,15 +39,31 @@ def doc_confidence(d: BaseDoc) -> float:
     return round(sum(vals) / len(vals), 2) if vals else 0.0
 
 
-def _doc_no(d: BaseDoc) -> Optional[str]:
-    for key in ("invoice_no", "po_no", "challan_no", "eway_no", "grn_no", "doc_no"):
+def _doc_no(d: Optional[BaseDoc], thr: float) -> Optional[str]:
+    """First document number read at or above the threshold (rule 3), else None."""
+    if d is None:
+        return None
+    for key in DOC_NO_KEYS:
         f = getattr(d, key, None)
-        if f is not None and f.value:
+        if f is not None and f.value and f.confidence >= thr:
             return str(f.value)
     return None
 
 
-def build_graph(pkg: ExtractedPackage, checks: list[Check]) -> Graph:
+def _doc_no_text(d: Optional[BaseDoc], thr: float) -> str:
+    """Label text: a confident number, '? (verify)' if one was read below threshold, else ''."""
+    no = _doc_no(d, thr)
+    if no:
+        return no
+    if d is not None and any((f := getattr(d, k, None)) is not None and f.value for k in DOC_NO_KEYS):
+        return f"No. {UNSURE}"
+    return ""
+
+
+def build_graph(pkg: ExtractedPackage, checks: list[Check], cfg: Optional[dict[str, Any]] = None) -> Graph:
+    if cfg is None:
+        cfg = get_config()
+    thr = float(cfg["extraction"]["uncertain_below"])
     by_id = {c.check_id: c for c in checks}
     c04 = by_id.get("C04")
     party_bad = set(c04.facts.get("mismatched_nodes", [])) if c04 and c04.status == CheckStatus.fail else set()
@@ -67,9 +73,15 @@ def build_graph(pkg: ExtractedPackage, checks: list[Check]) -> Graph:
     edges: list[GraphEdge] = []
 
     inv_bad = any(by_id[c].status == CheckStatus.fail for c in ("C02", "C14") if c in by_id) or "inv" in party_bad
-    inv_label = f"{_doc_no(inv) or 'Invoice'} {_inr(inv.total.value) if inv else ''}".strip()
-    nodes.append(GraphNode(id="inv", type="invoice", label=inv_label,
-                           status="mismatch" if inv_bad else "ok", doc_no=_doc_no(inv) if inv else None))
+    amount, amount_unsure = "", False
+    if inv is not None and inv.total.value is not None:
+        amount_unsure = inv.total.confidence < thr
+        amount = f"₹{UNSURE}" if amount_unsure else inr(inv.total.value)
+    no_text = _doc_no_text(inv, thr)
+    inv_label = f"{no_text or 'Invoice'} {amount}".strip()
+    inv_status = "mismatch" if inv_bad else "uncertain" if amount_unsure or UNSURE in no_text else "ok"
+    nodes.append(GraphNode(id="inv", type="invoice", label=inv_label, status=inv_status,
+                           doc_no=_doc_no(inv, thr)))
 
     eway_required = bool(by_id.get("C09") and by_id["C09"].facts.get("required"))
     for node_id, check_ids in EDGE_CHECKS.items():
@@ -89,12 +101,13 @@ def build_graph(pkg: ExtractedPackage, checks: list[Check]) -> Graph:
         else:
             n_status, e_status = "ok", "matched"
         conf = doc_confidence(doc) if doc else 0.0
-        if doc is not None and conf and conf < 0.6 and n_status == "ok":
+        if doc is not None and conf and conf < thr and n_status == "ok":
             n_status, e_status = "uncertain", "uncertain"
 
-        label = LABELS[node_id] + (f" {_doc_no(doc)}" if doc and _doc_no(doc) else "")
+        no_text = _doc_no_text(doc, thr)
+        label = LABELS[node_id] + (f" {no_text}" if no_text else "")
         nodes.append(GraphNode(id=node_id, type=node_id, label=label, status=n_status,
-                               doc_no=_doc_no(doc) if doc else None))
+                               doc_no=_doc_no(doc, thr)))
         bad = [c for c in rel if c.status != CheckStatus.passed and c.severity.value != "info"]
         if node_id in party_bad and c04:
             bad.append(c04)

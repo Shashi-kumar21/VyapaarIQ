@@ -386,3 +386,45 @@ def test_last_past_step_points_to_dispute_pack():
     assert "Use the latest step instead" in drafts[-2].text
     assert "Use the latest step instead" not in drafts[-1].text
     assert "dispute evidence pack" in drafts[-1].text
+
+
+def test_graph_labels_do_not_show_low_confidence_values(ground_truth):
+    from app.matching.checks import run_checks
+    from app.matching.graph import build_graph
+    from app.schemas import DocType
+
+    pkg = _lowconf_pkg()  # invoice total read at 0.3
+    inv = pkg.first(DocType.invoice)
+    inv.invoice_no.confidence = inv.doc_no.confidence = 0.3
+    po = pkg.first(DocType.po)
+    po.po_no.confidence = po.doc_no.confidence = 0.3
+    g = build_graph(pkg, run_checks(pkg))
+    nodes = {n.id: n for n in g.nodes}
+    assert "? (verify)" in nodes["inv"].label and "₹? (verify)" in nodes["inv"].label
+    assert nodes["inv"].status in ("uncertain", "mismatch") and nodes["inv"].doc_no is None
+    assert nodes["po"].label == "Purchase order No. ? (verify)" and nodes["po"].doc_no is None
+
+
+def test_graph_label_confident_values_use_indian_grouping(ground_truth):
+    from app.matching.checks import run_checks
+    from app.matching.graph import build_graph
+    from app.extraction.base import InputFile, extract_file
+    from app.schemas import ExtractedPackage
+    from .conftest import OUT
+
+    docs = [extract_file(InputFile(p.name, p.read_bytes()), mode="fixture")
+            for p in sorted((OUT / "PKG01").glob("*.pdf"))]
+    pkg = ExtractedPackage(documents=docs)
+    inv = {n.id: n for n in build_graph(pkg, run_checks(pkg)).nodes}["inv"]
+    assert inv.label.startswith("SPC/26-27/0101 ₹") and inv.status == "ok" and "verify" not in inv.label
+
+
+def test_negative_total_gets_its_own_interest_reason(ground_truth):
+    from app.pipeline import analyze
+    from app.schemas import DocType
+
+    pkg = _lowconf_pkg()
+    inv = pkg.first(DocType.invoice)
+    inv.total.value, inv.total.confidence = -500.0, 0.95
+    a = analyze(pkg, today=TODAY)
+    assert not a.interest.computable and "negative" in a.interest.formula
