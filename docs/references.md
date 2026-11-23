@@ -100,6 +100,7 @@ reviewed by QA. All dates are 2026-11-23 unless stated.
 | D-39 | After the tag: **React Router 7.18.5 (`react-router`) + Vitest 5.1.0**. Pick releases at least two weeks old that contain the fixes; `npm audit` = 0 | **Owner** (post-demo order) | Closes the advisories D-38 deferred, without the newest-release supply-chain risk |
 | D-40 | **API contract v1.0 frozen** (`docs/api_contract.md`, 14 endpoints). Any change needs a PR with a QA verdict and a schema-version bump | **Owner** (2026-11-23) | Closes T1.6; the UI and the docs rely on it |
 | D-41 | **Hosted demo link on Render Free, behind a shared password** (HTTP Basic, `DEMO_PASSWORD` set only in the Render dashboard). One Docker service serves the API and the UI; `fixture` mode, pinned date; every start on an empty DB seeds and preloads PKG01/PKG20; no persistent disk. The live demo stays local | **Owner** (2026-11-24) | Free, no card; a shareable link without exposing an app that has no login. Render free limits: sleeps after 15 min (30–60 s cold start), no persistent disk |
+| D-42 | **Demo opening statistic: MSME Samadhaan totals as on June 2026**: 2,56,892 applications, ₹55,244.29 crore claimed (PIB, 26 Jun 2026, https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/jun/doc2026626903401.pdf). Said as "claims", since filings since 2017 are not proven dues | **Owner** (2026-11-24, option A of 2) | Official government data, the most recent available; the GAME–FISME–C2FO ₹7.34 lakh crore figure is a model estimate |
 
 ---
 
