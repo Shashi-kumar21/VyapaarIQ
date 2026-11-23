@@ -6,6 +6,7 @@
 //   # terminal 2: cd frontend; npm run dev
 //   # terminal 3:
 //   cd frontend; npm i --no-save playwright; npx playwright install chromium
+//   (any later `npm install` / `npm audit fix` removes a --no-save package: repeat the first command)
 //   node scripts/ui_runthrough.mjs            # ONLY=PKG07,PKG27 to run a subset
 //
 // It uploads every package through the New package page in order (so C14 duplicates work),
