@@ -45,10 +45,10 @@
 ## GET /api/health
 
 ```json
-{"status": "ok", "schema_version": "1.1", "extractor": "fixture", "today": "2026-11-23", "uncertain_below": 0.6}
+{"status": "ok", "schema_version": "1.1", "extractor": "fixture", "today": "2026-11-23", "uncertain_below": 0.6, "min_history": 5}
 ```
 
-`uncertain_below` is `extraction.uncertain_below` from `config.yaml`. The UI uses it for the amber "needs human check" state, so the threshold is never hard-coded in the frontend. (This is an additive key, not a breaking change.)
+`uncertain_below` is `extraction.uncertain_below` from `config.yaml`. The UI uses it for the amber "needs human check" state, so the threshold is never hard-coded in the frontend. `min_history` is `buyer_profile.min_history`, the number of paid invoices a buyer needs before it gets a reliability label (the Buyers page shows it). (Both are additive keys, not breaking changes.)
 
 ## POST /api/packages
 

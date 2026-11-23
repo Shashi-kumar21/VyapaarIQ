@@ -46,6 +46,7 @@ def test_health(client):
 
     assert r["status"] == "ok" and r["schema_version"] == SCHEMA_VERSION
     assert r["uncertain_below"] == 0.6  # from rules/config.yaml
+    assert r["min_history"] == 5
 
 
 def test_upload_validation(client):
