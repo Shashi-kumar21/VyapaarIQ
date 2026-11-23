@@ -43,7 +43,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T1.13 `scoring/score.py`: penalties → score → tier from config + unit tests
 
 ### A3 Frontend & QA
-- [ ] T1.14 Vite + React + Tailwind scaffold, routing for 4 pages (§13), API client with base URL env
+- [x] T1.14 Vite + React + Tailwind scaffold, routing for 4 pages (§13), API client with base URL env
 - [ ] T1.15 Dashboard page with mocked data; INR formatting helper (₹2,40,000)
 - [ ] T1.16 New-package upload page (drag-and-drop, file list, doc-type dropdown, Process button wired to stub)
 
