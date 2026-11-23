@@ -115,3 +115,19 @@ def test_ui_text_from_runthrough(fixture_results):
     # PKG27: challan has no stamp (C07 fails) while C05 passes -> the edge label must lead with C07
     edge = next(e for e in by_id["PKG27"].graph.edges if e.to == "challan")
     assert edge.status == "mismatch" and edge.check_ids[0] == "C07"
+
+
+def test_edge_leads_with_failing_check_of_any_severity():
+    """QA #13 nit: a failing info check also turns an edge red, so it must lead the label;
+    a skipped check (info + missing) never does."""
+    from app.matching.graph import _bad_checks, _ordered_ids
+    from app.schemas import Check, Severity
+
+    def ck(cid, status, sev):
+        return Check(check_id=cid, name=cid, status=status, severity=Severity(sev), detail=cid)
+
+    rel = [ck("C05", CheckStatus.passed, "blocker"), ck("C06", CheckStatus.missing, "info"),
+           ck("C07", CheckStatus.uncertain, "warning"), ck("C09", CheckStatus.fail, "info")]
+    bad = _bad_checks(rel)
+    assert [c.check_id for c in bad] == ["C09", "C07"]
+    assert _ordered_ids(bad, rel) == ["C09", "C07", "C05", "C06"]

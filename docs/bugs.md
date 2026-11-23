@@ -12,6 +12,9 @@ uploaded **all 28 packages through the New package page**, in order. For each on
 It then opened Dashboard and Buyers at 1366 px and 375 px. Every view was screenshotted, and
 the console was watched for errors.
 
+The script is committed as **`frontend/scripts/ui_runthrough.mjs`** (manual; not part of `npm test`).
+Its header gives the exact steps. It exits 1 if any package has an issue.
+
 **Severity:** P0 = blocks the demo or shows a wrong number · P1 = misleading on screen ·
 P2 = cosmetic. **Owner tag** = who fixes it (§17): A2 backend & risk, A3 frontend.
 
@@ -39,9 +42,9 @@ P2 = cosmetic. **Owner tag** = who fixes it (§17): A2 backend & risk, A3 fronte
 | B-4 | P1 | A3 | Dashboard stat tiles | "Cash at risk · 60 days" (₹66,85,085) was **lower** than the 30-day figure (₹80,39,017) under the hint "until <date>". That is correct by definition, but it looks like an error | Hint now reads "not expected by <date>" (D-32) |
 | B-5 | P1 | A3 | Dashboard chart at 375 px | Chart text scaled to about 6 px and could not be read | The table view is open by default below 640 px (D-33) |
 
-Each fix has a regression test:
+Each fix has a regression test. B-3 also covers a failing *info* check, which turns an edge red too (QA #13 nit):
 
-- **Backend:** `tests/test_ground_truth.py::test_ui_text_from_runthrough`.
+- **Backend:** `tests/test_ground_truth.py::test_ui_text_from_runthrough` and `::test_edge_leads_with_failing_check_of_any_severity`.
 - **Frontend:** the `ForecastChart` tests in `components/panels.test.jsx`, plus the stat-hint assertion in `pages/pages.test.jsx`.
 
 A second full run after the fixes was clean: 28/28, no issues.
