@@ -152,7 +152,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T5.9 Fresh-clone test on a clean folder following `README.md` exactly
 
 ### A0
-- [ ] T5.10 Final merge, tag `v0.1-demo`, remove debug logs, confirm no secrets/API keys in git history — checks done (`docs/release.md`); **tag pending, owner**
+- [x] T5.10 Final merge, tag `v0.1-demo`, remove debug logs, confirm no secrets/API keys in git history — done: checks in `docs/release.md`; annotated tag **`v0.1-demo` at `c5ec290`** (the #16 merge, demo-verified main), pushed 2026-11-23
 - [x] T5.11 `docs/architecture.md` (one diagram + one page) and a short pitch slide or README section: problem, solution, metrics, limits, next steps
 
 **Gate 5 = Definition of Done (BUILD_SPEC §18).**

@@ -1,7 +1,7 @@
 # Release: v0.1-demo (T5.10)
 
 Pre-release checks run by DEV on 2026-11-23 against `main` at `f5a9a26` (after PRs #14 and #15).
-**The owner creates the tag** (D-29: only the owner merges and releases).
+**Tagged:** annotated `v0.1-demo` at `c5ec290`, pushed 2026-11-23 at the owner's request. Later changes (React Router 7 / Vitest 5, P2 UI fixes) are on `main` after the tag.
 
 ## Checklist
 
