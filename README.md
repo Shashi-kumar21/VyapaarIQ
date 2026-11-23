@@ -15,6 +15,7 @@ invoice and cross-checks them. It shows the gaps and works out the MSMED Act tim
 
 - What to build: [`BUILD_SPEC.md`](BUILD_SPEC.md) · Plan and owners: [`task.md`](task.md)
 - REST API reference: [`docs/api_contract.md`](docs/api_contract.md) · Progress log: [`docs/progress.md`](docs/progress.md)
+- Architecture (one page + diagram): [`docs/architecture.md`](docs/architecture.md) · 3-minute demo: [`docs/demo_script.md`](docs/demo_script.md)
 - Rules for contributors and AI agents: [`CLAUDE.md`](CLAUDE.md)
 
 ---
@@ -87,7 +88,7 @@ invoice and cross-checks them. It shows the gaps and works out the MSMED Act tim
 | REST API + SQLite: packages, invoices, graph, actions, buyers, forecast | ✅ tested |
 | Seed history, follow-up drafts, forecast, dispute pack | ✅ tested |
 | API contract ([`docs/api_contract.md`](docs/api_contract.md)) | ✅ v1.0 |
-| React frontend | 🚧 in progress |
+| React frontend: dashboard, upload, invoice detail + evidence graph, follow-ups, dispute pack, buyers | ✅ tested (vitest + browser E2E) |
 | Evaluation script and report ([`eval/report.md`](eval/report.md)) | ✅ `text`: 0 confidently wrong fields, detection precision 100 % |
 
 ## Requirements
@@ -125,7 +126,7 @@ cd backend; ..\.venv\Scripts\python -m pytest -q
 ..\.venv\Scripts\uvicorn app.main:app --reload
 ```
 
-Frontend (in a second terminal, once `frontend/` is on `main`):
+Frontend (in a second terminal):
 
 ```powershell
 cd frontend; npm install; npm run dev          # UI on http://localhost:5173
@@ -308,8 +309,10 @@ samples/
   out/                   generated PDFs (git-ignored, reproducible)
 docs/
   api_contract.md        REST contract
+  architecture.md        one-page architecture + diagram, results, limits
+  demo_script.md         3-minute demo script with setup and recovery
   progress.md            one line per finished task
-frontend/                React + Vite + Tailwind (in progress)
+frontend/                React + Vite + Tailwind: pages/, components/, lib/ (api client, formatting)
 eval/                    run_eval.py + report.md (field accuracy, check precision/recall, due dates, timing)
 ```
 

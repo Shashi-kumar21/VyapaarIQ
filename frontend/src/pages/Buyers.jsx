@@ -27,19 +27,23 @@ export function LabelChip({ label }) {
 }
 
 export default function Buyers() {
-  const { data, error, loading, reload } = useApi(() => api.listBuyers())
+  const { data: res, error, loading, reload } = useApi(async () => {
+    const [buyers, health] = await Promise.all([api.listBuyers(), api.health()])
+    return { buyers, minHistory: health.min_history }
+  })
 
   if (loading) return <Loading label="Loading buyers…" />
   if (error) return <ErrorBox error={error} onRetry={reload} />
 
+  const data = res.buyers
   const anySynthetic = data.some((b) => b.synthetic)
   return (
     <section className="space-y-4">
       <h1 className="text-2xl font-semibold">Buyers</h1>
       <p className="text-sm text-slate-600 max-w-3xl">
         How each buyer has paid <b>this supplier</b> in the past: days late against the due date. It is not
-        a credit rating and does not predict whether a buyer will pay. A buyer needs at least 5 paid
-        invoices for a label.
+        a credit rating and does not predict whether a buyer will pay. A buyer needs enough paid
+        {res.minHistory ? ` invoices for a label (minimum ${res.minHistory}, from the rule config).` : ' invoices for a label.'}
       </p>
       {anySynthetic && (
         <p role="note" className="text-sm bg-amber-50 text-amber-900 rounded-lg px-3 py-2">

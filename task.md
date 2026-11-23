@@ -148,12 +148,12 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 
 ### A3
 - [ ] T5.7 UI polish: spacing, typography, status colours, mobile-width sanity, consistent INR formatting
-- [ ] T5.8 `docs/demo_script.md` (3 minutes, see below); record a backup screen recording
-- [ ] T5.9 Fresh-clone test on a clean folder following `README.md` exactly
+- [x] T5.8 `docs/demo_script.md` (3 minutes, see below); record a backup screen recording
+- [x] T5.9 Fresh-clone test on a clean folder following `README.md` exactly
 
 ### A0
 - [ ] T5.10 Final merge, tag `v0.1-demo`, remove debug logs, confirm no secrets/API keys in git history
-- [ ] T5.11 `docs/architecture.md` (one diagram + one page) and a short pitch slide or README section: problem, solution, metrics, limits, next steps
+- [x] T5.11 `docs/architecture.md` (one diagram + one page) and a short pitch slide or README section: problem, solution, metrics, limits, next steps
 
 **Gate 5 = Definition of Done (BUILD_SPEC §18).**
 

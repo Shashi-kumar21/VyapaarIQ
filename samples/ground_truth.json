@@ -346,7 +346,7 @@
      "filename": "PKG02_invoice_scan.pdf",
      "doc_type": "invoice",
      "scan": true,
-     "sha256": "757a19295d67f37a9e1057a838e1ce0a7ccb32586e11178b63abc4bc175ddd3d",
+     "sha256": "ef65fe7ef782730864787091187868b0156b1e5b31455eff44693f98aa95f1eb",
      "fields": {
       "supplier_name": "Shakti Precision Components Pvt Ltd",
       "supplier_gstin": "27AAECS4821K1Z6",
@@ -1262,7 +1262,7 @@
      "filename": "PKG06_challan_scan.pdf",
      "doc_type": "challan",
      "scan": true,
-     "sha256": "6db939c740a6e0dd451305f4f2e9a8ef65cb20af54b875c2c70152b0d31e6e79",
+     "sha256": "a0a579197044c672219c45d3b6386e3d466e3675f48ad95571baa5266558304e",
      "fields": {
       "supplier_name": "Shakti Precision Components Pvt Ltd",
       "supplier_gstin": "27AAECS4821K1Z6",
@@ -1849,7 +1849,7 @@
      "filename": "PKG09_grn_scan.pdf",
      "doc_type": "grn",
      "scan": true,
-     "sha256": "b7fa8fe6deb13d4d7ff1bd6a291473cc4fea85ad0c384071798184a0be5c87c5",
+     "sha256": "c7506975b9284867c3666ae37834b41f09a7df6e5d74d41d8fe0c44684e60cd3",
      "fields": {
       "supplier_name": "Shakti Precision Components Pvt Ltd",
       "supplier_gstin": "27AAECS4821K1Z6",
@@ -2868,7 +2868,7 @@
      "filename": "PKG14_po_scan.pdf",
      "doc_type": "po",
      "scan": true,
-     "sha256": "d24d477232e861d6bc8f11df4b5f1429a61d0b5204d0f7fffce8ade9ae4368dc",
+     "sha256": "2b03979ce89b3654a051c5aa8163175e33ec5423f1265c4e60cf71803b290ff9",
      "fields": {
       "supplier_name": "Shakti Precision Components Pvt Ltd",
       "supplier_gstin": "27AAECS4821K1Z6",
@@ -4453,7 +4453,7 @@
      "filename": "PKG21_challan_scan.pdf",
      "doc_type": "challan",
      "scan": true,
-     "sha256": "50f641951305d0f2afaf6bd55984473156253b3d30d184933e6ea2418868c2a8",
+     "sha256": "74fc53c0c9a87bb74ffe0a94ccd6c4a82df1ab6e8e668f47858611593ff81f58",
      "fields": {
       "supplier_name": "Shakti Precision Components Pvt Ltd",
       "supplier_gstin": "27AAECS4821K1Z6",

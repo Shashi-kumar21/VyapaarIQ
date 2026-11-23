@@ -33,7 +33,8 @@ def health():
     # uncertain_below: the UI's "needs human check" threshold comes from config, not the frontend.
     return {"status": "ok", "schema_version": SCHEMA_VERSION,
             "extractor": os.environ.get("EXTRACTOR", "text"), "today": _today().isoformat(),
-            "uncertain_below": float(get_config()["extraction"]["uncertain_below"])}
+            "uncertain_below": float(get_config()["extraction"]["uncertain_below"]),
+            "min_history": int(get_config()["buyer_profile"]["min_history"])}
 
 
 # ---------------------------------------------------------------- packages

@@ -17,6 +17,7 @@ import hashlib
 import io
 import json
 import random
+import time
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 from pathlib import Path
@@ -505,7 +506,10 @@ def scanify(pdf_bytes: bytes, rng: random.Random) -> bytes:
         x, y = rng.randrange(w), rng.randrange(h)
         px[x, y] = max(0, min(255, px[x, y] + rng.randint(-70, 70)))
     out = io.BytesIO()
-    img.save(out, format="PDF", resolution=110)
+    # Fixed PDF dates: Pillow otherwise stamps the current time, so every run produced different
+    # bytes (and sha256 in the committed ground_truth.json) for the scan-style files.
+    fixed = time.gmtime(1767225600)  # 2026-01-01T00:00:00Z
+    img.save(out, format="PDF", resolution=110, creationDate=fixed, modDate=fixed)
     return out.getvalue()
 
 

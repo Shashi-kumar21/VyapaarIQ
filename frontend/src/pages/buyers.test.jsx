@@ -4,9 +4,12 @@ import ForecastChart from '../components/ForecastChart.jsx'
 import { api } from '../lib/api.js'
 import Buyers from './Buyers.jsx'
 
-vi.mock('../lib/api.js', () => ({ api: { listBuyers: vi.fn() } }))
+vi.mock('../lib/api.js', () => ({ api: { listBuyers: vi.fn(), health: vi.fn() } }))
 
-beforeEach(() => vi.resetAllMocks())
+beforeEach(() => {
+  vi.resetAllMocks()
+  api.health.mockResolvedValue({ status: 'ok', min_history: 7 })
+})
 afterEach(cleanup)
 
 // Shapes from the real /api/buyers response (seeded history).
@@ -37,6 +40,7 @@ describe('Buyers page', () => {
     expect(within(fresh).getByText('GSTIN not recorded')).toBeTruthy()
     expect(screen.getByRole('note').textContent).toMatch(/synthetic.*seeded demo data/)
     expect(screen.getAllByText(/Not a credit rating/).length).toBeGreaterThan(0)
+    expect(screen.getByText(/minimum 7, from the rule config/)).toBeTruthy() // from /api/health, not hard-coded
   })
 
   it('shows empty and error states', async () => {
