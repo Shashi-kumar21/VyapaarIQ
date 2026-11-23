@@ -11,3 +11,9 @@ export function splitDraft(text) {
     body: lines.slice(i).join('\n').replace(/^\n+/, ''),
   }
 }
+
+/** Email message -> {subject, body}; subject is null when the message has no "Subject:" line. */
+export function splitEmail(message) {
+  const m = /^Subject: (.*)\n\n?([\s\S]*)$/.exec(message || '')
+  return m ? { subject: m[1], body: m[2] } : { subject: null, body: message || '' }
+}
