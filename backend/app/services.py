@@ -160,6 +160,11 @@ def process_package(s: Session, package_id: int, *, mode: Optional[str] = None,
         s.add(pkg)
         s.commit()
         raise PackageError(str(exc)) from exc
+    except Exception as exc:  # noqa: BLE001 - never leave a package stuck in "processing"
+        pkg.status, pkg.error = "failed", "Analysis failed for this package."
+        s.add(pkg)
+        s.commit()
+        raise PackageError(pkg.error) from exc
 
     inv_doc = pkg_docs.first(DocType.invoice)
     buyer = resolve_buyer(s, inv_doc.buyer_name.value or pkg.buyer_name_hint, inv_doc.buyer_gstin.value)
@@ -226,9 +231,12 @@ def cash_forecast(s: Session, today: date, days: int) -> dict:
             medians[bid] = compute_profile(buyer_history(s, bid)).median_days_late
             b = s.get(Buyer, bid)
             names[bid] = b.name if b else None
+        dup = s.exec(select(CheckResult).where(CheckResult.invoice_id == inv.id, CheckResult.check_id == "C14",
+                                               CheckResult.status == "fail")).first() is not None
         rows.append(OpenInvoice(id=inv.id, invoice_no=inv.invoice_no, buyer_id=bid,
                                 buyer_name=names.get(bid), amount=inv.amount_total, due_date=inv.due_date,
-                                risk_tier=inv.risk_tier, buyer_median_late=medians.get(bid)))
+                                risk_tier=inv.risk_tier, buyer_median_late=medians.get(bid),
+                                duplicate_suspect=dup))
     return forecast(rows, today, days)
 
 
@@ -264,7 +272,8 @@ def _attachments(s: Session, inv: Invoice) -> list[str]:
     return out
 
 
-def generate_followups(s: Session, invoice_id: int, *, tone: str, channel: str) -> list[Followup]:
+def generate_followups(s: Session, invoice_id: int, *, tone: str, channel: str,
+                       today: Optional[date] = None) -> list[Followup]:
     """Replace this invoice's drafts for ``channel`` + ``tone`` with a fresh set. Never sends."""
     from app.followups.drafts import FollowupContext, build_followups, buyer_requests
 
@@ -279,16 +288,20 @@ def generate_followups(s: Session, invoice_id: int, *, tone: str, channel: str) 
     a = json.loads(inv.analysis_json)
     buyer = s.get(Buyer, inv.buyer_id) if inv.buyer_id else None
     supplier = supplier_info(s, inv)
-    missing = buyer_requests([c["check_id"] for c in a.get("checks", [])
+    checks = {c["check_id"]: c for c in a.get("checks", [])}
+    missing = buyer_requests([cid for cid, c in checks.items()
                               if c["status"] in ("fail", "missing") and c["severity"] != "info"])
+    due = a.get("due", {})
     ctx = FollowupContext(
         invoice_no=inv.invoice_no or f"#{inv.id}", amount=inv.amount_total, due_date=inv.due_date,
-        due_reasoning=a.get("due", {}).get("reasoning", ""),
+        due_reasoning=due.get("reasoning", ""),
         buyer_name=(buyer.name if buyer else a.get("buyer_name")) or "Buyer",
         supplier_name=supplier.get("name") or "the supplier",
-        msmed_applies=a.get("due", {}).get("msmed_applies", True),
+        msmed_applies=due.get("msmed_applies", True),
+        udyam_on_record=checks.get("C13", {}).get("status") == "pass",
+        due_basis=due.get("acceptance_basis", "unknown"), due_uncertain=bool(due.get("uncertain")),
         missing=missing, attachments=_attachments(s, inv))
-    drafts = build_followups(ctx, tone=tone, channel=channel)
+    drafts = build_followups(ctx, tone=tone, channel=channel, today=today)
     q = select(Followup).where(Followup.invoice_id == inv.id, Followup.tone == tone, Followup.channel == channel)
     for old in s.exec(q).all():
         s.delete(old)

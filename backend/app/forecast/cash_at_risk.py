@@ -14,7 +14,7 @@ from typing import Optional
 
 FORMULA = ("expected payment date = due date + buyer's median days late (0 if fewer than the minimum "
            "history); at risk = risk tier High, or due date unknown, or expected date already passed, "
-           "or expected date beyond the window")
+           "or expected date beyond the window; suspected duplicates (C14 failed) are excluded")
 NOTE = "Illustrative forecast from synthetic demo history. Not a prediction of buyer payment."
 WINDOWS = (30, 60)
 
@@ -29,17 +29,23 @@ class OpenInvoice:
     due_date: Optional[date]
     risk_tier: Optional[str]
     buyer_median_late: Optional[float]  # None = insufficient history
+    duplicate_suspect: bool = False  # C14 failed: same number + buyer already on record
 
 
 def forecast(invoices: list[OpenInvoice], today: date, days: int) -> dict:
+    """Duplicate suspects (C14 failed) are listed under ``excluded`` and left out of every total."""
     if days not in WINDOWS:
         raise ValueError(f"days must be one of {WINDOWS}")
     horizon = today + timedelta(days=days)
     buckets = {"overdue": 0.0, "next_30": 0.0, "days_31_60": 0.0, "beyond_60": 0.0, "unknown": 0.0}
-    rows = []
+    rows, excluded = [], []
     open_total = expected_in_window = at_risk = 0.0
     for inv in invoices:
         amt = float(inv.amount or 0.0)
+        if inv.duplicate_suspect:
+            excluded.append({"id": inv.id, "invoice_no": inv.invoice_no, "buyer_name": inv.buyer_name,
+                             "amount": round(amt, 2), "reason": "duplicate_suspect (C14 failed)"})
+            continue
         open_total += amt
         lag = round(inv.buyer_median_late) if inv.buyer_median_late is not None else 0
         expected = inv.due_date + timedelta(days=lag) if inv.due_date else None
@@ -73,7 +79,9 @@ def forecast(invoices: list[OpenInvoice], today: date, days: int) -> dict:
     return {
         "as_of": today, "days": days, "window_end": horizon,
         "totals": {"open": round(open_total, 2), "expected_in_window": round(expected_in_window, 2),
-                   "at_risk": round(at_risk, 2), "count": len(rows)},
+                   "at_risk": round(at_risk, 2), "count": len(rows),
+                   "excluded_count": len(excluded),
+                   "excluded_amount": round(sum(e["amount"] for e in excluded), 2)},
         "buckets": [{"key": k, "amount": round(v, 2)} for k, v in buckets.items()],
-        "invoices": rows, "formula": FORMULA, "note": NOTE,
+        "invoices": rows, "excluded": excluded, "formula": FORMULA, "note": NOTE,
     }

@@ -34,9 +34,11 @@ TEMPLATES: dict[str, tuple[str, str, str]] = {
     "C10": ("Request GRN / acceptance acknowledgement from the buyer's receiving department",
             "Acceptance starts the MSMED payment clock; without it acceptance is only deemed.", "sales"),
     "C11": ("Send written payment terms (PO acknowledgement or terms letter)",
-            "Without written terms the MSMED 15-day default applies, which buyers often dispute.", "sales"),
-    "C12": ("Note that terms exceed 45 days and plan the follow-up around the 45-day limit",
-            "MSMED s.15 limits the agreed period to 45 days from acceptance (verify).", "supplier_accounts"),
+            "Without written terms the MSMED {no_agreement_days}-day default applies, which buyers often "
+            "dispute.", "sales"),
+    "C12": ("Note that terms exceed {max_days} days and plan the follow-up around the {max_days}-day limit",
+            "MSMED s.15 limits the agreed period to {max_days} days from acceptance (verify).",
+            "supplier_accounts"),
     "C13": ("Add the Udyam registration number to invoices",
             "MSMED delayed-payment protections depend on Udyam registration.", "supplier_accounts"),
     "C14": ("Check for a duplicate invoice number and cancel or renumber",
@@ -54,6 +56,8 @@ def build_actions(checks: list[Check], due: Optional[DueDateResult], *,
         cfg = get_config()
     today = today or date.today()
     lead = int(cfg["actions"]["lead_days_before_due"])
+    limits = {"max_days": int(cfg["msmed"]["max_terms_days"]),
+              "no_agreement_days": int(cfg["msmed"]["no_agreement_days"])}
     target = None
     if due and due.due_date:
         target = max(today, due.due_date - timedelta(days=lead))
@@ -67,6 +71,7 @@ def build_actions(checks: list[Check], due: Optional[DueDateResult], *,
             title = t.format(name=c.name)
         else:
             title, r, owner = TEMPLATES[c.check_id]
+            title, r = title.format(**limits), r.format(**limits)
         due_by = target
         if c.check_id == "C10" and target:
             title = f"{title} before {target.isoformat()}"

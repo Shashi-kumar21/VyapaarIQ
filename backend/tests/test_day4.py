@@ -14,6 +14,7 @@ from app.scoring.buyer_profile import compute_profile
 from app.seed import seed
 from app.services import buyer_history
 
+from .test_api import _files as _files_for
 from .test_api import _upload_and_process, client  # noqa: F401  (fixture)
 
 TODAY = date(2026, 11, 23)
@@ -67,7 +68,7 @@ def _ctx(**kw):
     base = dict(invoice_no="SPC/26-27/0107", amount=240000.0, due_date=date(2026, 10, 13),
                 due_reasoning="GRN date + 30 days", buyer_name="Kaveri Auto Assemblies Pvt Ltd",
                 supplier_name="Shakti Precision Components Pvt Ltd",
-                missing=buyer_requests(["C10", "C02"]),
+                missing=buyer_requests(["C10", "C02"]), udyam_on_record=True, due_basis="grn",
                 attachments=["Tax invoice SPC/26-27/0107"])
     base.update(kw)
     return FollowupContext(**base)
@@ -85,6 +86,53 @@ def test_followup_cadence_and_required_content():
     assert buyer_requests(["C02", "C14"]) == []  # supplier-side fixes are not asked of the buyer
     assert "45 days" in drafts[3].text and "verify" in drafts[3].text  # D+10 cites the rule politely
     assert "ODR portal" in drafts[4].text and "not legal advice" in drafts[4].text
+
+
+def test_followup_due_date_is_called_an_estimate_and_deemed_needs_verify():
+    drafts = build_followups(_ctx())
+    assert all("estimate" in x.text for x in drafts)
+    assert not any("VERIFY" in x.text for x in drafts)
+    for basis, uncertain in (("deemed", False), ("grn", True)):
+        flagged = build_followups(_ctx(due_basis=basis, due_uncertain=uncertain))
+        assert all(x.text.splitlines()[1].startswith("[VERIFY: the estimated due date 13 Oct 2026")
+                   and "GRN date + 30 days" in x.text for x in flagged)
+
+
+def test_followup_limits_come_from_config():
+    from app.rules.config import get_config
+
+    cfg = get_config()
+    cfg["msmed"]["max_terms_days"] = 30
+    d10 = build_followups(_ctx(), cfg=cfg)[3].text
+    assert "30 days from acceptance" in d10 and "45" not in d10
+
+
+def test_followup_no_udyam_on_record_avoids_registration_claims():
+    drafts = build_followups(_ctx(udyam_on_record=False))
+    text = "\n".join(x.text for x in drafts)
+    assert "registered" not in text and "ODR" not in text and "s.16" not in text
+    assert "For reference, we would note" in drafts[3].text  # law cited neutrally
+
+
+def test_followup_past_steps_are_marked():
+    drafts = build_followups(_ctx(), today=date(2026, 10, 20))  # due 13 Oct -> D-7, D-1, D+3 have passed
+    assert [x.past for x in drafts] == [True, True, True, False, False]
+    assert "has passed; kept for reference" in drafts[0].text
+    assert "has passed" not in drafts[3].text
+
+
+def test_action_templates_use_config_limits():
+    from app.rules.config import get_config
+    from app.schemas import Check, CheckStatus, Severity
+    from app.scoring.actions import build_actions
+
+    cfg = get_config()
+    cfg["msmed"]["max_terms_days"], cfg["msmed"]["no_agreement_days"] = 40, 12
+    checks = [Check(check_id="C11", name="n", status=CheckStatus.fail, severity=Severity.warning, detail="x"),
+              Check(check_id="C12", name="n", status=CheckStatus.fail, severity=Severity.warning, detail="y")]
+    acts = {a.check_id: a for a in build_actions(checks, None, today=TODAY, cfg=cfg)}
+    assert "12-day default" in acts["C11"].rationale
+    assert "exceed 40 days" in acts["C12"].title and "40 days from acceptance" in acts["C12"].rationale
 
 
 def test_followup_tones_differ_and_medium_supplier_skips_msmed():
@@ -119,7 +167,8 @@ def test_forecast_buckets_and_risk_rules():
         _oi(5, 500, TODAY - timedelta(days=20)),               # past expected date, unpaid -> at risk
     ]
     f30 = forecast(rows, TODAY, 30)
-    assert f30["totals"] == {"open": 1500, "expected_in_window": 100, "at_risk": 1400, "count": 5}
+    assert f30["totals"] == {"open": 1500, "expected_in_window": 100, "at_risk": 1400, "count": 5,
+                              "excluded_count": 0, "excluded_amount": 0}
     b = {x["key"]: x["amount"] for x in f30["buckets"]}
     assert b == {"overdue": 500, "next_30": 400, "days_31_60": 200, "beyond_60": 0, "unknown": 400}
     by_id = {r["id"]: r for r in f30["invoices"]}
@@ -130,6 +179,16 @@ def test_forecast_buckets_and_risk_rules():
     assert "median days late" in f30["formula"] and "Illustrative" in f30["note"]
     with pytest.raises(ValueError):
         forecast(rows, TODAY, 45)
+
+
+def test_forecast_excludes_duplicate_suspects_from_totals():
+    rows = [_oi(1, 100, TODAY + timedelta(days=10)), _oi(2, 100, TODAY + timedelta(days=10))]
+    rows[1].duplicate_suspect = True
+    f = forecast(rows, TODAY, 30)
+    assert f["totals"]["open"] == 100 and f["totals"]["count"] == 1
+    assert f["totals"]["excluded_count"] == 1 and f["totals"]["excluded_amount"] == 100
+    assert [r["id"] for r in f["invoices"]] == [1] and f["excluded"][0]["id"] == 2
+    assert sum(b["amount"] for b in f["buckets"]) == 100
 
 
 # ---------------------------------------------------------------- dispute pack (unit)
@@ -182,6 +241,33 @@ def test_api_followups_generate_and_list(client):  # noqa: F811
     assert len(client.get(f"/api/invoices/{inv_id}/followups?tone=firm").json()) == 5
     assert client.post(f"/api/invoices/{inv_id}/followups/generate?tone=rude").status_code == 422
     assert client.post("/api/invoices/999/followups/generate").status_code == 404
+
+
+def test_api_followups_mark_past_steps(client):  # noqa: F811
+    inv_id = _upload_and_process(client, "PKG07")  # due 2026-10-13, today pinned to 2026-11-23
+    rows = client.post(f"/api/invoices/{inv_id}/followups/generate").json()["followups"]
+    assert all(x["past"] for x in rows)  # D+25 = 2026-11-07 is also before today
+
+
+def test_api_forecast_excludes_duplicates(client):  # noqa: F811
+    _upload_and_process(client, "PKG17")
+    dup_id = _upload_and_process(client, "PKG23")  # same invoice number + buyer as PKG17
+    f = client.get("/api/forecast?days=60").json()
+    assert dup_id not in [r["id"] for r in f["invoices"]]
+    assert [e["id"] for e in f["excluded"]] == [dup_id] and f["totals"]["count"] == 1
+
+
+def test_api_unexpected_analysis_error_marks_package_failed(client, monkeypatch):  # noqa: F811
+    from app import services
+
+    def boom(*a, **k):
+        raise RuntimeError("unexpected")
+
+    monkeypatch.setattr(services, "analyze", boom)
+    pid = client.post("/api/packages", files=_files_for("PKG01")).json()["id"]
+    r = client.post(f"/api/packages/{pid}/process")
+    assert r.status_code == 422 and "Analysis failed" in r.json()["detail"]
+    assert client.get(f"/api/packages/{pid}").json()["status"] == "failed"
 
 
 def test_api_dispute_pack_pdf_and_md(client):  # noqa: F811

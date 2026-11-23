@@ -146,7 +146,8 @@ def get_graph(invoice_id: int, s: Session = Depends(get_session)):
 # ---------------------------------------------------------------- follow-ups
 def _followup_view(f: Followup) -> dict:
     return {"id": f.id, "invoice_id": f.invoice_id, "step": f.step,
-            "step_label": f"D{f.step:+d}", "send_on": f.send_on, "channel": f.channel, "tone": f.tone,
+            "step_label": f"D{f.step:+d}", "send_on": f.send_on,
+            "past": bool(f.send_on and f.send_on < _today()), "channel": f.channel, "tone": f.tone,
             "draft_text": f.draft_text, "status": f.status}
 
 
@@ -156,7 +157,7 @@ def followups_generate(invoice_id: int, tone: str = Query(default="friendly", pa
                        s: Session = Depends(get_session)):
     _get_invoice(s, invoice_id)
     try:
-        rows = generate_followups(s, invoice_id, tone=tone, channel=channel)
+        rows = generate_followups(s, invoice_id, tone=tone, channel=channel, today=_today())
     except PackageError as exc:
         raise HTTPException(409, str(exc))
     return {"invoice_id": invoice_id, "note": "Drafts only. Nothing is sent.",

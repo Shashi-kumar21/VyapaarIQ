@@ -2,8 +2,13 @@
 
 Cadence comes from ``config.yaml`` (``followups.steps``, default D-7, D-1,
 D+3, D+10, D+25). Two tones: friendly and firm. Every draft names the invoice
-number, amount and due date and lists what is attached. Drafts are never sent;
-status is always ``draft``. An LLM may later polish wording only.
+number, amount and estimated due date and lists what is attached. Drafts are
+never sent; status is always ``draft``. An LLM may later polish wording only.
+
+The due date is always an estimate. When it rests on deemed acceptance or an
+unreadable input, a reviewer note asks the user to verify it before sending.
+MSMED wording appears only for a micro/small supplier, and claims of Udyam
+registration, s.16 interest and the ODR route only when C13 passed.
 """
 
 from __future__ import annotations
@@ -40,13 +45,20 @@ def buyer_requests(check_ids: list[str]) -> list[str]:
 class FollowupContext:
     invoice_no: str
     amount: Optional[float]
-    due_date: date
+    due_date: date  # always an estimate (DueDateResult.estimated)
     due_reasoning: str
     buyer_name: str
     supplier_name: str
-    msmed_applies: bool = True
+    msmed_applies: bool = True  # supplier class is micro/small (config)
+    udyam_on_record: bool = False  # C13 passed: Udyam number appears on the supplier's documents
+    due_basis: str = "unknown"  # DueDateResult.acceptance_basis
+    due_uncertain: bool = False  # DueDateResult.uncertain
     missing: list[str] = field(default_factory=list)  # buyer-facing requests, see buyer_requests()
     attachments: list[str] = field(default_factory=list)  # e.g. "Purchase order KAA/PO/1100"
+
+    @property
+    def due_needs_verify(self) -> bool:
+        return self.due_uncertain or self.due_basis in ("deemed", "unknown")
 
 
 @dataclass
@@ -57,6 +69,7 @@ class Draft:
     tone: str
     subject: str
     text: str
+    past: bool = False  # send date had already passed when generated; kept for reference
     status: str = "draft"
 
 
@@ -70,22 +83,39 @@ def _missing_line(ctx: FollowupContext) -> str:
     return "To close our records, could you please share " + "; and ".join(ctx.missing) + "."
 
 
-def _body(step: int, tone: str, ctx: FollowupContext, send_on: date) -> tuple[str, str]:
+def _header(ctx: FollowupContext, send_on: date, today: Optional[date]) -> str:
+    """Reviewer notes above the draft; not part of the message to the buyer."""
+    lines = [f"[{DRAFT_LABEL}]"]
+    if ctx.due_needs_verify:
+        why = ("deemed acceptance" if ctx.due_basis == "deemed"
+               else "an input that could not be read reliably")
+        lines.append(f"[VERIFY: the estimated due date {d(ctx.due_date)} rests on {why}. "
+                     f"{ctx.due_reasoning} Confirm it before sending.]")
+    if today is not None and send_on < today:
+        lines.append(f"[Scheduled send date {d(send_on)} has passed; kept for reference. "
+                     "Use the latest step instead.]")
+    return "\n".join(lines)
+
+
+def _body(step: int, tone: str, ctx: FollowupContext, send_on: date,
+          cfg: dict[str, Any]) -> tuple[str, str]:
     """Return (subject, body) for one step."""
     amt, due, inv = inr(ctx.amount), d(ctx.due_date), ctx.invoice_no
     firm = tone == "firm"
-    ref_l = f"invoice {inv} for {amt}, due {due}"
+    max_days = int(cfg["msmed"]["max_terms_days"])
+    ref_l = f"invoice {inv} for {amt}, estimated due date {due}"
     ref = ref_l[0].upper() + ref_l[1:]
 
     if step < 0:
         days = -step
-        subject = f"Upcoming payment: invoice {inv} due {due}"
+        subject = f"Upcoming payment: invoice {inv} due {due} (estimated)"
         if firm:
-            lead = (f"This is a reminder that payment of {amt} against invoice {inv} falls due on "
-                    f"{due}, {days} day(s) from now. Please schedule it for release on or before that date.")
+            lead = (f"This is a reminder that payment of {amt} against invoice {inv} falls due on our "
+                    f"estimated due date of {due}, {days} day(s) from now. Please schedule it for "
+                    "release on or before that date.")
         else:
-            lead = (f"Hope all is well. A quick note that invoice {inv} for {amt} is due on {due} "
-                    f"({days} day(s) away). Please let us know if anything is needed from our side.")
+            lead = (f"Hope all is well. A quick note that invoice {inv} for {amt} is due on {due} by our "
+                    f"estimate ({days} day(s) away). Please let us know if anything is needed from our side.")
         parts = [lead, _missing_line(ctx)]
     elif step <= 3:
         subject = f"Payment overdue: invoice {inv} ({amt})"
@@ -100,26 +130,30 @@ def _body(step: int, tone: str, ctx: FollowupContext, send_on: date) -> tuple[st
         subject = f"Second reminder: invoice {inv} overdue by {step} days"
         law = ""
         if ctx.msmed_applies:
-            law = ("As a registered MSME supplier, we would note that the MSMED Act, 2006 (s.15) limits "
-                   "payment to 45 days from acceptance, and s.43B(h) of the Income-tax Act allows the "
-                   "buyer's deduction for such dues only on payment (please verify with your advisers).")
+            who = ("As a Udyam-registered micro/small supplier, we" if ctx.udyam_on_record
+                   else "For reference, we")
+            law = (f"{who} would note that the MSMED Act, 2006 (s.15) limits payment to micro and small "
+                   f"suppliers to {max_days} days from acceptance, and s.43B(h) of the Income-tax Act "
+                   "allows the buyer's deduction for such dues only on payment (please verify with your "
+                   "advisers).")
         if firm:
-            lead = (f"{ref} remains unpaid, {step} days past the due date. We request payment within "
-                    "3 working days.")
+            lead = f"{ref} remains unpaid, {step} days past that date. We request payment within 3 working days."
         else:
             lead = (f"Following up on {ref_l}, which is now {step} days overdue. We would be grateful "
                     "for a payment date.")
         parts = [lead, law]
     else:
         subject = f"Escalation: invoice {inv} overdue by {step} days"
-        est = estimate_interest(ctx.amount or 0.0, ctx.due_date, send_on) if ctx.msmed_applies else None
         interest = ""
-        if est and est.computable and est.interest:
-            interest = (f"Estimated statutory interest under MSMED s.16 to {d(send_on)} is about "
-                        f"{inr(est.interest)} (estimate, not legal advice).")
-        route = ("If the matter is not resolved, we may consider a delayed-payment reference through the "
-                 "MSME ODR portal (verify the current process)." if ctx.msmed_applies else
-                 "If the matter is not resolved, we will need to escalate it.")
+        if ctx.msmed_applies and ctx.udyam_on_record:
+            est = estimate_interest(ctx.amount or 0.0, ctx.due_date, send_on, cfg)
+            if est.computable and est.interest:
+                interest = (f"Estimated statutory interest under MSMED s.16 to {d(send_on)} is about "
+                            f"{inr(est.interest)} (estimate, not legal advice).")
+            route = ("If the matter is not resolved, we may consider a delayed-payment reference through "
+                     "the MSME ODR portal (verify the current process).")
+        else:
+            route = "If the matter is not resolved, we will need to escalate it."
         if firm:
             lead = (f"Despite earlier reminders, {ref_l}, is {step} days overdue. Please arrange "
                     "payment within 7 days.")
@@ -136,12 +170,13 @@ def _body(step: int, tone: str, ctx: FollowupContext, send_on: date) -> tuple[st
 
 def _whatsapp(subject: str, body: str) -> str:
     """Shorter text for WhatsApp: subject line + body without greeting/sign-off."""
-    paras = [p for p in body.split("\n\n")[1:-1]]
+    paras = body.split("\n\n")[1:-1]
     return "\n".join([f"*{subject}*"] + paras)
 
 
 def build_followups(ctx: FollowupContext, *, tone: str = "friendly", channel: str = "email",
-                    cfg: Optional[dict[str, Any]] = None) -> list[Draft]:
+                    today: Optional[date] = None, cfg: Optional[dict[str, Any]] = None) -> list[Draft]:
+    """Every step of the cadence; steps whose send date is before ``today`` are marked ``past``."""
     if tone not in TONES:
         raise ValueError(f"tone must be one of {TONES}")
     if channel not in CHANNELS:
@@ -151,9 +186,9 @@ def build_followups(ctx: FollowupContext, *, tone: str = "friendly", channel: st
     out = []
     for step in sorted(int(x) for x in cfg["followups"]["steps"]):
         send_on = ctx.due_date + timedelta(days=step)
-        subject, body = _body(step, tone, ctx, send_on)
-        text = body if channel == "email" else _whatsapp(subject, body)
+        subject, body = _body(step, tone, ctx, send_on, cfg)
+        text = f"Subject: {subject}\n\n{body}" if channel == "email" else _whatsapp(subject, body)
         out.append(Draft(step=step, send_on=send_on, channel=channel, tone=tone, subject=subject,
-                         text=f"[{DRAFT_LABEL}]\n\n" + (f"Subject: {subject}\n\n{text}" if channel == "email"
-                                                        else text)))
+                         text=_header(ctx, send_on, today) + "\n\n" + text,
+                         past=today is not None and send_on < today))
     return out
