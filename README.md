@@ -88,7 +88,7 @@ invoice and cross-checks them. It shows the gaps and works out the MSMED Act tim
 | Seed history, follow-up drafts, forecast, dispute pack | ✅ tested |
 | API contract ([`docs/api_contract.md`](docs/api_contract.md)) | ✅ v1.0 |
 | React frontend | 🚧 in progress |
-| Evaluation script and report (`eval/`) | 🚧 planned |
+| Evaluation script and report ([`eval/report.md`](eval/report.md)) | ✅ `text`: 0 confidently wrong fields, detection precision 100 % |
 
 ## Requirements
 
@@ -310,7 +310,7 @@ docs/
   api_contract.md        REST contract
   progress.md            one line per finished task
 frontend/                React + Vite + Tailwind (in progress)
-eval/                    evaluation script + report (planned)
+eval/                    run_eval.py + report.md (field accuracy, check precision/recall, due dates, timing)
 ```
 
 ## Testing

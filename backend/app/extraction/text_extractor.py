@@ -16,6 +16,7 @@ from app.matching.normalize import parse_amount, parse_date
 from app.schemas import DOC_MODELS, BaseDoc, DocType, LineItem
 
 FOUND, ABSENT = 0.85, 0.75
+PARTIAL = 0.4  # value only partly visible (e.g. truncated IRN); below uncertain_below
 GSTIN = r"\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]"
 SEP = r"\s*[:\-]\s*"
 
@@ -137,7 +138,13 @@ class TextExtractor:
         put("total", *_search(p, rf"(?:Grand Total|Invoice Total|Total Amount){SEP}([\d,]+\.?\d*)"),
             parse_amount)
         self._terms(p, put)
-        put("irn", *_search(p, rf"IRN{SEP}(\S+)"))
+        irn, page = _search(p, rf"IRN{SEP}(\S+)")
+        if irn and (irn.endswith("...") or irn.endswith("…")):
+            # Printed truncated: only a prefix is visible, so it is not the IRN. Keep the visible
+            # part for a human, below the confidence threshold (rule 3: never silently trusted).
+            out["irn"] = {"value": irn.rstrip(".…"), "confidence": PARTIAL, "source_page": page}
+        else:
+            put("irn", irn, page)
         bank = re.search(r"IFSC|A/c No", "\n".join(p), re.IGNORECASE)
         out["bank_details_present"] = {"value": bool(bank), "confidence": FOUND}
         items = self._priced_items(p)
@@ -158,6 +165,9 @@ class TextExtractor:
         put("invoice_reference", *_search(p, rf"Against Invoice No\.?{SEP}(\S+)"))
         put("vehicle_no", *_search(p, rf"Vehicle No\.?{SEP}(\S+)"))
         who, page = _search(p, rf"Received By{SEP}(.+)$")
+        if who:
+            # text from an overlapping stamp lands on the same line after a wide gap ("R. Patil  06")
+            who = re.split(r"\s{2,}", who.strip())[0]
         put("received_by_name", None if not who or "__" in who else who, page)
         put("received_date", *_search(p, rf"Received Date{SEP}(.+)$"), parse_date)
         text = "\n".join(p)
