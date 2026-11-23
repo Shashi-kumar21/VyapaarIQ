@@ -473,7 +473,10 @@ def c14(x: _Ctx, lookup: Optional[DuplicateLookup]) -> Check:
         return _mk("C14", UNCERTAIN, BLOCKER, "Could not read the invoice number.", ["inv"])
     if lookup is None:
         return _mk("C14", PASS, BLOCKER, "Not checked against history (no lookup available).", ["inv"])
-    dup = lookup(no.value, x.inv.buyer_gstin.value, x.inv.buyer_name.value)
+    # Only confidently read buyer details narrow the match (rule 3).
+    gstin = x.inv.buyer_gstin.value if x.st(x.inv.buyer_gstin) == "known" else None
+    name = x.inv.buyer_name.value if x.st(x.inv.buyer_name) == "known" else None
+    dup = lookup(no.value, gstin, name)
     if dup:
         return _mk("C14", FAIL, BLOCKER,
                    f"Invoice {no.value} already exists for this buyer.", ["inv"], invoice_no=no.value)

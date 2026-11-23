@@ -48,9 +48,21 @@ class Pack:
     footer: str = FOOTER
 
 
-def _val(fields: Optional[dict], name: str) -> Any:
+UNVERIFIED = "[to be verified]"
+
+
+def _val(fields: Optional[dict], name: str, thr: float = 0.0) -> Any:
+    """Field value, or None when absent or read below the confidence threshold ``thr``."""
     f = (fields or {}).get(name)
-    return f.get("value") if isinstance(f, dict) else None
+    if not isinstance(f, dict) or (f.get("confidence") or 0.0) < thr:
+        return None
+    return f.get("value")
+
+
+def _unsure(fields: Optional[dict], name: str, thr: float) -> bool:
+    """True when the field was read but below the threshold (rule 3: never silently trusted)."""
+    f = (fields or {}).get(name)
+    return isinstance(f, dict) and (f.get("confidence") or 0.0) < thr
 
 
 def _date(v: Any) -> Optional[date]:
@@ -63,16 +75,30 @@ def _date(v: Any) -> Optional[date]:
 
 
 def build_pack(*, invoice: dict, analysis: dict, documents: list[dict], supplier: Optional[dict],
-               today: date, rupee: str = "₹") -> Pack:
+               today: date, rupee: str = "₹", thr: Optional[float] = None) -> Pack:
     """``invoice`` = API invoice summary, ``analysis`` = stored Analysis JSON,
     ``documents`` = package_view documents (with ``fields``)."""
+    if thr is None:
+        from app.rules.config import get_config
+
+        thr = float(get_config()["extraction"]["uncertain_below"])
+
     def money(x):
         return inr(x, rupee)
+
+    def show(fields: Optional[dict], name: str, amount_field: bool = False) -> str:
+        if _unsure(fields, name, thr):
+            return UNVERIFIED
+        v = _val(fields, name, thr)
+        if v is None:
+            return "-"
+        return money(v) if amount_field else str(v)
 
     due = analysis.get("due") or {}
     checks = analysis.get("checks") or []
     due_date = _date(due.get("due_date"))
-    amount = invoice.get("amount_total")
+    amount = invoice.get("amount_total")  # already None when the total was read below threshold
+    amount_text = money(amount) if amount is not None else UNVERIFIED
     sup = supplier or {}
     by_type: dict[str, dict] = {}
     for doc in documents:
@@ -86,7 +112,9 @@ def build_pack(*, invoice: dict, analysis: dict, documents: list[dict], supplier
         f"Udyam {sup.get('udyam_no') or 'not on record'}).",
         f"Buyer: {invoice.get('buyer_name') or analysis.get('buyer_name') or '-'}.",
         f"Invoice {invoice.get('invoice_no') or '-'} dated {d(_date(invoice.get('invoice_date')))} for "
-        f"{money(amount)}; estimated due date {d(due_date)}.",
+        f"{amount_text}; estimated due date {d(due_date)}.",
+        ("VERIFY: the invoice total could not be read reliably; check it against the original "
+         "and note that interest is not computed." if amount is None else ""),
         f"Readiness score {score.get('score', '-')} / 100 (tier {score.get('tier', '-')}); "
         f"{len(blockers)} blocker issue(s) open. Illustrative score, not a prediction of payment.",
     ])
@@ -95,12 +123,13 @@ def build_pack(*, invoice: dict, analysis: dict, documents: list[dict], supplier
     facts = Section("Invoice facts", table=[["Field", "Value"]] + [
         ["Invoice no.", str(invoice.get("invoice_no") or "-")],
         ["Invoice date", d(_date(invoice.get("invoice_date")))],
-        ["Taxable value", money(_val(inv_f, "taxable_value"))],
-        ["CGST / SGST / IGST", " / ".join(money(_val(inv_f, k)) for k in ("cgst", "sgst", "igst"))],
-        ["Total", money(amount)],
-        ["PO reference", str(_val(inv_f, "po_reference") or "-")],
-        ["Payment terms (as written)", str(_val(inv_f, "payment_terms_text")
-                                           or _val(by_type.get("po"), "payment_terms_text") or "-")],
+        ["Taxable value", show(inv_f, "taxable_value", True)],
+        ["CGST / SGST / IGST", " / ".join(show(inv_f, k, True) for k in ("cgst", "sgst", "igst"))],
+        ["Total", amount_text],
+        ["PO reference", show(inv_f, "po_reference")],
+        ["Payment terms (as written)", show(inv_f, "payment_terms_text")
+         if _val(inv_f, "payment_terms_text") is not None or _unsure(inv_f, "payment_terms_text", thr)
+         else show(by_type.get("po"), "payment_terms_text")],
     ])
 
     index_rows = [["#", "Document", "File", "Key fields", "Conf."]]
@@ -108,7 +137,10 @@ def build_pack(*, invoice: dict, analysis: dict, documents: list[dict], supplier
         fields = doc.get("fields") or {}
         keys = []
         for name, label in KEY_FIELDS.get(doc["doc_type"], []):
-            v = _val(fields, name)
+            if _unsure(fields, name, thr) and _val(fields, name) is not None:
+                keys.append(f"{label}: {UNVERIFIED}")
+                continue
+            v = _val(fields, name, thr)
             if v is not None:
                 keys.append(f"{label}: {money(v) if name in AMOUNT_FIELDS else v}")
         conf = doc.get("extraction_conf")
@@ -119,11 +151,11 @@ def build_pack(*, invoice: dict, analysis: dict, documents: list[dict], supplier
 
     po_f, ch_f, grn_f = by_type.get("po"), by_type.get("challan"), by_type.get("grn")
     events = [
-        ("Purchase order", _date(_val(po_f, "po_date"))),
+        ("Purchase order", _date(_val(po_f, "po_date", thr))),
         ("Invoice issued", _date(invoice.get("invoice_date"))),
-        ("Goods dispatched (challan)", _date(_val(ch_f, "challan_date"))),
-        ("Goods received (challan)", _date(_val(ch_f, "received_date"))),
-        ("GRN / acceptance", _date(_val(grn_f, "grn_date"))),
+        ("Goods dispatched (challan)", _date(_val(ch_f, "challan_date", thr))),
+        ("Goods received (challan)", _date(_val(ch_f, "received_date", thr))),
+        ("GRN / acceptance", _date(_val(grn_f, "grn_date", thr))),
         (f"Acceptance used for due date ({due.get('acceptance_basis', 'unknown')})",
          _date(due.get("acceptance_date"))),
         ("Due date (estimated)", due_date),
@@ -133,7 +165,8 @@ def build_pack(*, invoice: dict, analysis: dict, documents: list[dict], supplier
         [x.isoformat(), label] for label, x in sorted((e for e in events if e[1]), key=lambda e: e[1])])
     missing_events = [label for label, x in events if x is None]
     if missing_events:
-        timeline.paragraphs.append("Not found in the documents: " + ", ".join(missing_events) + ".")
+        timeline.paragraphs.append("Not found (or not read reliably) in the documents: "
+                                   + ", ".join(missing_events) + ".")
 
     checks_sec = Section("Verification checks", table=[["Check", "Status", "Severity", "Detail"]] + [
         [f"{c['check_id']} {c['name']}", c["status"], c["severity"], c["detail"]] for c in checks])
@@ -145,7 +178,10 @@ def build_pack(*, invoice: dict, analysis: dict, documents: list[dict], supplier
     ])
 
     est = estimate_interest(float(amount or 0.0), due_date, today)
-    if est.computable and est.days_late > 0:
+    if amount is None:
+        interest_text = ["Not computable: the invoice total could not be read reliably (needs human check).",
+                         est.note]
+    elif est.computable and est.days_late > 0:
         interest_text = [f"Principal {money(est.principal)}, {est.days_late} day(s) late as of {d(today)}, "
                          f"annual rate {est.annual_rate_pct:g}%: estimated interest {money(est.interest)}.",
                          f"Formula: {est.formula}.", est.note]

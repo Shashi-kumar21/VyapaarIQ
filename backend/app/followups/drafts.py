@@ -24,6 +24,7 @@ from app.rules.interest import estimate_interest
 TONES = ("friendly", "firm")
 CHANNELS = ("email", "whatsapp")
 DRAFT_LABEL = "DRAFT - not sent. Review before sending."
+AMOUNT_PLACEHOLDER = "[amount to be verified]"
 
 # Failed check -> what the *buyer* can provide. Supplier-side fixes (GST math,
 # duplicate number, Udyam on invoice) are not asked of the buyer.
@@ -83,24 +84,29 @@ def _missing_line(ctx: FollowupContext) -> str:
     return "To close our records, could you please share " + "; and ".join(ctx.missing) + "."
 
 
-def _header(ctx: FollowupContext, send_on: date, today: Optional[date]) -> str:
+def _header(ctx: FollowupContext, send_on: date, today: Optional[date], last: bool) -> str:
     """Reviewer notes above the draft; not part of the message to the buyer."""
     lines = [f"[{DRAFT_LABEL}]"]
+    if ctx.amount is None:
+        lines.append(f"[VERIFY: the invoice total could not be read reliably. Replace {AMOUNT_PLACEHOLDER} "
+                     "with the checked amount before sending.]")
     if ctx.due_needs_verify:
         why = ("deemed acceptance" if ctx.due_basis == "deemed"
                else "an input that could not be read reliably")
         lines.append(f"[VERIFY: the estimated due date {d(ctx.due_date)} rests on {why}. "
                      f"{ctx.due_reasoning} Confirm it before sending.]")
     if today is not None and send_on < today:
-        lines.append(f"[Scheduled send date {d(send_on)} has passed; kept for reference. "
-                     "Use the latest step instead.]")
+        nxt = ("Consider the dispute evidence pack as the next step." if last
+               else "Use the latest step instead.")
+        lines.append(f"[Scheduled send date {d(send_on)} has passed; kept for reference. {nxt}]")
     return "\n".join(lines)
 
 
 def _body(step: int, tone: str, ctx: FollowupContext, send_on: date,
           cfg: dict[str, Any]) -> tuple[str, str]:
     """Return (subject, body) for one step."""
-    amt, due, inv = inr(ctx.amount), d(ctx.due_date), ctx.invoice_no
+    amt = inr(ctx.amount) if ctx.amount is not None else AMOUNT_PLACEHOLDER
+    due, inv = d(ctx.due_date), ctx.invoice_no
     firm = tone == "firm"
     max_days = int(cfg["msmed"]["max_terms_days"])
     ref_l = f"invoice {inv} for {amt}, estimated due date {due}"
@@ -147,7 +153,7 @@ def _body(step: int, tone: str, ctx: FollowupContext, send_on: date,
         interest = ""
         if ctx.msmed_applies and ctx.udyam_on_record:
             est = estimate_interest(ctx.amount or 0.0, ctx.due_date, send_on, cfg)
-            if est.computable and est.interest:
+            if ctx.amount is not None and est.computable and est.interest:
                 interest = (f"Estimated statutory interest under MSMED s.16 to {d(send_on)} is about "
                             f"{inr(est.interest)} (estimate, not legal advice).")
             route = ("If the matter is not resolved, we may consider a delayed-payment reference through "
@@ -184,11 +190,12 @@ def build_followups(ctx: FollowupContext, *, tone: str = "friendly", channel: st
     if cfg is None:
         cfg = get_config()
     out = []
-    for step in sorted(int(x) for x in cfg["followups"]["steps"]):
+    steps = sorted(int(x) for x in cfg["followups"]["steps"])
+    for step in steps:
         send_on = ctx.due_date + timedelta(days=step)
         subject, body = _body(step, tone, ctx, send_on, cfg)
         text = f"Subject: {subject}\n\n{body}" if channel == "email" else _whatsapp(subject, body)
         out.append(Draft(step=step, send_on=send_on, channel=channel, tone=tone, subject=subject,
-                         text=_header(ctx, send_on, today) + "\n\n" + text,
+                         text=_header(ctx, send_on, today, step == steps[-1]) + "\n\n" + text,
                          past=today is not None and send_on < today))
     return out

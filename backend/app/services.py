@@ -18,10 +18,11 @@ from app.db.models import (ActionRow, Buyer, CheckResult, Document, Followup, In
 from app.db.session import DATA_DIR
 from app.extraction.base import InputFile, classify, extract_file
 from app.extraction.pdf_text import UnreadableFileError, read_document
-from app.matching.checks import NoInvoiceError
+from app.matching.checks import NoInvoiceError, state
 from app.matching.graph import doc_confidence
 from app.matching.normalize import normalize_gstin, normalize_ref, party_similarity
-from app.pipeline import analyze
+from app.pipeline import analyze, known_value
+from app.rules.config import get_config
 from app.schemas import DocType, ExtractedPackage
 
 UPLOAD_DIR = DATA_DIR / "uploads"
@@ -166,17 +167,25 @@ def process_package(s: Session, package_id: int, *, mode: Optional[str] = None,
         s.commit()
         raise PackageError(pkg.error) from exc
 
+    # Rule 3: only values read at or above the confidence threshold are stored or used to
+    # identify the buyer. Uncertain values stay visible in the document fields for a human check.
+    thr = float(get_config()["extraction"]["uncertain_below"])
     inv_doc = pkg_docs.first(DocType.invoice)
-    buyer = resolve_buyer(s, inv_doc.buyer_name.value or pkg.buyer_name_hint, inv_doc.buyer_gstin.value)
+    buyer = resolve_buyer(s, known_value(inv_doc.buyer_name, thr) or pkg.buyer_name_hint,
+                          known_value(inv_doc.buyer_gstin, thr))
     pkg.buyer_id = buyer.id if buyer else None
 
     inv = s.exec(select(Invoice).where(Invoice.package_id == package_id)).first() or Invoice(package_id=package_id)
-    gst = sum(v for v in (inv_doc.cgst.value, inv_doc.sgst.value, inv_doc.igst.value) if v) or None
+    gst_fields = (inv_doc.cgst, inv_doc.sgst, inv_doc.igst)
+    gst = None
+    if all(state(f, thr) != "uncertain" for f in gst_fields):
+        gst = sum(f.value for f in gst_fields if f.value) or None
     inv.buyer_id = pkg.buyer_id
     inv.invoice_no = a.invoice_no
     inv.invoice_no_norm = normalize_ref(a.invoice_no) if a.invoice_no else None
-    inv.invoice_date = inv_doc.invoice_date.value
-    inv.amount_total, inv.amount_taxable, inv.gst_amount = a.amount_total, inv_doc.taxable_value.value, gst
+    inv.invoice_date = known_value(inv_doc.invoice_date, thr)
+    inv.amount_total, inv.amount_taxable, inv.gst_amount = (a.amount_total,
+                                                            known_value(inv_doc.taxable_value, thr), gst)
     inv.payment_terms_days = a.due.terms_days_applied
     inv.due_date = a.due.due_date
     inv.readiness_score, inv.risk_tier = a.score.score, a.score.tier.value
@@ -224,8 +233,6 @@ def cash_forecast(s: Session, today: date, days: int) -> dict:
     rows = []
     q = select(Invoice).where(Invoice.status == "open", Invoice.synthetic == False)  # noqa: E712
     for inv in s.exec(q).all():
-        if inv.amount_total is None:
-            continue
         bid = inv.buyer_id
         if bid is not None and bid not in medians:
             medians[bid] = compute_profile(buyer_history(s, bid)).median_days_late

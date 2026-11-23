@@ -13,9 +13,14 @@ from app.matching.graph import build_graph
 from app.rules.config import get_config
 from app.rules.due_date import compute_due_date
 from app.rules.interest import estimate_interest
-from app.schemas import Analysis, DocType, DueDateResult, ExtractedPackage
+from app.schemas import Analysis, DocType, DueDateResult, ExtractedPackage, InterestEstimate
 from app.scoring.actions import build_actions
 from app.scoring.score import compute_score
+
+
+def known_value(f, thr: float):
+    """The field's value only if it was read at or above the confidence threshold, else None."""
+    return f.value if f is not None and state(f, thr) == "known" else None
 
 
 def due_date_for(pkg: ExtractedPackage, cfg: dict[str, Any]) -> DueDateResult:
@@ -56,12 +61,21 @@ def analyze(pkg: ExtractedPackage, *, duplicate_lookup: Optional[DuplicateLookup
     score = compute_score(checks, cfg)
     due = due_date_for(pkg, cfg)
     inv = pkg.first(DocType.invoice)
-    total = inv.total.value if inv and inv.total.value is not None else None
-    interest = estimate_interest(total, due.due_date, today, cfg) if total is not None and total >= 0 else None
+    thr = float(cfg["extraction"]["uncertain_below"])
+    # Rule 3: a value read below the confidence threshold is never used in a calculation.
+    total = known_value(inv.total, thr) if inv else None
+    if total is not None and total >= 0:
+        interest = estimate_interest(total, due.due_date, today, cfg)
+    else:
+        bank = float(cfg["rbi"]["bank_rate_pct"]) * float(cfg["msmed"]["interest_multiplier"])
+        interest = InterestEstimate(principal=0.0, due_date=due.due_date, as_of=today, days_late=0,
+                                    annual_rate_pct=round(bank, 4), interest=None, computable=False,
+                                    formula="Not computable: the invoice total could not be read reliably "
+                                            "(needs human check).")
     extractors = {d.extractor for d in pkg.documents if d.extractor}
     return Analysis(
-        invoice_no=inv.invoice_no.value or inv.doc_no.value,
-        buyer_name=inv.buyer_name.value,
+        invoice_no=known_value(inv.invoice_no, thr) or known_value(inv.doc_no, thr),
+        buyer_name=known_value(inv.buyer_name, thr),
         amount_total=total,
         checks=checks,
         score=score,

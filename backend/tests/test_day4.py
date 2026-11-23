@@ -212,7 +212,8 @@ def test_dispute_pack_sections_markdown_and_pdf():
     inv = {"id": 1, "invoice_no": "SPC/26-27/0107", "invoice_date": "2026-09-05", "amount_total": 240000.0,
            "buyer_name": "Kaveri Auto Assemblies Pvt Ltd"}
     docs = [{"doc_type": "invoice", "filename": "inv.pdf", "extraction_conf": 0.95,
-             "fields": {"invoice_no": {"value": "SPC/26-27/0107"}, "total": {"value": 240000.0}}}]
+             "fields": {"invoice_no": {"value": "SPC/26-27/0107", "confidence": 0.95},
+                        "total": {"value": 240000.0, "confidence": 0.95}}}]
     pack = build_pack(invoice=inv, analysis=_analysis(), documents=docs,
                       supplier={"name": "Shakti Precision Components Pvt Ltd", "gstin": "27AAECS4821K1Z6"},
                       today=TODAY)
@@ -305,3 +306,83 @@ def test_api_forecast_uses_seeded_buyer_history(client):  # noqa: F811
     assert client.get("/api/forecast?days=45").status_code == 400
     kaa = next(b for b in client.get("/api/buyers").json() if b["name"].startswith("Kaveri"))
     assert kaa["synthetic"] and kaa["profile"]["label"] == "Reliable"
+
+
+# ---------------------------------------------------------------- rule 3: low-confidence values (QA item 7)
+def _lowconf_pkg():
+    """PKG01 from ground truth with the invoice total, buyer and taxable read at low confidence."""
+    from app.schemas import DocType, ExtractedPackage
+    from app.extraction.base import InputFile, extract_file
+    from .conftest import OUT
+
+    docs = []
+    for pdf in sorted((OUT / "PKG01").glob("*.pdf")):
+        docs.append(extract_file(InputFile(pdf.name, pdf.read_bytes()), mode="fixture"))
+    pkg = ExtractedPackage(documents=docs)
+    inv = pkg.first(DocType.invoice)
+    for name in ("total", "buyer_name", "buyer_gstin", "taxable_value", "invoice_date"):
+        getattr(inv, name).confidence = 0.3
+    return pkg
+
+
+def test_pipeline_does_not_use_low_confidence_total(ground_truth):
+    from app.pipeline import analyze
+
+    a = analyze(_lowconf_pkg(), today=TODAY)
+    assert a.amount_total is None and a.buyer_name is None
+    assert a.interest is not None and not a.interest.computable and a.interest.interest is None
+    assert "could not be read reliably" in a.interest.formula
+
+
+def test_low_confidence_buyer_never_creates_a_buyer(client, monkeypatch):  # noqa: F811
+    from app import services
+
+    real = services.extract_file
+    calls = {"n": 0}
+
+    def lowconf(f, mode=None):
+        doc = real(f, mode="fixture")
+        if doc.doc_type.value == "invoice":
+            for name in ("total", "buyer_name", "buyer_gstin", "taxable_value", "invoice_date"):
+                getattr(doc, name).confidence = 0.3
+            calls["n"] += 1
+        return doc
+
+    monkeypatch.setattr(services, "extract_file", lowconf)
+    pid = client.post("/api/packages", files=_files_for("PKG01")).json()["id"]
+    inv_id = client.post(f"/api/packages/{pid}/process").json()["invoice_id"]
+    assert calls["n"] == 1
+    inv = client.get(f"/api/invoices/{inv_id}").json()
+    assert inv["buyer_id"] is None and inv["amount_total"] is None and inv["invoice_date"] is None
+    assert client.get("/api/buyers").json() == []  # nothing created from an unreadable name
+    # with a user-supplied buyer hint the invoice is linked to that buyer instead
+    pid2 = client.post("/api/packages", files=_files_for("PKG02"),
+                       data={"buyer_name": "Hint Buyer Pvt Ltd"}).json()["id"]
+    inv2 = client.post(f"/api/packages/{pid2}/process").json()["invoice_id"]
+    assert client.get(f"/api/invoices/{inv2}").json()["buyer_name"] == "Hint Buyer Pvt Ltd"
+
+    f = client.get("/api/forecast?days=30").json()
+    reasons = {e["id"]: e["reason"] for e in f["excluded"]}
+    assert reasons[inv_id].startswith("amount_unverified") and f["totals"]["count"] == 0
+
+    drafts = client.post(f"/api/invoices/{inv_id}/followups/generate").json()["followups"]
+    assert all("[amount to be verified]" in x["draft_text"] and "VERIFY: the invoice total" in x["draft_text"]
+               for x in drafts)
+    assert not any("s.16 to" in x["draft_text"] for x in drafts)  # no interest on an unread amount
+    md = client.get(f"/api/invoices/{inv_id}/dispute-pack?format=md").text
+    assert "Total | [to be verified]" in md and "Taxable value | [to be verified]" in md
+    assert "Not computable: the invoice total could not be read reliably" in md
+
+
+def test_forecast_lists_unverified_amount_as_excluded():
+    rows = [_oi(1, 100, TODAY + timedelta(days=10)), _oi(2, None, TODAY + timedelta(days=10))]
+    f = forecast(rows, TODAY, 30)
+    assert f["totals"]["open"] == 100 and f["totals"]["excluded_count"] == 1
+    assert f["excluded"][0]["amount"] is None and f["totals"]["excluded_amount"] == 0
+
+
+def test_last_past_step_points_to_dispute_pack():
+    drafts = build_followups(_ctx(), today=date(2026, 12, 31))
+    assert "Use the latest step instead" in drafts[-2].text
+    assert "Use the latest step instead" not in drafts[-1].text
+    assert "dispute evidence pack" in drafts[-1].text

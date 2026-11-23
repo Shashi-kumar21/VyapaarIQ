@@ -14,7 +14,8 @@ from typing import Optional
 
 FORMULA = ("expected payment date = due date + buyer's median days late (0 if fewer than the minimum "
            "history); at risk = risk tier High, or due date unknown, or expected date already passed, "
-           "or expected date beyond the window; suspected duplicates (C14 failed) are excluded")
+           "or expected date beyond the window; suspected duplicates (C14 failed) and invoices whose total could not be read reliably are "
+           "excluded")
 NOTE = "Illustrative forecast from synthetic demo history. Not a prediction of buyer payment."
 WINDOWS = (30, 60)
 
@@ -25,7 +26,7 @@ class OpenInvoice:
     invoice_no: Optional[str]
     buyer_id: Optional[int]
     buyer_name: Optional[str]
-    amount: float
+    amount: Optional[float]  # None = total could not be read reliably
     due_date: Optional[date]
     risk_tier: Optional[str]
     buyer_median_late: Optional[float]  # None = insufficient history
@@ -33,7 +34,8 @@ class OpenInvoice:
 
 
 def forecast(invoices: list[OpenInvoice], today: date, days: int) -> dict:
-    """Duplicate suspects (C14 failed) are listed under ``excluded`` and left out of every total."""
+    """Duplicate suspects (C14 failed) and unverified amounts are listed under ``excluded``
+    and left out of every total."""
     if days not in WINDOWS:
         raise ValueError(f"days must be one of {WINDOWS}")
     horizon = today + timedelta(days=days)
@@ -41,7 +43,11 @@ def forecast(invoices: list[OpenInvoice], today: date, days: int) -> dict:
     rows, excluded = [], []
     open_total = expected_in_window = at_risk = 0.0
     for inv in invoices:
-        amt = float(inv.amount or 0.0)
+        if inv.amount is None:
+            excluded.append({"id": inv.id, "invoice_no": inv.invoice_no, "buyer_name": inv.buyer_name,
+                             "amount": None, "reason": "amount_unverified (total not read reliably)"})
+            continue
+        amt = float(inv.amount)
         if inv.duplicate_suspect:
             excluded.append({"id": inv.id, "invoice_no": inv.invoice_no, "buyer_name": inv.buyer_name,
                              "amount": round(amt, 2), "reason": "duplicate_suspect (C14 failed)"})
@@ -81,7 +87,7 @@ def forecast(invoices: list[OpenInvoice], today: date, days: int) -> dict:
         "totals": {"open": round(open_total, 2), "expected_in_window": round(expected_in_window, 2),
                    "at_risk": round(at_risk, 2), "count": len(rows),
                    "excluded_count": len(excluded),
-                   "excluded_amount": round(sum(e["amount"] for e in excluded), 2)},
+                   "excluded_amount": round(sum(e["amount"] or 0.0 for e in excluded), 2)},
         "buckets": [{"key": k, "amount": round(v, 2)} for k, v in buckets.items()],
         "invoices": rows, "excluded": excluded, "formula": FORMULA, "note": NOTE,
     }
