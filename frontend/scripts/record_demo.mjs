@@ -14,6 +14,7 @@ import { fileURLToPath } from 'node:url'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const UI = process.env.UI_URL || 'http://localhost:5173'
+const API = process.env.API_URL || 'http://localhost:8000/api'
 const OUT = process.env.REC_OUT || path.join(os.tmpdir(), 'vyapaariq-recording')
 const PKG = process.env.PKG_DIR || path.resolve(HERE, '../../samples/out')
 const REPORT = process.env.REPORT || path.resolve(HERE, '../../eval/report.md')
@@ -46,6 +47,12 @@ const OVERLAY = () => {
 }
 
 async function main() {
+  // The captions quote the script's numbers, so refuse any other setup (same guard as ui_runthrough).
+  const health = await (await fetch(`${API}/health`)).json()
+  if (health.extractor !== 'fixture' || health.today !== '2026-11-23') {
+    console.error('Use the demo setup (EXTRACTOR=fixture, VYAPAARIQ_TODAY=2026-11-23):', health)
+    process.exit(2)
+  }
   const browser = await chromium.launch()
   const ctx = await browser.newContext({ viewport: { width: W, height: H }, recordVideo: { dir: OUT, size: { width: W, height: H } },
     acceptDownloads: true })

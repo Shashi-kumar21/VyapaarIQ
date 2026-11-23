@@ -87,3 +87,4 @@ Tests:
 | ID | Sev | Owner | Where | Bug | Fix |
 |---|---|---|---|---|---|
 | B-11 | P1 | A3 | Evidence graph, any edge | A mouse click on an edge (the demo clicks the dashed GRN link) drew the browser's black focus box around the whole curve's bounding box. This is visible on stage and present in `v0.1-demo` | Edges and nodes use `focus:outline-none`. Keyboard focus (`:focus-visible`) thickens the edge pill or node border instead, so the graph stays keyboard-accessible. Checked in the browser: no box after a click, and the pill stroke is 3 px on Tab |
+| B-12 | P2 | A3 | Dashboard top actions (since #18) | The meta line read "Kaveri Auto Assemblies Pvt Ltd **·act now** …": JSX dropped the space between a trailing "·" and an expression on the next line | Explicit `{' · '}` separator (#22); `pages.test.jsx` asserts the whole line |
