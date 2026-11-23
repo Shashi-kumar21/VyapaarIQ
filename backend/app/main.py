@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import os
 from contextlib import asynccontextmanager
 
@@ -10,6 +11,16 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import router
 from app.db.session import init_db
+
+
+# App log lines (e.g. per-package processing time, T3.10) at INFO in the uvicorn terminal.
+# Uvicorn configures only its own loggers, so give ours a handler once.
+_app_log = logging.getLogger("vyapaariq")
+if not _app_log.handlers:
+    _h = logging.StreamHandler()
+    _h.setFormatter(logging.Formatter("%(levelname)s:     %(name)s: %(message)s"))
+    _app_log.addHandler(_h)
+    _app_log.setLevel(os.environ.get("VYAPAARIQ_LOG_LEVEL", "INFO"))
 
 
 @asynccontextmanager

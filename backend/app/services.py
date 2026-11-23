@@ -6,6 +6,7 @@ Keeps routes thin. All deterministic logic lives in ``pipeline``.
 from __future__ import annotations
 
 import json
+import logging
 import time
 from datetime import date
 from pathlib import Path
@@ -24,6 +25,10 @@ from app.matching.normalize import normalize_gstin, normalize_ref, party_similar
 from app.pipeline import analyze, known_value
 from app.rules.config import get_config
 from app.schemas import DocType, ExtractedPackage
+
+# T3.10: one line per processed package. Ids, counts and timings only, never document text
+# (CLAUDE.md rule 4).
+log = logging.getLogger("vyapaariq.processing")
 
 UPLOAD_DIR = DATA_DIR / "uploads"
 ALLOWED_EXT = (".pdf", ".png", ".jpg", ".jpeg")
@@ -160,11 +165,13 @@ def process_package(s: Session, package_id: int, *, mode: Optional[str] = None,
         pkg.status, pkg.error = "failed", str(exc)
         s.add(pkg)
         s.commit()
+        log.warning("package %s failed after %d ms: no invoice found", package_id, int((time.perf_counter() - started) * 1000))
         raise PackageError(str(exc)) from exc
     except Exception as exc:  # noqa: BLE001 - never leave a package stuck in "processing"
         pkg.status, pkg.error = "failed", "Analysis failed for this package."
         s.add(pkg)
         s.commit()
+        log.warning("package %s failed after %d ms: %s", package_id, int((time.perf_counter() - started) * 1000), type(exc).__name__)
         raise PackageError(pkg.error) from exc
 
     # Rule 3: only values read at or above the confidence threshold are stored or used to
@@ -210,6 +217,8 @@ def process_package(s: Session, package_id: int, *, mode: Optional[str] = None,
     s.add(pkg)
     s.commit()
     s.refresh(inv)
+    log.info("package %s -> invoice %s: %d document(s), extractor %s%s, %d ms", package_id, inv.id,
+             len(docs), a.extractor_used, " (fallback)" if a.fallback_used else "", inv.processing_ms)
     return inv
 
 

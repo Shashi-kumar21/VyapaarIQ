@@ -73,7 +73,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T2.13 Invoice detail page skeleton: header, checks list with severity chips, tabs (Graph / Actions / Follow-ups / Dispute pack)
 - [x] T2.14 `EvidenceGraph` component (SVG or React Flow) driven by `/graph` JSON; node status colours + icons (ok / missing / mismatch / uncertain), edge labels
 - [x] T2.15 Extracted-fields panel showing confidence and "needs human check" amber state
-- [ ] T2.16 Start `eval/run_eval.py` harness shell (loads ground truth, calls pipeline, writes report)
+- [x] T2.16 Start `eval/run_eval.py` harness shell (loads ground truth, calls pipeline, writes report)
 
 **Gate 2:** For ≥10 sample packages, pipeline (using `fixture` or real extractor) yields correct check results; evidence graph renders for a real package JSON.
 
@@ -93,7 +93,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [ ] T3.7 Run extraction over all packages; fix top 5 failure patterns (prompt tweaks, normalisation, layout handling)
 - [ ] T3.8 LLM explanation writer: takes check result + facts → 2-sentence plain-English explanation (cannot change status/score); cache results
 - [x] T3.9 Confidence calibration: threshold below which a field is "uncertain" and the check becomes `uncertain` rather than pass/fail
-- [ ] T3.10 Processing-time logging per package
+- [x] T3.10 Processing-time logging per package
 
 ### A3
 - [x] T3.11 Wire upload → process → redirect to invoice detail with progress states (uploading / extracting / checking / done / failed)
@@ -128,7 +128,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 
 ### A0
 - [ ] T4.14 Integration review: merge branches, resolve conflicts, run full test suite, fix cross-module contract bugs
-- [ ] T4.15 `README.md`: setup ≤5 commands, env vars, `EXTRACTOR` modes, how to run seed/eval
+- [x] T4.15 `README.md`: setup ≤5 commands, env vars, `EXTRACTOR` modes, how to run seed/eval
 
 **Gate 4:** Entire flow works in the UI on real packages including follow-ups, forecast, dispute pack. No P0 bugs open.
 
@@ -139,10 +139,10 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 ### A3 + A1
 - [x] T5.1 Complete `eval/run_eval.py`: field accuracy, check precision/recall, due-date correctness, median time (§15)
 - [x] T5.2 Run eval on all 25–30 packages; write honest `eval/report.md` incl. failure cases
-- [ ] T5.3 Fix highest-impact failures from the report (time-boxed: 2 hours max)
+- [x] T5.3 Fix highest-impact failures from the report (time-boxed: 2 hours max)
 
 ### A2
-- [ ] T5.4 Backend tests green; add regression tests for each bug fixed this week
+- [x] T5.4 Backend tests green; add regression tests for each bug fixed this week
 - [ ] T5.5 Performance pass: package processing < 60 s; cache LLM calls; avoid re-extracting unchanged files
 - [x] T5.6 Review rule config values against current law/portal process (MSMED s.15/16, 43B(h), ODR portal route, RBI bank rate); update `config.yaml` and the dispute-pack wording
 

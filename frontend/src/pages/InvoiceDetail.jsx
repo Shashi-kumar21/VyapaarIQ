@@ -77,6 +77,11 @@ function Header({ inv, a }) {
         <div className="ml-auto flex flex-wrap gap-2 text-xs">
           <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">extractor: {a.extractor_used || '—'}</span>
           {a.fallback_used && <span className="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">demo fallback</span>}
+          {inv.processing_ms != null && (
+            <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700" title="Time to extract and analyse this package">
+              processed in {inv.processing_ms < 1000 ? `${inv.processing_ms} ms` : `${(inv.processing_ms / 1000).toFixed(1)} s`}
+            </span>
+          )}
         </div>
       </div>
       <details className="mt-3 text-sm">

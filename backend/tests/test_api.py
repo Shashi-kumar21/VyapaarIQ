@@ -147,3 +147,18 @@ def test_profile_labels_and_trend():
     assert mixed.label == "Mixed"
     worse = compute_profile(_hist([0, 0, 0, 20, 30, 40]))
     assert worse.trend == "worsening"
+
+
+def test_processing_is_timed_and_logged_without_document_text(client, caplog):
+    """T3.10: one log line per package with ids, counts and ms; never extracted text (rule 4)."""
+    import logging
+
+    with caplog.at_level(logging.INFO, logger="vyapaariq.processing"):
+        inv_id = _upload_and_process(client, "PKG07")
+    detail = client.get(f"/api/invoices/{inv_id}").json()
+    assert isinstance(detail["processing_ms"], int) and detail["processing_ms"] >= 0
+    lines = [r.getMessage() for r in caplog.records if r.name == "vyapaariq.processing"]
+    assert len(lines) == 1 and f"-> invoice {inv_id}:" in lines[0] and " ms" in lines[0]
+    assert "3 document(s)" in lines[0]
+    for secret in ("Kaveri", "SPC/26-27", "KAA/PO", "22921"):  # buyer, invoice no, PO no, amount
+        assert secret not in lines[0]
