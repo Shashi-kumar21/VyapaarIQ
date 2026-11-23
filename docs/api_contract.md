@@ -165,7 +165,7 @@ This is the invoice summary (same keys as the list), plus `processing_ms`, `docu
                  "note": "Estimated statutory interest (MSMED s.16). Not legal advice; verify the bank rate."},
     "actions": [
       {"priority": 1, "check_id": "C10",
-       "title": "Request GRN / acceptance acknowledgement from the buyer's receiving department before 2026-11-23",
+       "title": "Request GRN / acceptance acknowledgement from the buyer's receiving department before 23 Nov 2026",
        "rationale": "Acceptance starts the MSMED payment clock; …", "due_by": "2026-11-23",
        "owner_role": "sales", "status": "open"}
     ],
@@ -225,7 +225,7 @@ The dashboard's "top actions due". Query parameter: `limit` (1–50, default 5; 
 [
   {"invoice_id": 61, "invoice_no": "SPC/26-27/0107", "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
    "risk_tier": "Medium", "check_id": "C10", "severity": "blocker", "check_status": "missing",
-   "title": "Request GRN / acceptance acknowledgement from the buyer's receiving department before 2026-11-23",
+   "title": "Request GRN / acceptance acknowledgement from the buyer's receiving department before 23 Nov 2026",
    "rationale": "Acceptance starts the MSMED payment clock; …", "due_by": "2026-11-23",
    "owner_role": "sales", "priority_in_invoice": 1}
 ]

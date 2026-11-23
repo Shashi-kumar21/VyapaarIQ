@@ -124,7 +124,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T4.10 Dispute pack tab (preview + download)
 - [x] T4.11 Dashboard forecast chart (30/60-day buckets) with formula tooltip
 - [x] T4.12 Empty/loading/error states on every page; "illustrative risk, demo data" banners
-- [ ] T4.13 Full run-through of all packages in the UI; log bugs in `docs/bugs.md` with owner tag
+- [x] T4.13 Full run-through of all packages in the UI; log bugs in `docs/bugs.md` with owner tag
 
 ### A0
 - [ ] T4.14 Integration review: merge branches, resolve conflicts, run full test suite, fix cross-module contract bugs
@@ -147,7 +147,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T5.6 Review rule config values against current law/portal process (MSMED s.15/16, 43B(h), ODR portal route, RBI bank rate); update `config.yaml` and the dispute-pack wording
 
 ### A3
-- [ ] T5.7 UI polish: spacing, typography, status colours, mobile-width sanity, consistent INR formatting
+- [x] T5.7 UI polish: spacing, typography, status colours, mobile-width sanity, consistent INR formatting
 - [x] T5.8 `docs/demo_script.md` (3 minutes, see below); record a backup screen recording
 - [x] T5.9 Fresh-clone test on a clean folder following `README.md` exactly
 

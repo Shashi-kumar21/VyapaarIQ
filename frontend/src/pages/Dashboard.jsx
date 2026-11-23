@@ -50,9 +50,9 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <Stat label="Open receivables" value={inr(f30.totals.open)} hint={`${f30.totals.count} open invoice(s)`} />
         <Stat label="Cash at risk · 30 days" value={inr(f30.totals.at_risk)} tone="bad" title={f30.formula}
-              hint={`until ${date(f30.window_end)}`} />
+              hint={`not expected by ${date(f30.window_end)}`} />
         <Stat label="Cash at risk · 60 days" value={inr(f60.totals.at_risk)} tone="warn" title={f60.formula}
-              hint={`until ${date(f60.window_end)}`} />
+              hint={`not expected by ${date(f60.window_end)}`} />
         <Stat label="Expected in 30 days" value={inr(f30.totals.expected_in_window)} tone="ok" title={f30.formula} />
       </div>
       <p className="text-xs text-slate-500 -mt-3">

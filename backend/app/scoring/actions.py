@@ -8,6 +8,7 @@ from __future__ import annotations
 from datetime import date, timedelta
 from typing import Any, Optional
 
+from app.fmt import d
 from app.rules.config import get_config
 from app.schemas import Action, Check, CheckStatus, DueDateResult
 
@@ -74,7 +75,7 @@ def build_actions(checks: list[Check], due: Optional[DueDateResult], *,
             title, r = title.format(**limits), r.format(**limits)
         due_by = target
         if c.check_id == "C10" and target:
-            title = f"{title} before {target.isoformat()}"
+            title = f"{title} before {d(target)}"
         sev = SEVERITY_RANK.get(c.severity.value, 3) + (0.5 if c.status == CheckStatus.uncertain else 0)
         key = (sev, due_by or date.max, c.check_id)
         rows.append((key, Action(priority=0, check_id=c.check_id, title=title,

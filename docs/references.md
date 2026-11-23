@@ -59,6 +59,7 @@ reviewed by QA. All dates are 2026-11-23 unless stated.
 | D-7 | **Suspected duplicates (C14 failed) and unverified amounts are excluded** from forecast totals and listed under `excluded`. The dashboard tier card uses the same population | QA | `forecast/`, `Dashboard.jsx` | No double counting; the totals agree |
 | D-8 | Drafts always call the due date **"estimated"** and add a VERIFY note for deemed or uncertain dates. The "Udyam-registered" claim, s.16 interest and the ODR route appear only when C13 passed. The buyer is asked only for what the buyer can provide | QA | `followups/drafts.py` | No unsupported claims in a letter to a buyer |
 | D-9 | Drafts whose send date has passed are **kept and marked past**. The last one points to the dispute pack | QA | `followups/drafts.py` | Useful reference without false "7 days from now" wording |
+| D-10 | Follow-ups are **drafts only**: never sent by the app. Every draft carries a `DRAFT` header and the owner copies it into email or WhatsApp | Spec | `followups/drafts.py`, `FollowupsPanel.jsx` | No message reaches a buyer without a human reading it |
 | D-17 | Dispute pack: one structure, Markdown + reportlab PDF, **Markdown fallback** if the PDF fails. Core fonts get ASCII substitutes (₹ → "Rs.", ↔ → "<->"). CORS exposes `Content-Disposition` and `X-Pack-Format` | Spec + DEV | `dispute/pack.py`, `main.py` | Always exportable; correct file name in the browser |
 
 ### Evaluation (`eval/run_eval.py`)
@@ -79,6 +80,9 @@ reviewed by QA. All dates are 2026-11-23 unless stated.
 | D-23 | `doc_types` must be a JSON list (≤ one entry per file, known types or null), else **400** | QA | Was a 500 or silently accepted |
 | D-24 | New `GET /api/actions` gives the dashboard's top actions, ranked like inside an invoice | QA | §13 "top 5 actions" without N requests |
 | D-25 | Forecast chart: **ordered horizontal bars, one validated hue, no legend**, value at the tip, tooltip, formula and table view | DEV (R-7) | Magnitude over ordered buckets |
+| D-32 | At-risk tiles read **"not expected by <date>"**, not "until <date>": the 60-day figure is lower than the 30-day one by definition (more invoices fall inside a longer window) | DEV (T4.13) | It looked like a bug on stage |
+| D-33 | On a phone (< 640 px) the forecast **starts in table view**; the 1000-unit chart would shrink its text below 7 px | DEV (T4.13, R-7) | Readable on mobile without a second chart layout |
+| D-34 | Text the user reads uses one date style (`23 Nov 2026`, `app/fmt.d`), including action titles. Evidence-graph edges list the **failing check first**, because the label shows one id | DEV (T4.13) | "before 2026-11-23" and "mismatch · C05…" (real cause C07) were found in the run-through |
 
 ### Data and process
 
