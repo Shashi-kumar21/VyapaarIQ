@@ -69,6 +69,8 @@ describe('Dashboard', () => {
     expect(api.topActions).toHaveBeenCalledWith(5)
     // B-8: invoice 61 was due 13 Oct, so the action is not just "due by" today
     expect(screen.getByText(/act now · payment overdue since 13 Oct 2026/)).toBeTruthy()
+    // the meta line keeps a space on both sides of every separator ("Kaveri · act now", not "Kaveri ·act now")
+    expect(screen.getByText(/act now/).textContent).toMatch(/Kaveri · act now · payment overdue since 13 Oct 2026 · C10$/)
     expect(screen.getByRole('table')).toBeTruthy() // wide screen: the invoice table
   })
 

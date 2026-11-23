@@ -98,8 +98,8 @@ export default function Dashboard() {
                   <div className="flex-1 min-w-0">
                     <Link to={`/invoices/${a.invoice_id}`} className="font-medium hover:underline">{a.title}</Link>
                     <div className="text-xs text-slate-500">
-                      {a.invoice_no || `Invoice #${a.invoice_id}`} · {a.buyer_name || 'buyer unverified'} ·
-                      {deadlineText(a.due_by, dueOf[a.invoice_id])} · {a.check_id}
+                      {a.invoice_no || `Invoice #${a.invoice_id}`} · {a.buyer_name || 'buyer unverified'}
+                      {' · '}{deadlineText(a.due_by, dueOf[a.invoice_id])} · {a.check_id}
                     </div>
                   </div>
                 </li>
