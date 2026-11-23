@@ -17,6 +17,7 @@
 | Demo clock | `VYAPAARIQ_TODAY=YYYY-MM-DD` pins "today" (due dates, interest, forecast, past drafts). |
 | Errors | `{"detail": "<clear message>"}`. Status codes: `400` bad input, `404` not found, `409` not processed or no due date, `422` validation or processing failure. A FastAPI query-validation `422` returns `detail` as a **list** of `{loc, msg, type}`. |
 | Auth | None (out of scope, local demo). |
+| CORS | Allowed origins come from the `CORS_ORIGINS` env var (comma-separated). The default is `http://localhost:5173,http://127.0.0.1:5173` (the Vite dev server). |
 
 ## Endpoint index
 
@@ -29,6 +30,7 @@
 | GET | `/api/invoices` | Invoice list with filters |
 | GET | `/api/invoices/{id}` | Invoice + full analysis + documents |
 | GET | `/api/invoices/{id}/graph` | Evidence graph only |
+| GET | `/api/actions?limit=5` | Top open actions across invoices (dashboard) |
 | POST | `/api/invoices/{id}/followups/generate` | (Re)generate follow-up drafts |
 | GET | `/api/invoices/{id}/followups` | List drafts |
 | GET | `/api/invoices/{id}/dispute-pack` | Download evidence pack (PDF or Markdown) |
@@ -54,7 +56,7 @@
 |---|---|---|---|
 | `files` | file, repeated | yes | `.pdf`, `.png`, `.jpg`, `.jpeg`. Max 15 MB each, not empty. |
 | `buyer_name` | string | no | Used only when the buyer cannot be read confidently from the invoice. |
-| `doc_types` | string (JSON list) | no | Same order as `files`. Each item is a `doc_type` or `null`, e.g. `["invoice", null, "grn"]`. Overrides auto-detection (`doc_type_method: "user"`). |
+| `doc_types` | string (JSON list) | no | Same order as `files`, at most one entry per file. Each item is a `doc_type` or `null` (auto-detect), e.g. `["invoice", null, "grn"]`. Overrides auto-detection (`doc_type_method: "user"`). Anything else (not a list, too long, unknown type) is a `400`. |
 
 `201 Created` returns the same shape as `GET /api/packages/{id}`, before processing:
 
@@ -74,7 +76,7 @@
 - `doc_type` ∈ `invoice | po | challan | eway | grn | contract | other`.
 - `doc_type_method` ∈ `keywords | filename | user | none`. First-page keywords beat the filename, and `user` means it came from `doc_types`. There is no LLM classification step yet.
 - An unreadable file is kept with `doc_type: "other"`, `doc_type_method: "none"` and a non-null `error`.
-- Errors: `400` (`No files uploaded.`, `Unsupported file type: a.txt. Use PDF, PNG or JPG.`, `<name> is empty.`, `<name> is larger than 15 MB.`, `doc_types must be a JSON list.`).
+- Errors: `400` (`No files uploaded.`, `Unsupported file type: a.txt. Use PDF, PNG or JPG.`, `<name> is empty.`, `<name> is larger than 15 MB.`, `doc_types must be a JSON list with at most one entry per file; each entry is null or one of [...]`).
 
 ## POST /api/packages/{id}/process
 
@@ -130,7 +132,7 @@ Query parameters (all optional): `tier` (`Low | Medium | High`), `buyer_id` (int
 ]
 ```
 
-`amount_total`, `invoice_date` and `buyer_id` are `null` when they could not be read confidently.
+`amount_total` and `invoice_date` are `null` when they could not be read confidently. `buyer_id` is resolved from a confidently read buyer GSTIN or name, otherwise from the `buyer_name` given at upload. It is `null` when neither is available. A buyer is never created from an unreadable name.
 
 ## GET /api/invoices/{id}
 
@@ -210,8 +212,22 @@ The `analysis` object is `null` if the invoice has not been processed.
 
 - Node `id` ∈ `inv | po | challan | eway | grn | contract`. `eway` appears only when an e-way bill is required or present, and `contract` only when a contract is present.
 - `nodes[].status` ∈ `ok | missing | mismatch | uncertain`. `edges[].status` ∈ `matched | mismatch | missing | uncertain`.
-- An amount or document number read with low confidence is shown as `? (verify)` (e.g. `"SPC/26-27/0101 ₹? (verify)"`). The node then becomes `uncertain`, and `doc_no` is `null`.
+- An amount or document number read with low confidence is shown as `? (verify)` (e.g. `"SPC/26-27/0101 ₹? (verify)"`, `"Purchase order No. ? (verify)"`). Any such node (invoice or document) becomes `uncertain` unless it is already `mismatch`, and its `doc_no` is `null`. The edge keeps the status its checks gave it.
 - `409` `Invoice has not been processed yet.`
+
+## GET /api/actions
+
+The dashboard's "top actions due". Query parameter: `limit` (1–50, default 5; out of range returns `422`). It covers open actions on open, non-synthetic invoices. They are ranked the same way as within one invoice: severity first (blocker, then warning, then info; an `uncertain` check ranks half a step lower), then `due_by` (earliest first; none last).
+
+```json
+[
+  {"invoice_id": 61, "invoice_no": "SPC/26-27/0107", "buyer_name": "Kaveri Auto Assemblies Pvt Ltd",
+   "risk_tier": "Medium", "check_id": "C10", "severity": "blocker", "check_status": "missing",
+   "title": "Request GRN / acceptance acknowledgement from the buyer's receiving department before 2026-11-23",
+   "rationale": "Acceptance starts the MSMED payment clock; …", "due_by": "2026-11-23",
+   "owner_role": "sales", "priority_in_invoice": 1}
+]
+```
 
 ## POST /api/invoices/{id}/followups/generate
 
@@ -250,7 +266,7 @@ Query parameter: `format` = `pdf` (default) | `md`. The response is a file downl
 | `content-disposition` | `attachment; filename="evidence-pack-SPC-26-27-0107.pdf"` | `… .md` |
 | `x-pack-format` | `pdf` | `md`, or `md-fallback` when the PDF render failed |
 
-Sections: Summary, Invoice facts, Document index, Timeline, Verification checks, Due date and reasoning, Estimated statutory interest, Missing or weak evidence, Suggested next step. Footer: *"Generated assistance, not legal advice."* Values read with low confidence print as `[to be verified]`. Errors: `404`, `409` (not processed).
+Sections: Summary, Invoice facts, Document index, Timeline, Verification checks, Due date and reasoning, Estimated statutory interest, Missing or weak evidence, Suggested next step. Footer: *"Generated assistance, not legal advice."* Values read with low confidence print as `[to be verified]`. Errors: `404`, `409` (not processed), `422` (invalid `format`, FastAPI validation list).
 
 ## GET /api/buyers
 

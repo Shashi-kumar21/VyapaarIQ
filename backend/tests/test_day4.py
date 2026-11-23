@@ -428,3 +428,47 @@ def test_negative_total_gets_its_own_interest_reason(ground_truth):
     inv.total.value, inv.total.confidence = -500.0, 0.95
     a = analyze(pkg, today=TODAY)
     assert not a.interest.computable and "negative" in a.interest.formula
+
+
+# ---------------------------------------------------------------- PR #2 review follow-ups
+@pytest.mark.parametrize("bad", ['{"a": 1}', "5", '"invoice"', '["invoice", "bogus"]', "not json",
+                                 '["invoice", null, null, null, null, null]'])
+def test_upload_rejects_bad_doc_types(client, bad):  # noqa: F811
+    files = _files_for("PKG01")[:2]
+    r = client.post("/api/packages", files=files, data={"doc_types": bad})
+    assert r.status_code == 400 and "doc_types" in r.json()["detail"]
+
+
+def test_upload_accepts_valid_doc_types(client):  # noqa: F811
+    files = _files_for("PKG01")[:2]
+    r = client.post("/api/packages", files=files, data={"doc_types": '["grn", null]'})
+    assert r.status_code == 201
+    first = r.json()["documents"][0]
+    assert first["doc_type"] == "grn" and first["doc_type_method"] == "user"
+
+
+def test_graph_non_invoice_node_with_unsure_number_is_uncertain(ground_truth):
+    from app.matching.checks import run_checks
+    from app.matching.graph import build_graph
+    from app.extraction.base import InputFile, extract_file
+    from app.schemas import DocType, ExtractedPackage
+    from .conftest import OUT
+
+    docs = [extract_file(InputFile(p.name, p.read_bytes()), mode="fixture")
+            for p in sorted((OUT / "PKG01").glob("*.pdf"))]
+    pkg = ExtractedPackage(documents=docs)
+    ch = pkg.first(DocType.challan)
+    ch.challan_no.confidence = ch.doc_no.confidence = 0.3
+    nodes = {n.id: n for n in build_graph(pkg, run_checks(pkg)).nodes}
+    assert nodes["challan"].status == "uncertain" and "? (verify)" in nodes["challan"].label
+
+
+def test_api_top_actions_ranked_across_invoices(client):  # noqa: F811
+    _upload_and_process(client, "PKG19")  # terms > 45: warning only
+    grn_missing = _upload_and_process(client, "PKG07")  # C10 blocker
+    acts = client.get("/api/actions?limit=5").json()
+    assert acts and acts[0]["invoice_id"] == grn_missing and acts[0]["check_id"] == "C10"
+    assert acts[0]["severity"] == "blocker" and len(acts) <= 5
+    sev = [a["severity"] for a in acts]
+    assert sev == sorted(sev, key=["blocker", "warning", "info"].index)
+    assert client.get("/api/actions?limit=0").status_code == 422
