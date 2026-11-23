@@ -212,7 +212,7 @@ is listed on the *Actions & score* tab. Code: `backend/app/scoring/score.py`.
 
 ### Ranked actions
 
-Each finding becomes an **action**: what to do, why, the **owner role** (sales, accounts, dispatch)
+Each finding becomes an **action**: what to do, why, the **owner role** (sales, supplier accounts, dispatch)
 and a **due-by date**. The date is 7 days before the payment due date, or *today* when that has
 passed. Actions are ranked by severity and then by date. When the invoice is already overdue, the
 UI says *"act now · payment overdue since …"* (B-8). The dashboard shows the top 5 actions across
