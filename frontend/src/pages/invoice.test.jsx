@@ -96,6 +96,11 @@ describe('Invoice detail', () => {
     const panel = screen.getByText(/Invoice → GRN \/ acceptance/).parentElement
     expect(within(panel).getByText(/C10/)).toBeTruthy()
     expect(within(panel).getAllByText(/No GRN in package/).length).toBeGreaterThan(0)
+    // B-11: clicking an edge must not draw the browser focus box around the whole curve
+    for (const g of container.querySelectorAll('[data-edge], [data-node]')) {
+      expect(g.getAttribute('class')).toContain('focus:outline-none')
+    }
+    expect(container.querySelector('[data-edge="grn"] rect').getAttribute('class')).toContain('group-focus-visible:')
   })
 
   it('lists failing checks first, then actions with the score breakdown', async () => {
