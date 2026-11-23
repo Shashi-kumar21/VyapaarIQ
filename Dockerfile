@@ -3,7 +3,8 @@
 # never in git). Local development does not use this file.
 
 # ---- 1. frontend build (same-origin API: VITE_API_BASE=/)
-FROM node:22-slim AS web
+# Base images pinned to exact releases (QA #24); bump on purpose, in a PR.
+FROM node:22.23.4-slim AS web
 WORKDIR /web
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci --no-audit --no-fund
@@ -12,11 +13,13 @@ ENV VITE_API_BASE=/
 RUN npm run build
 
 # ---- 2. runtime: FastAPI + generated sample packages + the UI build
-FROM python:3.13-slim
+FROM python:3.13.17-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 WORKDIR /app
-COPY backend/requirements.txt backend/requirements.txt
-RUN pip install -r backend/requirements.txt
+# Runtime set only (no pytest/httpx/anthropic: fixture mode never calls Claude), at the exact
+# versions the test suite runs with.
+COPY backend/requirements-runtime.txt backend/constraints-runtime.txt backend/
+RUN pip install -r backend/requirements-runtime.txt -c backend/constraints-runtime.txt
 COPY backend/ backend/
 COPY samples/generate.py samples/ground_truth.json samples/
 # Sample PDFs are not in git; the generator is deterministic and reads backend/app/rules/config.yaml.

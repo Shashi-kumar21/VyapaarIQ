@@ -21,6 +21,21 @@ address. The defaults are baked into the image:
 `DEMO_PASSWORD` is entered in the Render dashboard only. It is **never** committed, and the app
 never logs it. With no password set, the gate is off. Never deploy without it.
 
+## Image hardening
+
+- **Base images are pinned to exact releases:** `node:22.23.4-slim` and `python:3.13.17-slim`. Bump
+  them on purpose, in a PR.
+- **Python packages:** the image installs only `backend/requirements-runtime.txt`, at the exact
+  versions in `backend/constraints-runtime.txt`, the same versions the test suite runs with.
+  pytest, httpx and the optional Claude client are left out, because `fixture` mode never calls
+  Claude. Local development still uses `backend/requirements.txt`, which includes the runtime set.
+- **Password gate:** every response carries `Strict-Transport-Security`, because Basic auth is only
+  safe over HTTPS. Render terminates TLS and redirects `http://` with a 301. Only the `lifespan`
+  scope passes the gate without a password. WebSocket connections are closed, since the app has
+  none.
+- **Possible follow-up:** PyMuPDF 2.x pulls in `onnxruntime` and `numpy`, which makes the image
+  larger. Pinning PyMuPDF 1.x could shrink it, but the extractor would need re-testing first.
+
 ## Steps (owner, one time, about 15 minutes)
 
 1. Sign in at [render.com](https://render.com) with GitHub. When Render asks for repository
