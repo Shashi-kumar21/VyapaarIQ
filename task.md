@@ -99,7 +99,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T3.11 Wire upload → process → redirect to invoice detail with progress states (uploading / extracting / checking / done / failed)
 - [x] T3.12 Actions tab (ranked list, due-by, rationale) and score breakdown panel (each penalty listed)
 - [x] T3.13 Dashboard on real `/invoices` data: tiers, open receivables, top actions
-- [ ] T3.14 Buyers page with reliability numbers (labelled synthetic demo data)
+- [x] T3.14 Buyers page with reliability numbers (labelled synthetic demo data)
 
 **Gate 3:** Upload a package in the UI → real graph, checks, score, actions. Clean package scores ≥85; "GRN missing" package shows blocker + correct action.
 
@@ -122,8 +122,8 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 ### A3
 - [x] T4.9 Follow-ups tab (draft cards, copy button, tone toggle; clearly "draft, not sent")
 - [x] T4.10 Dispute pack tab (preview + download)
-- [ ] T4.11 Dashboard forecast chart (30/60-day buckets) with formula tooltip
-- [ ] T4.12 Empty/loading/error states on every page; "illustrative risk, demo data" banners
+- [x] T4.11 Dashboard forecast chart (30/60-day buckets) with formula tooltip
+- [x] T4.12 Empty/loading/error states on every page; "illustrative risk, demo data" banners
 - [ ] T4.13 Full run-through of all packages in the UI; log bugs in `docs/bugs.md` with owner tag
 
 ### A0

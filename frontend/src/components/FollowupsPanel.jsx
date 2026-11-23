@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { api } from '../lib/api.js'
-import { splitDraft } from '../lib/drafts.js'
+import { splitDraft, splitEmail } from '../lib/drafts.js'
 import { date } from '../lib/format.js'
 import { useApi } from '../lib/useApi.js'
 import { ErrorBox, Loading } from './ui.jsx'
@@ -39,7 +39,7 @@ function DraftText({ text }) {
   )
 }
 
-function CopyButton({ text }) {
+function CopyButton({ text, label = 'Copy' }) {
   const [state, setState] = useState('idle')
   async function copy() {
     try {
@@ -52,7 +52,7 @@ function CopyButton({ text }) {
   }
   return (
     <button type="button" onClick={copy} className="text-xs px-2 py-1 rounded border border-slate-300 hover:bg-slate-50">
-      {state === 'copied' ? 'Copied ✓' : state === 'failed' ? 'Copy failed' : 'Copy'}
+      {state === 'copied' ? 'Copied ✓' : state === 'failed' ? 'Copy failed' : label}
     </button>
   )
 }
@@ -110,7 +110,19 @@ export default function FollowupsPanel({ invoiceId }) {
               <span className="text-sm text-slate-600">send on {date(d.send_on)}</span>
               {d.past && <span className="px-2 py-0.5 rounded-full text-xs bg-slate-200 text-slate-700">date passed</span>}
               <span className="px-2 py-0.5 rounded-full text-xs bg-blue-100 text-blue-800">draft, not sent</span>
-              <span className="ml-auto"><CopyButton text={splitDraft(d.draft_text).body} /></span>
+              <span className="ml-auto flex gap-2">
+                {(() => {
+                  const msg = splitDraft(d.draft_text).body
+                  const email = d.channel === 'email' ? splitEmail(msg) : null
+                  // email: subject and body go into different fields of the mail client
+                  return email && email.subject !== null ? (
+                    <>
+                      <CopyButton text={email.subject} label="Copy subject" />
+                      <CopyButton text={email.body} label="Copy body" />
+                    </>
+                  ) : <CopyButton text={msg} />
+                })()}
+              </span>
             </div>
             <DraftText text={d.draft_text} />
           </li>

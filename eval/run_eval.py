@@ -255,13 +255,17 @@ def write_report(results: list[dict], path: Path) -> str:
 
     for r, s in zip(results, sums):
         L += [f"## Mode `{r['mode']}`", "", "### Field extraction by document type", "",
-              "| Doc type | Fields | Correct | Wrong (confident) | Uncertain | Missed | Spurious |",
-              "|---|---|---|---|---|---|---|"]
+              "| Doc type | Fields | Correct (value) | Correct (absent) | Wrong (confident) | Uncertain | Missed "
+              "| Spurious |",
+              "|---|---|---|---|---|---|---|---|"]
         for dt in sorted(r["fields"]):
             c = Counter(r["fields"][dt])
             n = sum(c.values())
-            L.append(f"| {dt} | {n} | {pct(c['correct'] / n if n else None)} | {c['wrong']} | {c['uncertain']} | "
+            # every row sums to `Fields`: value + absent + wrong + uncertain + missed + spurious
+            L.append(f"| {dt} | {n} | {c['correct']} | {c['correct_absent']} | {c['wrong']} | {c['uncertain']} | "
                      f"{c['missed']} | {c['spurious']} |")
+        L += ["", "_Counts per outcome; each row adds up to `Fields`. *Correct (absent)* = the field is empty in "
+              "the ground truth and confidently empty in the extraction._"]
         L += ["", "### Defect detection by check", "",
               "| Check | TP | FP | FN | TN | Uncertain | Skipped | Precision | Recall |",
               "|---|---|---|---|---|---|---|---|---|"]

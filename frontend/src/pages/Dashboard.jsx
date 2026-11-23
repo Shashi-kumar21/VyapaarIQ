@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import ForecastChart from '../components/ForecastChart.jsx'
 import { Card, Empty, ErrorBox, Loading, SeverityChip, Stat, TierBadge } from '../components/ui.jsx'
 import { api } from '../lib/api.js'
 import { date, inr } from '../lib/format.js'
@@ -58,6 +59,10 @@ export default function Dashboard() {
         <abbr title={f30.formula} className="cursor-help">How is this calculated?</abbr> · {f30.note}
         {excluded > 0 && ` · ${excluded} invoice(s) left out (suspected duplicate or unverified amount).`}
       </p>
+
+      <Card title="Open receivables by expected payment" aside="Illustrative · synthetic demo history">
+        <ForecastChart forecast={f30} />
+      </Card>
 
       <div className="grid lg:grid-cols-3 gap-4">
         <Card title="Invoices by risk tier" aside="Illustrative">

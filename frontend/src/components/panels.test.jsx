@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { api } from '../lib/api.js'
-import { splitDraft } from '../lib/drafts.js'
+import { splitDraft, splitEmail } from '../lib/drafts.js'
 import { parseMarkdown } from '../lib/markdown.js'
 import DisputePackPanel from './DisputePackPanel.jsx'
 import FollowupsPanel from './FollowupsPanel.jsx'
@@ -31,6 +31,13 @@ describe('draft helpers', () => {
   })
 })
 
+describe('splitEmail', () => {
+  it('separates the subject line from the body', () => {
+    expect(splitEmail('Subject: Hello\n\nDear team,\nThanks')).toEqual({ subject: 'Hello', body: 'Dear team,\nThanks' })
+    expect(splitEmail('*WhatsApp text*')).toEqual({ subject: null, body: '*WhatsApp text*' })
+  })
+})
+
 describe('FollowupsPanel', () => {
   it('shows drafts for the chosen tone/channel with notes, badges and copy of the message only', async () => {
     api.listFollowups.mockResolvedValue([row(), row({ id: 2, tone: 'firm', draft_text: '[DRAFT]\n\nFirm text' })])
@@ -41,9 +48,12 @@ describe('FollowupsPanel', () => {
     expect(screen.getByText('draft, not sent')).toBeTruthy()
     expect(screen.getByText('date passed')).toBeTruthy()
     expect(screen.getByText(/^VERIFY: the estimated due date/).className).toMatch(/amber/)
-    fireEvent.click(screen.getByText('Copy'))
+    fireEvent.click(screen.getByText('Copy subject'))
     await screen.findByText('Copied ✓')
-    expect(writeText.mock.calls[0][0].startsWith('Subject: Upcoming payment')).toBe(true)
+    expect(writeText.mock.calls[0][0]).toBe('Upcoming payment: invoice SPC/26-27/0107 due 13 Oct 2026 (estimated)')
+    fireEvent.click(screen.getByText('Copy body'))
+    expect(writeText.mock.calls[1][0].startsWith('Dear Kaveri Auto Assemblies')).toBe(true)
+    expect(writeText.mock.calls[1][0]).not.toMatch(/Subject:|DRAFT|VERIFY/)
     fireEvent.click(screen.getByRole('radio', { name: 'Firm' }))
     expect(screen.getByText('Firm text')).toBeTruthy()
     fireEvent.click(screen.getByRole('radio', { name: 'WhatsApp' }))
