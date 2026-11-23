@@ -29,7 +29,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T1.3 `backend/app/db`: SQLModel tables (§5), `init_db()`, session helper
 - [x] T1.4 `rules/config.yaml` skeleton: tolerances, penalties, thresholds, 45/15-day rules, e-way threshold, bank rate placeholder (marked VERIFY)
 - [x] T1.5 FastAPI app skeleton with `/api/health`, CORS, routers stubbed with fixture responses so frontend can start immediately
-- [~] T1.6 Message A1/A2/A3 when contracts are frozen — `docs/api_contract.md` v1.0 is in use (changes go through PR + QA review); **formal sign-off pending (owner)**
+- [x] T1.6 Message A1/A2/A3 when contracts are frozen — `docs/api_contract.md` v1.0 **frozen, signed off by the owner 2026-11-23** (D-40); changes go through PR + QA review
 
 ### A1 Document intelligence
 - [x] T1.7 `samples/generate.py` v1: reportlab generator for invoice, PO, challan, e-way, GRN with fictional companies
