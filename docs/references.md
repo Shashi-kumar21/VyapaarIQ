@@ -96,6 +96,7 @@ reviewed by QA. All dates are 2026-11-23 unless stated.
 | D-35 | **No API key for the demo** (T0.3): the demo runs on `fixture` (and `text`); the `claude` extractor and LLM explanations (T3.7, T3.8, T4.6, T4.7) stay optional and unmeasured | **Owner** | No network or key risk on stage, no API cost |
 | D-36 | **Scans keep abstaining** without OCR: in `text` mode a scanned document is `uncertain` (needs human check), never guessed. No local OCR dependency is added. Every `text`-mode eval difference is such a scan (PKG02/06/09/14/21) | **Owner** (T5.3) | Keeps 0 confidently wrong fields; local OCR would add a heavy dependency and new error risk |
 | D-37 | Every processed package logs one line (package id, invoice id, document count, extractor, fallback, ms; failures log only the error type) and the invoice header shows "processed in …" | DEV (T3.10) | Timing visible without logging document text (CLAUDE.md rule 4) |
+| D-38 | **npm audit before the demo**: apply only non-breaking patches (react-router-dom 6.30.6 closes the *high* advisories; vitest 3.2.7). The remaining moderate react-router advisories (no user-controlled paths, no SSR) and the dev-only vitest/tinypool ones wait for React Router 7 + Vitest 5 after `v0.1-demo` | **Owner** | No breaking upgrade right before the demo; see `docs/release.md` |
 
 ---
 
