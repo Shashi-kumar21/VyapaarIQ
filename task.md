@@ -60,7 +60,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T2.4 `extraction/text_extractor.py`: regex/heuristic fallback for digital PDFs (invoice no., dates, GSTIN, totals)
 - [x] T2.5 Doc-type classifier (filename hints + first-page keywords + LLM fallback)
 - [x] T2.6 Generate full 25–30 package set with scan-style variants (§14); commit `ground_truth.json`
-- [ ] T2.7 Quick accuracy script: per-field accuracy on first 10 packages; log failures
+- [x] T2.7 Quick accuracy script: per-field accuracy on first 10 packages; log failures
 
 ### A2
 - [x] T2.8 `matching/normalize.py`: party-name normalisation (strip Pvt/Ltd/punctuation), GSTIN validation (15-char format + checksum optional), date/amount parsing
@@ -137,8 +137,8 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 ## Day 5 — Evaluation, hardening, demo
 
 ### A3 + A1
-- [ ] T5.1 Complete `eval/run_eval.py`: field accuracy, check precision/recall, due-date correctness, median time (§15)
-- [ ] T5.2 Run eval on all 25–30 packages; write honest `eval/report.md` incl. failure cases
+- [x] T5.1 Complete `eval/run_eval.py`: field accuracy, check precision/recall, due-date correctness, median time (§15)
+- [x] T5.2 Run eval on all 25–30 packages; write honest `eval/report.md` incl. failure cases
 - [ ] T5.3 Fix highest-impact failures from the report (time-boxed: 2 hours max)
 
 ### A2
