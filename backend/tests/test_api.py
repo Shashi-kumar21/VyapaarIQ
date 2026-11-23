@@ -1,5 +1,6 @@
 """API end to end with a temp SQLite DB and the sample PDFs (EXTRACTOR=text)."""
 
+import logging
 from datetime import date, timedelta
 
 import pytest
@@ -151,7 +152,6 @@ def test_profile_labels_and_trend():
 
 def test_processing_is_timed_and_logged_without_document_text(client, caplog):
     """T3.10: one log line per package with ids, counts and ms; never extracted text (rule 4)."""
-    import logging
 
     with caplog.at_level(logging.INFO, logger="vyapaariq.processing"):
         inv_id = _upload_and_process(client, "PKG07")
@@ -162,3 +162,35 @@ def test_processing_is_timed_and_logged_without_document_text(client, caplog):
     assert "3 document(s)" in lines[0]
     for secret in ("Kaveri", "SPC/26-27", "KAA/PO", "22921"):  # buyer, invoice no, PO no, amount
         assert secret not in lines[0]
+
+
+@pytest.mark.parametrize("raw, level, warns", [
+    (None, logging.INFO, False), ("debug", logging.DEBUG, False), (" Warning ", logging.WARNING, False),
+    ("ERROR", logging.ERROR, False), ("verbose", logging.INFO, True), ("", logging.INFO, False),
+])
+def test_log_level_is_case_insensitive_and_never_blocks_startup(raw, level, warns):
+    """QA #15: a lowercase or unknown VYAPAARIQ_LOG_LEVEL must not raise at import of app.main."""
+    from app.main import log_level
+
+    got, warning = log_level(raw)
+    assert got == level and bool(warning) == warns
+
+
+def test_unknown_log_level_env_still_imports_app(monkeypatch):
+    import importlib
+
+    import app.main as main_mod
+
+    monkeypatch.setenv("VYAPAARIQ_LOG_LEVEL", "debgu")
+    logger = logging.getLogger("vyapaariq")
+    saved = list(logger.handlers)
+    for h in saved:
+        logger.removeHandler(h)  # force the setup branch to run again
+    try:
+        importlib.reload(main_mod)  # must not raise
+        assert logger.level == logging.INFO
+    finally:
+        for h in list(logger.handlers):
+            logger.removeHandler(h)
+        for h in saved:
+            logger.addHandler(h)

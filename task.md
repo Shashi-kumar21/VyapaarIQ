@@ -139,7 +139,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 ### A3 + A1
 - [x] T5.1 Complete `eval/run_eval.py`: field accuracy, check precision/recall, due-date correctness, median time (§15)
 - [x] T5.2 Run eval on all 25–30 packages; write honest `eval/report.md` incl. failure cases
-- [x] T5.3 Fix highest-impact failures from the report (time-boxed: 2 hours max)
+- [x] T5.3 Fix highest-impact failures from the report (time-boxed: 2 hours max) — analysed: all `text`-mode differences are scans, **accepted as abstentions (D-36)**, no code fix; report now tags them
 
 ### A2
 - [x] T5.4 Backend tests green; add regression tests for each bug fixed this week

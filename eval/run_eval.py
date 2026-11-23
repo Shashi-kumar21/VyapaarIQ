@@ -144,6 +144,8 @@ def run_mode(gt: dict, mode: str) -> dict:
         scan_docs = [f["doc_type"] for f in pkg["files"] if f["scan"]]
         if wrong_checks:
             check_failures.append({"package": pid, "scan_docs": scan_docs,
+                                   "abstained": all(got[c] == "uncertain" for c in got
+                                                    if got[c] != pkg["expected"]["checks"].get(c)),
                                    "text": f"{pid} {pkg['defects'] or ['clean']}{_scan_tag(scan_docs)}: "
                                            + "; ".join(wrong_checks)})
 
@@ -297,8 +299,10 @@ def write_report(results: list[dict], path: Path) -> str:
         L += ["### Failure cases", ""]
         if not (r["check_failures"] or r["field_failures"] or bad_due):
             L += ["None.", ""]
-        failing = [x["scan_docs"] for x in r["check_failures"]] + [p["scan_docs"] for p in bad_due]
-        if failing and all(failing):
+        # the note is only true if every difference is an abstention (uncertain / no due date) on a scan
+        failing = ([(x["scan_docs"], x["abstained"]) for x in r["check_failures"]]
+                   + [(p["scan_docs"], p["due_got"] is None) for p in bad_due])
+        if failing and all(scans and abstained for scans, abstained in failing):
             L += ["Every package below has a **scanned** document. With no OCR in this mode the scan is "
                   "read as `uncertain` (needs a human check) and is never guessed, so these are abstentions, "
                   "not wrong answers. Reading scans needs the `claude` extractor (references D-36).", ""]

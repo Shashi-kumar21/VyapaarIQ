@@ -15,12 +15,27 @@ from app.db.session import init_db
 
 # App log lines (e.g. per-package processing time, T3.10) at INFO in the uvicorn terminal.
 # Uvicorn configures only its own loggers, so give ours a handler once.
+_LEVELS = ("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL")
+
+
+def log_level(raw: str | None) -> tuple[int, str | None]:
+    """Level from VYAPAARIQ_LOG_LEVEL, case-insensitive. An unknown name falls back to INFO and
+    returns a warning instead of raising: a typo must never stop the API from starting."""
+    name = (raw or "INFO").strip().upper()
+    if name in _LEVELS:
+        return getattr(logging, name), None
+    return logging.INFO, f"Unknown VYAPAARIQ_LOG_LEVEL {raw!r}; using INFO (one of {', '.join(_LEVELS)})."
+
+
 _app_log = logging.getLogger("vyapaariq")
 if not _app_log.handlers:
     _h = logging.StreamHandler()
     _h.setFormatter(logging.Formatter("%(levelname)s:     %(name)s: %(message)s"))
     _app_log.addHandler(_h)
-    _app_log.setLevel(os.environ.get("VYAPAARIQ_LOG_LEVEL", "INFO"))
+    _level, _warning = log_level(os.environ.get("VYAPAARIQ_LOG_LEVEL"))
+    _app_log.setLevel(_level)
+    if _warning:
+        _app_log.warning(_warning)
 
 
 @asynccontextmanager
