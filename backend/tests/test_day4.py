@@ -472,3 +472,10 @@ def test_api_top_actions_ranked_across_invoices(client):  # noqa: F811
     sev = [a["severity"] for a in acts]
     assert sev == sorted(sev, key=["blocker", "warning", "info"].index)
     assert client.get("/api/actions?limit=0").status_code == 422
+
+
+def test_cors_exposes_dispute_pack_headers(client):  # noqa: F811
+    inv_id = _upload_and_process(client, "PKG07")
+    r = client.get(f"/api/invoices/{inv_id}/dispute-pack", headers={"Origin": "http://localhost:5173"})
+    exposed = r.headers.get("access-control-expose-headers", "").lower()
+    assert "content-disposition" in exposed and "x-pack-format" in exposed

@@ -25,5 +25,7 @@ app.add_middleware(
     allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(","),
     allow_methods=["*"],
     allow_headers=["*"],
+    # The UI reads these on dispute-pack downloads (file name, PDF -> Markdown fallback flag).
+    expose_headers=["Content-Disposition", "X-Pack-Format"],
 )
 app.include_router(router)

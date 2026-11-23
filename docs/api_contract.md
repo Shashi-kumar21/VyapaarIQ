@@ -45,8 +45,10 @@
 ## GET /api/health
 
 ```json
-{"status": "ok", "schema_version": "1.1", "extractor": "fixture", "today": "2026-11-23"}
+{"status": "ok", "schema_version": "1.1", "extractor": "fixture", "today": "2026-11-23", "uncertain_below": 0.6}
 ```
+
+`uncertain_below` is `extraction.uncertain_below` from `config.yaml`. The UI uses it for the amber "needs human check" state, so the threshold is never hard-coded in the frontend. (This is an additive key, not a breaking change.)
 
 ## POST /api/packages
 

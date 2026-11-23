@@ -35,7 +35,11 @@ export default function Dashboard() {
     )
   }
 
-  const byTier = Object.fromEntries(TIERS.map((t) => [t, open.filter((i) => i.risk_tier === t)]))
+  // Same population as the forecast totals: leave out suspected duplicates and unverified amounts,
+  // so the tier card and "Open receivables" always add up to the same figure.
+  const excludedIds = new Set(f30.excluded.map((e) => e.id))
+  const counted = open.filter((i) => !excludedIds.has(i.id))
+  const byTier = Object.fromEntries(TIERS.map((t) => [t, counted.filter((i) => i.risk_tier === t)]))
   const excluded = f30.totals.excluded_count
 
   return (
@@ -67,6 +71,11 @@ export default function Dashboard() {
               </li>
             ))}
           </ul>
+          {excluded > 0 && (
+            <p className="text-xs text-slate-500 mt-3">
+              Excludes {excluded} invoice(s) left out of the forecast, so the totals match Open receivables.
+            </p>
+          )}
         </Card>
 
         <Card title="Top actions due" aside="Ranked by severity, then date" className="lg:col-span-2">

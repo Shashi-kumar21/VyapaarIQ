@@ -44,8 +44,8 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 
 ### A3 Frontend & QA
 - [x] T1.14 Vite + React + Tailwind scaffold, routing for 4 pages (§13), API client with base URL env
-- [x] T1.15 Dashboard page with mocked data; INR formatting helper (₹2,40,000)
-- [x] T1.16 New-package upload page (drag-and-drop, file list, doc-type dropdown, Process button wired to stub)
+- [x] T1.15 Dashboard page with mocked data; INR formatting helper (₹2,40,000) — built directly on the real API instead of mocks
+- [x] T1.16 New-package upload page (drag-and-drop, file list, doc-type dropdown, Process button wired to stub) — wired to the real upload + process API
 
 **Gate 1:** `uvicorn` serves stub API; frontend shows mocked dashboard + upload page; 10 sample packages exist; due-date/interest/score unit tests pass.
 
@@ -70,9 +70,9 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T2.12 `matching/graph.py`: build evidence graph JSON from docs + check results (§12)
 
 ### A3
-- [ ] T2.13 Invoice detail page skeleton: header, checks list with severity chips, tabs (Graph / Actions / Follow-ups / Dispute pack)
-- [ ] T2.14 `EvidenceGraph` component (SVG or React Flow) driven by `/graph` JSON; node status colours + icons (ok / missing / mismatch / uncertain), edge labels
-- [ ] T2.15 Extracted-fields panel showing confidence and "needs human check" amber state
+- [x] T2.13 Invoice detail page skeleton: header, checks list with severity chips, tabs (Graph / Actions / Follow-ups / Dispute pack)
+- [x] T2.14 `EvidenceGraph` component (SVG or React Flow) driven by `/graph` JSON; node status colours + icons (ok / missing / mismatch / uncertain), edge labels
+- [x] T2.15 Extracted-fields panel showing confidence and "needs human check" amber state
 - [ ] T2.16 Start `eval/run_eval.py` harness shell (loads ground truth, calls pipeline, writes report)
 
 **Gate 2:** For ≥10 sample packages, pipeline (using `fixture` or real extractor) yields correct check results; evidence graph renders for a real package JSON.
@@ -97,7 +97,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 
 ### A3
 - [x] T3.11 Wire upload → process → redirect to invoice detail with progress states (uploading / extracting / checking / done / failed)
-- [ ] T3.12 Actions tab (ranked list, due-by, rationale) and score breakdown panel (each penalty listed)
+- [x] T3.12 Actions tab (ranked list, due-by, rationale) and score breakdown panel (each penalty listed)
 - [x] T3.13 Dashboard on real `/invoices` data: tiers, open receivables, top actions
 - [ ] T3.14 Buyers page with reliability numbers (labelled synthetic demo data)
 
@@ -120,8 +120,8 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T4.8 Fixture fallback switch: if Claude extractor fails or key missing, auto-fall back to `text`, then `fixture` (with a visible "demo fallback" badge)
 
 ### A3
-- [ ] T4.9 Follow-ups tab (draft cards, copy button, tone toggle; clearly "draft, not sent")
-- [ ] T4.10 Dispute pack tab (preview + download)
+- [x] T4.9 Follow-ups tab (draft cards, copy button, tone toggle; clearly "draft, not sent")
+- [x] T4.10 Dispute pack tab (preview + download)
 - [ ] T4.11 Dashboard forecast chart (30/60-day buckets) with formula tooltip
 - [ ] T4.12 Empty/loading/error states on every page; "illustrative risk, demo data" banners
 - [ ] T4.13 Full run-through of all packages in the UI; log bugs in `docs/bugs.md` with owner tag
