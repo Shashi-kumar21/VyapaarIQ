@@ -31,7 +31,10 @@ function barPath(x0, y, w, h, r = 4) {
 
 export default function ForecastChart({ forecast }) {
   const [hover, setHover] = useState(null)
-  const [table, setTable] = useState(false)
+  // On a phone the 1000-unit chart scales its text below 7px, so the table is the default view there.
+  const [table, setTable] = useState(() => {
+    try { return window.matchMedia('(max-width: 639px)').matches } catch { return false }
+  })
   const buckets = forecast.buckets.filter((b) => BUCKET_LABEL[b.key])
   const max = Math.max(...buckets.map((b) => b.amount), 0)
   const open = forecast.totals.open || 0

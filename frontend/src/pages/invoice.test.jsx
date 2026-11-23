@@ -33,8 +33,8 @@ const INVOICE = {
                   { check_id: 'C07', status: 'uncertain', severity: 'warning', points: 5 }] },
     due: { acceptance_basis: 'challan_received', due_date: '2026-10-13', uncertain: false,
       reasoning: 'No GRN; acceptance 2026-09-13 taken from the received date on the delivery challan.' },
-    interest: { computable: true, interest: 432.32, days_late: 41, as_of: '2026-11-23', annual_rate_pct: 16.5,
-      formula: 'P x (1 + 16.50%/12)^1 …', note: 'Estimated statutory interest (MSMED s.16). Not legal advice.' },
+    interest: { computable: true, interest: 452.05, days_late: 41, as_of: '2026-11-23', annual_rate_pct: 17.25,
+      formula: 'P x (1 + 17.25%/12)^1 …', note: 'Estimated statutory interest (MSMED s.16). Not legal advice.' },
     actions: [{ priority: 1, check_id: 'C10', title: 'Request GRN / acceptance acknowledgement',
       rationale: 'Acceptance starts the MSMED payment clock.', due_by: '2026-11-23', owner_role: 'sales' }],
     graph: {
@@ -78,7 +78,7 @@ describe('Invoice detail', () => {
     expect(screen.getByText('13 Oct 2026')).toBeTruthy()
     expect(screen.getByText('from challan received date')).toBeTruthy()
     expect(screen.getAllByText('demo fallback').length).toBeGreaterThan(0)
-    expect(screen.getByText('₹432')).toBeTruthy()
+    expect(screen.getByText('₹452')).toBeTruthy()
     expect(screen.getByText(/Not legal advice/)).toBeTruthy()
   })
 

@@ -102,3 +102,16 @@ def test_text_mode_on_digital_packages(ground_truth):
                 continue
             errors.append(f"{pkg['package_id']} {pkg['defects']} {cid}: want {want}, got {g.value}")
     assert not errors, "\n".join(errors)
+
+
+def test_ui_text_from_runthrough(fixture_results):
+    """T4.13 findings: readable dates in action titles, 'PO' in C11, failing check first on edges."""
+    by_id = {pkg["package_id"]: a for pkg, _, a in fixture_results}
+    pkg07 = by_id["PKG07"]
+    grn = next(x for x in pkg07.actions if x.check_id == "C10")
+    assert grn.title.endswith("before 23 Nov 2026")
+    c11 = next(c for c in pkg07.checks if c.check_id == "C11")
+    assert "found on the PO:" in c11.detail
+    # PKG27: challan has no stamp (C07 fails) while C05 passes -> the edge label must lead with C07
+    edge = next(e for e in by_id["PKG27"].graph.edges if e.to == "challan")
+    assert edge.status == "mismatch" and edge.check_ids[0] == "C07"

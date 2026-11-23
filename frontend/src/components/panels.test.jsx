@@ -5,6 +5,7 @@ import { splitDraft, splitEmail } from '../lib/drafts.js'
 import { parseMarkdown } from '../lib/markdown.js'
 import DisputePackPanel from './DisputePackPanel.jsx'
 import FollowupsPanel from './FollowupsPanel.jsx'
+import ForecastChart from './ForecastChart.jsx'
 
 vi.mock('../lib/api.js', () => ({
   api: { listFollowups: vi.fn(), generateFollowups: vi.fn(), disputePack: vi.fn() },
@@ -127,5 +128,29 @@ describe('DisputePackPanel', () => {
     await waitFor(() => expect(screen.getByText('Invoice has not been processed yet.')).toBeTruthy())
     expect(click).toHaveBeenCalledTimes(1)
     click.mockRestore()
+  })
+})
+
+describe('ForecastChart', () => {
+  const fc = {
+    as_of: '2026-11-23', formula: 'f', totals: { open: 300 },
+    buckets: [{ key: 'overdue', amount: 200 }, { key: 'next_30', amount: 100 }],
+  }
+  afterEach(() => { delete window.matchMedia })
+
+  it('shows the chart on a wide screen, table on demand', () => {
+    window.matchMedia = () => ({ matches: false })
+    render(<ForecastChart forecast={fc} />)
+    expect(screen.getByRole('img')).toBeTruthy()
+    expect(screen.queryByRole('table')).toBeNull()
+    fireEvent.click(screen.getByText('Show as table'))
+    expect(screen.getByRole('table')).toBeTruthy()
+  })
+
+  it('starts with the table on a phone, where chart text would be too small', () => {
+    window.matchMedia = (q) => ({ matches: q === '(max-width: 639px)' })
+    render(<ForecastChart forecast={fc} />)
+    expect(screen.getByRole('table')).toBeTruthy()
+    expect(screen.getByText('Hide table')).toBeTruthy()
   })
 })

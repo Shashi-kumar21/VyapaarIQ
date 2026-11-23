@@ -53,6 +53,9 @@ describe('Dashboard', () => {
     expect(await screen.findByText('₹2,62,922')).toBeTruthy() // open receivables, half-even
     expect(screen.getAllByText('₹22,922').length).toBeGreaterThan(0) // at risk 30 days
     expect(screen.getByText('₹30,000')).toBeTruthy() // at risk 60 days
+    // at-risk tiles say what the number is (the 60-day one can be lower than the 30-day one)
+    expect(screen.getByText('not expected by 23 Dec 2026')).toBeTruthy()
+    expect(screen.getByText('not expected by 22 Jan 2027')).toBeTruthy()
     expect(screen.getByText('Request GRN / acceptance acknowledgement').closest('a').getAttribute('href'))
       .toBe('/invoices/61')
     expect(screen.getByText(/1 invoice\(s\) left out \(/)).toBeTruthy()

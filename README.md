@@ -17,6 +17,7 @@ invoice and cross-checks them. It shows the gaps and works out the MSMED Act tim
 - REST API reference: [`docs/api_contract.md`](docs/api_contract.md) · Progress log: [`docs/progress.md`](docs/progress.md)
 - Architecture (one page + diagram): [`docs/architecture.md`](docs/architecture.md) · 3-minute demo: [`docs/demo_script.md`](docs/demo_script.md)
 - Sources and every design decision (who, when, why): [`docs/references.md`](docs/references.md)
+- Full UI run-through of all packages and the bug log: [`docs/bugs.md`](docs/bugs.md)
 - Rules for contributors and AI agents: [`CLAUDE.md`](CLAUDE.md)
 
 ---
@@ -313,6 +314,7 @@ docs/
   architecture.md        one-page architecture + diagram, results, limits
   demo_script.md         3-minute demo script with setup and recovery
   references.md          sources (legal, rates) + design-decision log
+  bugs.md                UI run-through results + bug log (owner tags)
   progress.md            one line per finished task
 frontend/                React + Vite + Tailwind: pages/, components/, lib/ (api client, formatting)
 eval/                    run_eval.py + report.md (field accuracy, check precision/recall, due dates, timing)

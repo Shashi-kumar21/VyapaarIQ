@@ -417,14 +417,17 @@ def governing_terms(x: _Ctx) -> tuple[Optional[int], str, bool, Optional[str]]:
 
 
 # ---------------------------------------------------------------- C11
+_SRC_LABEL = {"po": "PO", "invoice": "invoice", "contract": "contract"}
+
+
 def c11(x: _Ctx) -> Check:
     days, src, unc, text_src = governing_terms(x)
     if days is not None:
-        return _mk("C11", PASS, WARNING, f"Written payment terms found on the {src}: {days} days.",
+        return _mk("C11", PASS, WARNING, f"Written payment terms found on the {_SRC_LABEL.get(src, src)}: {days} days.",
                    [NODE[DocType(src)]], terms_days=days, source=src)
     if text_src:
         return _mk("C11", PASS, WARNING,
-                   f"Written payment terms found on the {text_src}, but the number of days is unclear.",
+                   f"Written payment terms found on the {_SRC_LABEL.get(text_src, text_src)}, but the number of days is unclear.",
                    [NODE[DocType(text_src)]], source=text_src)
     if unc:
         return _mk("C11", UNCERTAIN, WARNING, "Could not read the payment terms.", ["inv"])

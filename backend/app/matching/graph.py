@@ -60,6 +60,15 @@ def _doc_no_text(d: Optional[BaseDoc], thr: float) -> str:
     return ""
 
 
+def _ordered_ids(bad: list, rel: list) -> list[str]:
+    """Check ids for an edge, failing/uncertain ones first: the UI label shows the first id."""
+    out: list[str] = []
+    for c in [*bad, *rel]:
+        if c.check_id not in out:
+            out.append(c.check_id)
+    return out
+
+
 def build_graph(pkg: ExtractedPackage, checks: list[Check], cfg: Optional[dict[str, Any]] = None) -> Graph:
     if cfg is None:
         cfg = get_config()
@@ -115,5 +124,5 @@ def build_graph(pkg: ExtractedPackage, checks: list[Check], cfg: Optional[dict[s
             bad.append(c04)
         note = (bad[0].detail if bad else (rel[0].detail if rel else ""))
         edges.append(GraphEdge(**{"from": "inv"}, to=node_id, status=e_status, confidence=conf,
-                               note=note, check_ids=[c.check_id for c in rel]))
+                               note=note, check_ids=_ordered_ids(bad, rel)))
     return Graph(nodes=nodes, edges=edges)

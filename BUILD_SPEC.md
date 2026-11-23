@@ -19,7 +19,7 @@ Legal context the product encodes (informational, configurable, not legal advice
 
 - MSMED Act 2006, s.15: buyer must pay a Micro/Small supplier within the agreed period, max **45 days** from acceptance/deemed acceptance; **15 days** if there is no written agreement.
 - MSMED Act 2006, s.16: compound interest (monthly rests) at three times the RBI bank rate on delayed amounts.
-- Income-tax Act s.43B(h) (from AY 2024-25): buyer's deduction for dues to Micro/Small suppliers beyond the s.15 limit is allowed only on actual payment. This gives suppliers leverage.
+- Income-tax Act s.43B(h) (from AY 2024-25): buyer's deduction for dues to Micro/Small suppliers beyond the s.15 limit is allowed only on actual payment. This gives suppliers leverage. *(Update: under the Income-tax Act, 2025, in force from 2026-04-01, this is s.37(2)(g); drafts cite the value in `config.yaml` `legal_refs`. See `docs/references.md` D-13 / R-4.)*
 - Delayed-payment references: since Oct 2025 new references go through the **MSME ODR portal** (Samadhaan only for cases already pending). The dispute pack should be formatted for that route. **Verify current process before demo.**
 
 Rule values live in `backend/app/rules/config.yaml`. Never hard-code them.

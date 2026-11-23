@@ -48,6 +48,7 @@ Before going on stage:
 | Port 5173 is busy | Vite stops (`strictPort`) instead of moving to another port, which CORS would reject. Close the other dev server |
 | Numbers differ from this page | `VYAPAARIQ_TODAY` or `EXTRACTOR` is not set in the uvicorn terminal. Fix it and re-upload |
 | PKG07 shows up as a duplicate (C14) | It was uploaded twice into the same DB. Delete the demo DB and re-seed (Setup) |
+| PKG27 changes the dashboard | Since D-11 (deemed acceptance = delivery date) PKG27 is due 17 Nov 2026, so on the demo date it is overdue and moves into *at risk*. The script does not use it; if it was uploaded, delete the demo DB and re-seed |
 | A live upload fails | Use the backup recording (below) |
 
 ## Backup recording
