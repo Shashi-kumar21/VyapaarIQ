@@ -151,6 +151,20 @@ describe('ForecastChart', () => {
     window.matchMedia = (q) => ({ matches: q === '(max-width: 639px)' })
     render(<ForecastChart forecast={fc} />)
     expect(screen.getByRole('table')).toBeTruthy()
-    expect(screen.getByText('Hide table')).toBeTruthy()
+    expect(screen.queryByRole('img')).toBeNull() // B-7: the unreadable chart is not shown under the table
+    fireEvent.click(screen.getByText('Show chart'))
+    expect(screen.getByRole('img')).toBeTruthy()
+    expect(screen.queryByRole('table')).toBeNull()
+  })
+})
+
+describe('deadlineText (B-8)', () => {
+  it('says the payment is overdue when the invoice due date has passed', async () => {
+    const { deadlineText } = await import('../lib/deadline.js')
+    expect(deadlineText('2026-11-23', '2026-10-13')).toBe('act now · payment overdue since 13 Oct 2026')
+    expect(deadlineText('2026-11-23', '2026-11-23')).toBe('due by 23 Nov 2026')
+    expect(deadlineText('2026-11-30', '2026-12-10')).toBe('due by 30 Nov 2026')
+    expect(deadlineText('2026-11-23', null)).toBe('due by 23 Nov 2026')
+    expect(deadlineText(null, '2026-10-13')).toBe('no date')
   })
 })

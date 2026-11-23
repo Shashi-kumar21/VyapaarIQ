@@ -2,8 +2,10 @@ import { Link } from 'react-router'
 import ForecastChart from '../components/ForecastChart.jsx'
 import { Card, Empty, ErrorBox, Loading, SeverityChip, Stat, TierBadge } from '../components/ui.jsx'
 import { api } from '../lib/api.js'
+import { deadlineText } from '../lib/deadline.js'
 import { date, inr } from '../lib/format.js'
 import { useApi } from '../lib/useApi.js'
+import { PHONE, useMediaQuery } from '../lib/useMediaQuery.js'
 
 const TIERS = ['High', 'Medium', 'Low']
 
@@ -17,6 +19,7 @@ async function loadDashboard() {
 /** Dashboard (BUILD_SPEC §13.1): open receivables, cash at risk 30/60, tiers, top 5 actions. */
 export default function Dashboard() {
   const { data, error, loading, reload } = useApi(loadDashboard)
+  const phone = useMediaQuery(PHONE)
 
   if (loading) return <Loading label="Loading dashboard…" />
   if (error) return <ErrorBox error={error} onRetry={reload} />
@@ -42,6 +45,7 @@ export default function Dashboard() {
   const counted = open.filter((i) => !excludedIds.has(i.id))
   const byTier = Object.fromEntries(TIERS.map((t) => [t, counted.filter((i) => i.risk_tier === t)]))
   const excluded = f30.totals.excluded_count
+  const dueOf = Object.fromEntries(invoices.map((i) => [i.id, i.due_date]))
 
   return (
     <section className="space-y-6">
@@ -95,7 +99,7 @@ export default function Dashboard() {
                     <Link to={`/invoices/${a.invoice_id}`} className="font-medium hover:underline">{a.title}</Link>
                     <div className="text-xs text-slate-500">
                       {a.invoice_no || `Invoice #${a.invoice_id}`} · {a.buyer_name || 'buyer unverified'} ·
-                      due by {date(a.due_by)} · {a.check_id}
+                      {deadlineText(a.due_by, dueOf[a.invoice_id])} · {a.check_id}
                     </div>
                   </div>
                 </li>
@@ -106,6 +110,26 @@ export default function Dashboard() {
       </div>
 
       <Card title="Invoices">
+        {phone ? (
+          <ul className="divide-y divide-slate-100" aria-label="Invoices">
+            {invoices.map((i) => (
+              <li key={i.id} className="py-3 text-sm">
+                <div className="flex items-center justify-between gap-2">
+                  <Link to={`/invoices/${i.id}`} className="text-blue-700 hover:underline font-medium">
+                    {i.invoice_no || `#${i.id}`}
+                  </Link>
+                  <TierBadge tier={i.risk_tier} />
+                </div>
+                <div className="text-slate-700 truncate">{i.buyer_name || <span className="text-unsure">unverified</span>}</div>
+                <div className="text-xs text-slate-500 flex flex-wrap gap-x-3">
+                  <span>{i.amount_total === null ? <span className="text-unsure">amount to verify</span> : inr(i.amount_total)}</span>
+                  <span>due {date(i.due_date)} (est.)</span>
+                  <span>score {i.readiness_score ?? '—'}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="text-left text-xs uppercase text-slate-500 border-b border-slate-200 whitespace-nowrap">
@@ -135,6 +159,7 @@ export default function Dashboard() {
             </tbody>
           </table>
         </div>
+        )}
       </Card>
     </section>
   )

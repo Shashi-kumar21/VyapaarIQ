@@ -1,6 +1,7 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { within } from '@testing-library/react' // separate line: keeps the router import line untouched
 import { api } from '../lib/api.js'
 import { fileProblem } from '../lib/upload.js'
 import Dashboard from './Dashboard.jsx'
@@ -67,6 +68,29 @@ describe('Dashboard', () => {
     expect(screen.getByText('to verify')).toBeTruthy() // unverified amount is never shown as a number
     expect(screen.getByText('unverified')).toBeTruthy()
     expect(api.topActions).toHaveBeenCalledWith(5)
+    // B-8: invoice 61 was due 13 Oct, so the action is not just "due by" today
+    expect(screen.getByText(/act now · payment overdue since 13 Oct 2026/)).toBeTruthy()
+    expect(screen.getByRole('table')).toBeTruthy() // wide screen: the invoice table
+  })
+
+  it('shows invoices as cards on a phone instead of a sideways-scrolling table (B-6)', async () => {
+    window.matchMedia = (q) => ({ matches: q === '(max-width: 639px)', addEventListener() {}, removeEventListener() {} })
+    try {
+      api.listInvoices.mockResolvedValue([
+        { id: 61, invoice_no: 'SPC/26-27/0107', buyer_name: 'Kaveri', amount_total: 22921.5, due_date: '2026-10-13',
+          status: 'open', readiness_score: 70, risk_tier: 'Medium' },
+      ])
+      api.forecast.mockImplementation((d) => Promise.resolve(forecastFor(d, 22921.5)))
+      api.topActions.mockResolvedValue([])
+      renderAt('/', <Dashboard />)
+      const cards = await screen.findByRole('list', { name: 'Invoices' })
+      expect(within(cards).getByText('SPC/26-27/0107').getAttribute('href')).toBe('/invoices/61')
+      expect(within(cards).getByText('₹22,922')).toBeTruthy()
+      expect(within(cards).getByText('due 13 Oct 2026 (est.)')).toBeTruthy()
+      expect(within(cards).getByText('score 70')).toBeTruthy()
+    } finally {
+      delete window.matchMedia
+    }
   })
 
   it('shows an empty state with an upload link', async () => {
