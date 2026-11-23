@@ -26,7 +26,7 @@ cd backend; ..\..\VyapaarIQ\.venv\Scripts\python -m app.seed   # synthetic buyer
 ..\..\VyapaarIQ\.venv\Scripts\uvicorn app.main:app             # API on :8000 (keep this terminal open)
 # second terminal
 cd ..\VyapaarIQ-demo\frontend; npm run dev                  # UI on http://localhost:5173
-# after the demo, from the VyapaarIQ folder: git worktree remove ..\VyapaarIQ-demo
+# after the demo, from the VyapaarIQ folder (--force: generated files are untracked): git worktree remove --force ..\VyapaarIQ-demo
 ```
 
 Before going on stage:
