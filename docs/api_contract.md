@@ -1,6 +1,6 @@
 # VyapaarIQ API contract
 
-> **Status:** v1.0, written from the running backend (task T1.2). It needs sign-off from A0 / the owner before it is frozen.
+> **Status:** v1.0, written from the running backend (task T1.2). **Frozen: signed off by the owner on 2026-11-23.** Any change goes through a PR with a QA verdict and bumps the schema version (D-40).
 > **Schema:** `backend/app/schemas.py` `SCHEMA_VERSION = "1.1"` (returned by `/api/health`).
 > **Examples:** captured from the real API with `EXTRACTOR=fixture`, `VYAPAARIQ_TODAY=2026-11-23`, seeded history, and package `PKG07` (GRN missing). Long lists are trimmed with `…`.
 > Every risk, score, interest and forecast value is *illustrative / estimated / not legal advice*. The UI must keep those labels visible.

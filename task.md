@@ -10,10 +10,10 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 
 ## Day 0 (before Day 1, 30–45 min) — Setup, A0 + you
 
-- [ ] T0.1 Install Claude Code on Windows (`irm https://claude.ai/install.ps1 | iex`), run `claude --version`
-- [ ] T0.2 Confirm Agent Bridge works with 4 terminals (A0–A3); do one ping-pong message test
-- [ ] T0.3 Decide `ANTHROPIC_API_KEY` availability (API credit is separate from Claude Pro). If none, default `EXTRACTOR=text` + `fixture`
-- [~] T0.4 Create repo `vyapaariq`, add `BUILD_SPEC.md`, `task.md`, `.gitignore`, one branch per agent
+- [x] T0.1 Install Claude Code on Windows (`irm https://claude.ai/install.ps1 | iex`), run `claude --version` — done (DEV and QA sessions run in Claude Code)
+- [x] T0.2 Confirm Agent Bridge works with 4 terminals (A0–A3); do one ping-pong message test — done with 2 sessions (DEV + QA); the A0–A3 split was replaced by DEV builds / QA reviews / owner merges (D-29)
+- [x] T0.3 Decide `ANTHROPIC_API_KEY` availability (API credit is separate from Claude Pro). If none, default `EXTRACTOR=text` + `fixture` — **no key for the demo** (owner, D-35)
+- [x] T0.4 Create repo `vyapaariq`, add `BUILD_SPEC.md`, `task.md`, `.gitignore`, one branch per agent — done: private GitHub repo (D-31) with these files; short-lived feature branches per PR replace per-agent branches (D-29)
 - [x] T0.5 Write `CLAUDE.md` (project rules for all agents): stack, ownership table (§17), commands to run/test, "deterministic first, LLM second", no secrets in git
 - [x] T0.6 Verify toolchain: Python 3.11+, Node 20+, `pip install fastapi uvicorn sqlmodel pymupdf pydantic reportlab pyyaml rapidfuzz python-multipart pytest anthropic`, `npm create vite@latest`
 
@@ -29,7 +29,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T1.3 `backend/app/db`: SQLModel tables (§5), `init_db()`, session helper
 - [x] T1.4 `rules/config.yaml` skeleton: tolerances, penalties, thresholds, 45/15-day rules, e-way threshold, bank rate placeholder (marked VERIFY)
 - [x] T1.5 FastAPI app skeleton with `/api/health`, CORS, routers stubbed with fixture responses so frontend can start immediately
-- [ ] T1.6 Message A1/A2/A3 when contracts are frozen
+- [x] T1.6 Message A1/A2/A3 when contracts are frozen — `docs/api_contract.md` v1.0 **frozen, signed off by the owner 2026-11-23** (D-40); changes go through PR + QA review
 
 ### A1 Document intelligence
 - [x] T1.7 `samples/generate.py` v1: reportlab generator for invoice, PO, challan, e-way, GRN with fictional companies
@@ -90,8 +90,8 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T3.6 `GET /api/buyers/{id}/profile` per §8 with min-history rule + tests
 
 ### A1
-- [ ] T3.7 Run extraction over all packages; fix top 5 failure patterns (prompt tweaks, normalisation, layout handling)
-- [ ] T3.8 LLM explanation writer: takes check result + facts → 2-sentence plain-English explanation (cannot change status/score); cache results
+- [ ] T3.7 Run extraction over all packages; fix top 5 failure patterns (prompt tweaks, normalisation, layout handling) — `text` mode done via eval (truncated IRN, stamp text: D-16); **`claude` part deferred: no API key (D-35)**
+- [ ] T3.8 LLM explanation writer: takes check result + facts → 2-sentence plain-English explanation (cannot change status/score); cache results — **deferred: no API key (D-35)**; deterministic `detail` text is shown instead
 - [x] T3.9 Confidence calibration: threshold below which a field is "uncertain" and the check becomes `uncertain` rather than pass/fail
 - [x] T3.10 Processing-time logging per package
 
@@ -115,8 +115,8 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T4.5 Error handling: corrupt PDF, empty upload, unsupported type, extractor failure → clear API errors, partial results kept
 
 ### A1
-- [ ] T4.6 Edge cases: rotated scans, multi-invoice PDF, two documents in one file, Hindi/mixed-language stamps (best effort; log what fails)
-- [ ] T4.7 Re-run extraction accuracy on all packages; record numbers
+- [ ] T4.6 Edge cases: rotated scans, multi-invoice PDF, two documents in one file, Hindi/mixed-language stamps (best effort; log what fails) — **deferred**: scans need the `claude` extractor (D-35, D-36)
+- [ ] T4.7 Re-run extraction accuracy on all packages; record numbers — `text`/`fixture` recorded in `eval/report.md`; **`claude` deferred (D-35)**
 - [x] T4.8 Fixture fallback switch: if Claude extractor fails or key missing, auto-fall back to `text`, then `fixture` (with a visible "demo fallback" badge)
 
 ### A3
@@ -127,7 +127,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T4.13 Full run-through of all packages in the UI; log bugs in `docs/bugs.md` with owner tag
 
 ### A0
-- [ ] T4.14 Integration review: merge branches, resolve conflicts, run full test suite, fix cross-module contract bugs
+- [x] T4.14 Integration review: merge branches, resolve conflicts, run full test suite, fix cross-module contract bugs — done continuously: every change is a PR into `main` with a QA verdict and full tests (D-29)
 - [x] T4.15 `README.md`: setup ≤5 commands, env vars, `EXTRACTOR` modes, how to run seed/eval
 
 **Gate 4:** Entire flow works in the UI on real packages including follow-ups, forecast, dispute pack. No P0 bugs open.
@@ -143,7 +143,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 
 ### A2
 - [x] T5.4 Backend tests green; add regression tests for each bug fixed this week
-- [ ] T5.5 Performance pass: package processing < 60 s; cache LLM calls; avoid re-extracting unchanged files
+- [x] T5.5 Performance pass: package processing < 60 s; cache LLM calls; avoid re-extracting unchanged files — median ~13 ms per package (`eval/report.md`, logged per package: T3.10); LLM caching n/a without a key (D-35); re-extraction is not cached: at milliseconds per package it is not needed
 - [x] T5.6 Review rule config values against current law/portal process (MSMED s.15/16, 43B(h), ODR portal route, RBI bank rate); update `config.yaml` and the dispute-pack wording
 
 ### A3
