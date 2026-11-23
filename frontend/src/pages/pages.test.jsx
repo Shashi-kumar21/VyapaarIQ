@@ -16,7 +16,7 @@ vi.mock('../lib/api.js', () => ({
 const forecastFor = (days, atRisk) => ({
   as_of: '2026-11-23', days, window_end: days === 30 ? '2026-12-23' : '2027-01-22',
   totals: { open: 262921.5, expected_in_window: 240000, at_risk: atRisk, count: 2, excluded_count: 1, excluded_amount: 5 },
-  buckets: [], invoices: [], excluded: [], formula: 'expected = due + median late', note: 'Illustrative forecast.',
+  buckets: [], invoices: [], excluded: [{ id: 63, reason: 'duplicate_suspect (C14 failed)' }], formula: 'expected = due + median late', note: 'Illustrative forecast.',
 })
 
 beforeEach(() => vi.resetAllMocks())
@@ -41,6 +41,8 @@ describe('Dashboard', () => {
         status: 'open', readiness_score: 70, risk_tier: 'Medium' },
       { id: 62, invoice_no: null, buyer_name: null, amount_total: null, due_date: null,
         status: 'open', readiness_score: 45, risk_tier: 'High' },
+      { id: 63, invoice_no: 'DUP-1', buyer_name: 'Kaveri', amount_total: 99999, due_date: '2026-12-01',
+        status: 'open', readiness_score: 40, risk_tier: 'High' },
     ])
     api.forecast.mockImplementation((d) => Promise.resolve(forecastFor(d, d === 30 ? 22921.5 : 30000)))
     api.topActions.mockResolvedValue([
@@ -53,7 +55,12 @@ describe('Dashboard', () => {
     expect(screen.getByText('₹30,000')).toBeTruthy() // at risk 60 days
     expect(screen.getByText('Request GRN / acceptance acknowledgement').closest('a').getAttribute('href'))
       .toBe('/invoices/61')
-    expect(screen.getByText(/1 invoice\(s\) left out/)).toBeTruthy()
+    expect(screen.getByText(/1 invoice\(s\) left out \(/)).toBeTruthy()
+    // tier card leaves out the forecast-excluded duplicate (id 63): High = 1 invoice, unverified amount
+    expect(screen.getByText(/Excludes 1 invoice\(s\) left out of the forecast/)).toBeTruthy()
+    const tierCard = screen.getByText('Invoices by risk tier').closest('section').textContent
+    expect(tierCard).not.toContain('₹99,999') // the duplicate stays in the table, not in the totals
+    expect(tierCard).toContain('1 · ₹0') // High: only the unverified-amount invoice 62
     expect(screen.getByText('to verify')).toBeTruthy() // unverified amount is never shown as a number
     expect(screen.getByText('unverified')).toBeTruthy()
     expect(api.topActions).toHaveBeenCalledWith(5)
@@ -114,9 +121,29 @@ describe('New package', () => {
     fireEvent.change(screen.getByTestId('file-input'), { target: { files: [pdf('po.pdf')] } })
     fireEvent.click(screen.getByText('Process package'))
     await waitFor(() =>
-      expect(screen.getByRole('alert').textContent)
-        .toBe('Package #8 was uploaded but processing failed: No invoice found in the package.'))
-    expect(screen.getByText('Process package').disabled).toBe(false) // can retry
+      expect(screen.getByRole('alert').textContent).toMatch(
+        /^Package #8 was uploaded but processing failed: No invoice found in the package\. Retrying re-runs/))
+    // retry re-runs /process on the same package; it does not upload a duplicate
+    api.processPackage.mockResolvedValue({ invoice_id: 70, status: 'done' })
+    fireEvent.click(screen.getByText('Retry processing'))
+    expect(await screen.findByText('invoice page')).toBeTruthy()
+    expect(api.uploadPackage).toHaveBeenCalledTimes(1)
+    expect(api.processPackage.mock.calls.map((c) => c[0])).toEqual([8, 8])
+  })
+
+  it('uploads again after the inputs change following a failure', async () => {
+    api.uploadPackage.mockResolvedValueOnce({ id: 8 }).mockResolvedValueOnce({ id: 9 })
+    api.processPackage.mockRejectedValueOnce(new Error('No invoice found in the package.'))
+      .mockResolvedValueOnce({ invoice_id: 71 })
+    renderAt('/packages/new', <NewPackage />)
+    fireEvent.change(screen.getByTestId('file-input'), { target: { files: [pdf('po.pdf')] } })
+    fireEvent.click(screen.getByText('Process package'))
+    await screen.findByText('Retry processing')
+    fireEvent.change(screen.getByTestId('file-input'), { target: { files: [pdf('invoice.pdf')] } })
+    fireEvent.click(screen.getByText('Process package'))
+    expect(await screen.findByText('invoice page')).toBeTruthy()
+    expect(api.uploadPackage).toHaveBeenCalledTimes(2)
+    expect(api.processPackage.mock.calls.map((c) => c[0])).toEqual([8, 9])
   })
 
   it('disables Process until a file is added and lets you remove files', () => {

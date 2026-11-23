@@ -20,6 +20,9 @@ export default function NewPackage() {
   const [stage, setStage] = useState(null) // uploading | processing | done | failed
   const [error, setError] = useState(null)
   const [dragging, setDragging] = useState(false)
+  // Package already uploaded for the current inputs. A retry after a failed /process re-runs only
+  // /process; re-uploading would create a second invoice that C14 flags as a duplicate.
+  const [uploadedId, setUploadedId] = useState(null)
   const busy = stage === 'uploading' || stage === 'processing' || stage === 'done'
 
   function addFiles(list) {
@@ -27,6 +30,7 @@ export default function NewPackage() {
     const bad = files.map(fileProblem).filter(Boolean)
     const good = files.filter((f) => !fileProblem(f))
     setProblems(bad)
+    if (good.length) setUploadedId(null)
     setItems((cur) => [
       ...cur,
       ...good.filter((f) => !cur.some((c) => c.file.name === f.name && c.file.size === f.size))
@@ -36,20 +40,26 @@ export default function NewPackage() {
 
   async function process() {
     setError(null)
-    let pkg = null
+    let pkgId = uploadedId
     try {
-      setStage('uploading')
-      pkg = await api.uploadPackage(items.map((i) => i.file), {
-        buyerName: buyerName.trim() || undefined,
-        docTypes: items.map((i) => i.docType || null),
-      })
+      if (pkgId === null) {
+        setStage('uploading')
+        const pkg = await api.uploadPackage(items.map((i) => i.file), {
+          buyerName: buyerName.trim() || undefined,
+          docTypes: items.map((i) => i.docType || null),
+        })
+        pkgId = pkg.id
+        setUploadedId(pkgId)
+      }
       setStage('processing')
-      const res = await api.processPackage(pkg.id)
+      const res = await api.processPackage(pkgId)
       setStage('done')
       navigate(`/invoices/${res.invoice_id}`)
     } catch (e) {
       setStage('failed')
-      setError(pkg ? `Package #${pkg.id} was uploaded but processing failed: ${e.message}` : e.message)
+      setError(pkgId !== null
+        ? `Package #${pkgId} was uploaded but processing failed: ${e.message} Retrying re-runs processing only.`
+        : e.message)
     }
   }
 
@@ -98,14 +108,14 @@ export default function NewPackage() {
                   aria-label={`Document type for ${it.file.name}`}
                   value={it.docType}
                   disabled={busy}
-                  onChange={(e) => setItems((cur) => cur.map((c, j) => (j === idx ? { ...c, docType: e.target.value } : c)))}
+                  onChange={(e) => { setUploadedId(null); setItems((cur) => cur.map((c, j) => (j === idx ? { ...c, docType: e.target.value } : c))) }}
                   className="border border-slate-300 rounded-md px-2 py-1"
                 >
                   {DOC_TYPES.map(([v, label]) => <option key={v} value={v}>{label}</option>)}
                 </select>
                 <button
                   type="button" disabled={busy} aria-label={`Remove ${it.file.name}`}
-                  onClick={() => setItems((cur) => cur.filter((_, j) => j !== idx))}
+                  onClick={() => { setUploadedId(null); setItems((cur) => cur.filter((_, j) => j !== idx)) }}
                   className="text-slate-500 hover:text-red-700 px-2"
                 >✕</button>
               </li>
@@ -117,7 +127,7 @@ export default function NewPackage() {
       <label className="block text-sm">
         <span className="text-slate-700">Buyer name (optional)</span>
         <input
-          value={buyerName} disabled={busy} onChange={(e) => setBuyerName(e.target.value)}
+          value={buyerName} disabled={busy} onChange={(e) => { setUploadedId(null); setBuyerName(e.target.value) }}
           placeholder="Used only if the buyer cannot be read reliably from the invoice"
           className="mt-1 w-full border border-slate-300 rounded-md px-3 py-2"
         />
@@ -128,7 +138,7 @@ export default function NewPackage() {
           type="button" onClick={process} disabled={busy || items.length === 0}
           className="px-4 py-2 rounded-md bg-slate-900 text-white disabled:opacity-40"
         >
-          {busy ? 'Processing…' : 'Process package'}
+          {busy ? 'Processing…' : uploadedId !== null ? 'Retry processing' : 'Process package'}
         </button>
         {stage && stage !== 'failed' && (
           <span role="status" className="text-sm text-slate-600">{STAGES[stage]}</span>

@@ -14,6 +14,7 @@ from sqlmodel import Session, select
 from app.db.models import ActionRow, Buyer, CheckResult, Document, Followup, Invoice, Package
 from app.db.session import get_session
 from app.schemas import SCHEMA_VERSION, DocType
+from app.rules.config import get_config
 from app.scoring.buyer_profile import compute_profile
 from app.services import (PackageError, buyer_history, cash_forecast, create_package, dispute_pack,
                           generate_followups, process_package)
@@ -29,8 +30,10 @@ def _today() -> date:
 
 @router.get("/health")
 def health():
+    # uncertain_below: the UI's "needs human check" threshold comes from config, not the frontend.
     return {"status": "ok", "schema_version": SCHEMA_VERSION,
-            "extractor": os.environ.get("EXTRACTOR", "text"), "today": _today().isoformat()}
+            "extractor": os.environ.get("EXTRACTOR", "text"), "today": _today().isoformat(),
+            "uncertain_below": float(get_config()["extraction"]["uncertain_below"])}
 
 
 # ---------------------------------------------------------------- packages
