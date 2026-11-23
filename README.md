@@ -145,7 +145,7 @@ Copy [`.env.example`](.env.example) to `.env` and set only what you need. Never 
 | Variable | Default | Purpose |
 |---|---|---|
 | `EXTRACTOR` | `text` | `claude` \| `text` \| `fixture`. Falls back automatically along `claude → text → fixture`. |
-| `ANTHROPIC_API_KEY` | – | Needed only for `EXTRACTOR=claude`. |
+| `ANTHROPIC_API_KEY` | – | Needed only for `EXTRACTOR=claude`. `ANTHROPIC_AUTH_TOKEN` is also accepted in its place. |
 | `LLM_MODEL` | `claude-opus-5-5` | Model id for the `claude` extractor. Check it against current Anthropic docs. |
 | `LLM_EFFORT` | `medium` | `low` \| `medium` \| `high`. |
 | `VYAPAARIQ_DB` | `backend/data/vyapaariq.db` | SQLite file path. |
@@ -192,9 +192,9 @@ numbers):
 # upload the "GRN missing" package
 curl -F "files=@samples/out/PKG07/PKG07_invoice.pdf" -F "files=@samples/out/PKG07/PKG07_po.pdf" \
      -F "files=@samples/out/PKG07/PKG07_challan.pdf" http://127.0.0.1:8000/api/packages
-# -> {"id": 1, ...}
+# -> {"id": <package_id>, ...}
 
-curl -X POST http://127.0.0.1:8000/api/packages/1/process      # -> {"invoice_id": ..., "status": "done"}
+curl -X POST http://127.0.0.1:8000/api/packages/<package_id>/process   # -> {"invoice_id": ..., "status": "done"}
 curl http://127.0.0.1:8000/api/invoices/<invoice_id>             # checks, score, due date, actions, graph
 curl -X POST "http://127.0.0.1:8000/api/invoices/<invoice_id>/followups/generate?tone=firm"
 curl -o pack.pdf http://127.0.0.1:8000/api/invoices/<invoice_id>/dispute-pack
@@ -245,13 +245,17 @@ returns `uncertain` rather than guessing.
 
 ## Due date, interest and score
 
-- **Acceptance date** is the GRN date if there is one, otherwise the received date on the signed
-  challan, otherwise *deemed* acceptance (delivery + 15 days, configurable and labelled
+- **Acceptance date** is the GRN date if there is one, otherwise the received date on the
+  delivery challan, otherwise *deemed* acceptance (delivery + 15 days, configurable and labelled
   "deemed / estimated").
 - **Due date** is acceptance + min(written terms, 45) days, or acceptance + 15 days when there are
-  no written terms. The response always states which rule produced the date.
-- **Interest** is an estimate of MSMED s.16 interest: compound with monthly rests at 3 × the RBI
-  bank rate, on the delay beyond the due date. The formula is returned with the number.
+  no written terms. The 45-day cap and the 15-day default are MSMED rules for micro/small
+  suppliers. For a `medium` supplier, written terms apply as written, and without written terms
+  15 days is only an assumption (marked `uncertain`). The response always states which rule
+  produced the date.
+- **Interest** is an estimate of MSMED s.16 interest: compound with monthly rests (full 30-day
+  months compound, and the remaining days accrue pro rata) at 3 × the RBI bank rate, on the delay
+  beyond the due date. The formula is returned with the number.
 - **Score** is 100 − Σ penalties, clamped to 0–100, with tiers from config. It is an illustrative
   readiness score, not a prediction of whether the buyer will pay.
 
