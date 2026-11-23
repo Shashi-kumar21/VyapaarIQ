@@ -37,6 +37,17 @@ async function request(path, { method = 'GET', body, raw = false } = {}) {
   return raw ? res : res.json()
 }
 
+/** Blob -> string; uses FileReader where Blob.text() is missing (older engines, jsdom). */
+export function blobText(blob) {
+  if (typeof blob.text === 'function') return blob.text()
+  return new Promise((resolve, reject) => {
+    const r = new FileReader()
+    r.onload = () => resolve(r.result)
+    r.onerror = () => reject(r.error)
+    r.readAsText(blob)
+  })
+}
+
 function qs(params) {
   const p = new URLSearchParams()
   Object.entries(params || {}).forEach(([k, v]) => {
@@ -68,8 +79,19 @@ export const api = {
   generateFollowups: (id, { tone = 'friendly', channel = 'email' } = {}) =>
     request(`/invoices/${id}/followups/generate${qs({ tone, channel })}`, { method: 'POST' }),
   listFollowups: (id, filters) => request(`/invoices/${id}/followups${qs(filters)}`),
-  /** URL for the browser to download (PDF by default, or format="md"). */
+  /** URL of the dispute pack (PDF by default, or format="md"). */
   disputePackUrl: (id, format = 'pdf') => `${API_BASE}/api/invoices/${id}/dispute-pack${qs({ format })}`,
+  /**
+   * Fetch the dispute pack as {blob, filename, format}. Errors (404/409) become ApiError with the
+   * backend message instead of a raw JSON page. format: what the server actually sent
+   * ("pdf", "md" or "md-fallback" when the PDF render failed).
+   */
+  async disputePack(id, format = 'pdf') {
+    const res = await request(`/invoices/${id}/dispute-pack${qs({ format })}`, { raw: true })
+    const cd = res.headers.get('content-disposition') || ''
+    const filename = (/filename="([^"]+)"/.exec(cd) || [])[1] || `evidence-pack-${id}.${format}`
+    return { blob: await res.blob(), filename, format: res.headers.get('x-pack-format') || format }
+  },
 
   listBuyers: () => request('/buyers'),
   buyerProfile: (id) => request(`/buyers/${id}/profile`),

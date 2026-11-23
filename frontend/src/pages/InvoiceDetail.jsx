@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import DisputePackPanel from '../components/DisputePackPanel.jsx'
 import DocumentFields from '../components/DocumentFields.jsx'
 import EvidenceGraph from '../components/EvidenceGraph.jsx'
+import FollowupsPanel from '../components/FollowupsPanel.jsx'
 import { Card, ErrorBox, Loading, SeverityChip, TierBadge } from '../components/ui.jsx'
 import { api } from '../lib/api.js'
 import { date, inr } from '../lib/format.js'
@@ -14,6 +16,7 @@ const STATUS_STYLE = {
   fail: 'bg-red-100 text-red-800',
   missing: 'bg-red-100 text-red-800',
   uncertain: 'bg-amber-100 text-amber-900',
+  skipped: 'bg-slate-100 text-slate-600',
 }
 const SEV_ORDER = { blocker: 0, warning: 1, info: 2 }
 const BASIS = { grn: 'GRN date', challan_received: 'challan received date', deemed: 'deemed acceptance', unknown: 'unknown' }
@@ -25,6 +28,11 @@ const TABS = [
 async function load(id) {
   const [invoice, health] = await Promise.all([api.getInvoice(id), api.health()])
   return { invoice, threshold: health.uncertain_below ?? 0.6 }
+}
+
+/** "missing" on an info check means the check was skipped (e.g. C06/C07 with no challan). */
+function shownStatus(c) {
+  return c.status === 'missing' && c.severity === 'info' ? 'skipped' : c.status
 }
 
 function StatusChip({ status }) {
@@ -87,11 +95,13 @@ function Header({ inv, a }) {
   )
 }
 
+const rank = (c) => ({ pass: 2, skipped: 1 }[shownStatus(c)] ?? 0)
+
 function Checks({ checks }) {
   const sorted = [...checks].sort((x, y) =>
-    (x.status === 'pass') - (y.status === 'pass') || SEV_ORDER[x.severity] - SEV_ORDER[y.severity]
+    rank(x) - rank(y) || SEV_ORDER[x.severity] - SEV_ORDER[y.severity]
     || x.check_id.localeCompare(y.check_id))
-  const open = sorted.filter((c) => c.status !== 'pass').length
+  const open = sorted.filter((c) => !['pass', 'skipped'].includes(shownStatus(c))).length
   return (
     <div>
       <p className="text-sm text-slate-600 mb-2">{open} of {checks.length} checks need attention.</p>
@@ -102,10 +112,10 @@ function Checks({ checks }) {
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="font-medium">{c.name}</span>
-                <StatusChip status={c.status} />
-                {c.status !== 'pass' && <SeverityChip severity={c.severity} />}
+                <StatusChip status={shownStatus(c)} />
+                {!['pass', 'skipped'].includes(shownStatus(c)) && <SeverityChip severity={c.severity} />}
               </div>
-              <p className={c.status === 'pass' ? 'text-slate-500' : 'text-slate-700'}>{c.detail}</p>
+              <p className={['pass', 'skipped'].includes(shownStatus(c)) ? 'text-slate-500' : 'text-slate-700'}>{c.detail}</p>
               {c.explanation && <p className="text-slate-600 italic mt-0.5">{c.explanation}</p>}
             </div>
           </li>
@@ -205,16 +215,8 @@ export default function InvoiceDetail() {
           {tab === 'checks' && <Checks checks={a.checks} />}
           {tab === 'actions' && <ActionsAndScore a={a} />}
           {tab === 'documents' && <DocumentFields documents={inv.documents} threshold={threshold} />}
-          {tab === 'followups' && <p className="text-sm text-slate-500">Follow-up drafts arrive in the next PR (T4.9).</p>}
-          {tab === 'pack' && (
-            <div className="text-sm space-y-2">
-              <p className="text-slate-600">Preview arrives in the next PR (T4.10). Download now:</p>
-              <div className="flex gap-3">
-                <a className="px-3 py-1.5 rounded-md bg-slate-900 text-white" href={api.disputePackUrl(inv.id, 'pdf')}>PDF</a>
-                <a className="px-3 py-1.5 rounded-md border border-slate-300" href={api.disputePackUrl(inv.id, 'md')}>Markdown</a>
-              </div>
-            </div>
-          )}
+          {tab === 'followups' && <FollowupsPanel invoiceId={inv.id} />}
+          {tab === 'pack' && <DisputePackPanel invoiceId={inv.id} />}
         </div>
       </Card>
     </section>

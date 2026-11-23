@@ -120,8 +120,8 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T4.8 Fixture fallback switch: if Claude extractor fails or key missing, auto-fall back to `text`, then `fixture` (with a visible "demo fallback" badge)
 
 ### A3
-- [ ] T4.9 Follow-ups tab (draft cards, copy button, tone toggle; clearly "draft, not sent")
-- [ ] T4.10 Dispute pack tab (preview + download)
+- [x] T4.9 Follow-ups tab (draft cards, copy button, tone toggle; clearly "draft, not sent")
+- [x] T4.10 Dispute pack tab (preview + download)
 - [ ] T4.11 Dashboard forecast chart (30/60-day buckets) with formula tooltip
 - [ ] T4.12 Empty/loading/error states on every page; "illustrative risk, demo data" banners
 - [ ] T4.13 Full run-through of all packages in the UI; log bugs in `docs/bugs.md` with owner tag
