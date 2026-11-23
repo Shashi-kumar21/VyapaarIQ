@@ -2,7 +2,8 @@
 
 > One page and one diagram (task T5.11). The detail lives in [`BUILD_SPEC.md`](../BUILD_SPEC.md),
 > [`docs/api_contract.md`](api_contract.md) and [`eval/report.md`](../eval/report.md).
-> Sources and the decision log: [`docs/references.md`](references.md).
+> Sources and the decision log: [`docs/references.md`](references.md). The full guide with definitions:
+> [`docs/tutorial.md`](tutorial.md).
 > Demo on synthetic data with fictional companies. Scores are illustrative and legal figures are
 > estimates, not legal advice.
 
@@ -91,9 +92,27 @@ flowchart LR
   thresholds from `/api/health` (it falls back to 0.60 only if an older API omits the key).
 - **Explainable output.** Each score lists its penalties, each due date its rule, each interest
   figure its formula, and the forecast its heuristic.
-- **Local and simple.** SQLite, local files, no Docker, no auth (out of scope). Documents leave the
-  machine only if `EXTRACTOR=claude` is chosen, in which case they go to the Anthropic API for
-  extraction. Follow-ups are drafts and are never sent.
+- **Local and simple.** SQLite and local files; there is no user model and no login. Documents
+  leave the machine only if `EXTRACTOR=claude` is chosen, in which case they go to the Anthropic
+  API for extraction. Follow-ups are drafts and are never sent.
+- **A shareable demo without changing the app (D-41).** The hosted copy wraps the same app in
+  `backend/app/deploy.py`. Each part of it is off unless its env var is set:
+  - a shared-password gate (HTTP Basic auth plus HSTS, with `/api/health` left open),
+  - the built UI served from the same origin,
+  - a bootstrap that seeds the history and preloads two packages on an empty database.
+
+  Local development and the tests run without any of it.
+
+## Deployment
+
+| | Local (development, live demo) | Hosted (shareable link) |
+|---|---|---|
+| Processes | `uvicorn` on :8000 + `npm run dev` on :5173 | One Docker container (`Dockerfile`) serving the API **and** the built UI on `$PORT` |
+| Where | The laptop. The live demo runs from the tag `v0.1.1-demo` in a separate git worktree (`docs/demo_script.md`) | Render free web service from `render.yaml`; manual deploys only |
+| Data | `backend/data/` SQLite file + uploads (git-ignored) | `/tmp` SQLite; reset on every restart, then re-seeded with PKG01 and PKG20 preloaded |
+| Access | localhost | HTTP Basic auth (`DEMO_PASSWORD`, host secret) on everything except `/api/health`; HSTS; http → https |
+| Extractor / date | Any (`text` by default) | `fixture`, demo date 2026-11-23 |
+| Versions | `backend/requirements.txt`, `frontend/package-lock.json` | Pinned base images + `backend/constraints-runtime.txt` |
 
 ## Measured results (synthetic, 28 packages; see `eval/report.md`)
 
@@ -113,9 +132,17 @@ instead of guessing.
 
 - The numbers are on **synthetic** documents. Real invoices and scans are messier.
 - Scans need the `claude` extractor (an API key). Its accuracy is not measured yet.
-- The deemed-acceptance rule, the 45/15-day limits, the RBI bank rate and the ODR process must be
-  **verified against current law** before real use (they are marked VERIFY in config).
+- Legal values were researched on 2026-11-24 (`docs/tutorial.md` §14, L-1…L-4):
+  - The bank rate (5.75 %) was confirmed on the RBI's own release.
+  - MSMED ss.2(b), 15 and 16 were checked against the Act text.
+  - s.37(2)(g) is supported by every source found.
+  - The ODR launch and cut-over dates were confirmed.
+
+  Still open: the current ODR filing steps, any 2026 MSMED amendment, and a direct read of the
+  official ITA 2025 text. **Verify before real use.**
 - Buyer reliability uses only the supplier's own history, and the demo history is seeded.
+- The hosted demo reads only the 28 sample packages (`fixture`), sleeps when idle, and resets on
+  restart.
 - The product does not predict payment, send messages or file legal references.
 
 ## Next steps
