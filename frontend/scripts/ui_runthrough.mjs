@@ -12,7 +12,8 @@
 // compares checks / due date / basis with samples/ground_truth.json, opens all five tabs,
 // generates drafts, downloads the dispute-pack PDF, then screenshots Dashboard and Buyers at
 // desktop and phone width. Screenshots + results.json go to RT_OUT (default: OS temp dir).
-// Exit code 1 if any package has an issue.
+// Exit code 1 if any package has an issue, or Dashboard/Buyers log a console error or overflow
+// the page sideways at either width.
 import { chromium } from 'playwright'
 import fs from 'node:fs'
 import os from 'node:os'
@@ -108,6 +109,7 @@ async function main() {
 
   // dashboard + buyers, desktop and phone
   errors = [];
+  const pageIssues = [];
   for (const [name, url, wait] of [['dashboard', UI, 'Top actions due'], ['buyers', `${UI}/buyers`, 'Reliable']]) {
     for (const [vw, w, h] of [['desktop', 1366, 900], ['phone', 375, 800]]) {
       await page.setViewportSize({ width: w, height: h });
@@ -117,16 +119,19 @@ async function main() {
       await page.screenshot({ path: `${OUT}/${name}-${vw}.png`, fullPage: true });
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
       console.log(name, vw, 'horizontal overflow px:', overflow);
+      if (overflow > 0) pageIssues.push(`${name} ${vw}: ${overflow}px horizontal overflow`);
     }
   }
   const stats = await (await fetch(`${API}/forecast?days=30`)).json();
   console.log('forecast totals', JSON.stringify(stats.totals));
   console.log('dashboard console errors:', errors.length ? errors : 'none');
+  if (errors.length) pageIssues.push(`console: ${errors.join(' | ')}`);
   fs.writeFileSync(`${OUT}/results.json`, JSON.stringify(results, null, 1));
   await browser.close();
   const bad = results.filter((r) => r.issues.length)
   console.log(`${results.length - bad.length}/${results.length} packages OK; output in ${OUT}`)
-  process.exitCode = bad.length ? 1 : 0
+  if (pageIssues.length) console.log('PAGE ISSUES:', pageIssues.join('; '))
+  process.exitCode = bad.length || pageIssues.length ? 1 : 0
 }
 
 main()
