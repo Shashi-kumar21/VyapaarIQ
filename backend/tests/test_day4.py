@@ -27,6 +27,7 @@ def test_inr_grouping():
     assert inr(999) == "₹999"
     assert inr(-1500) == "-₹1,500"
     assert inr(None) == "-"
+    assert inr(399480, paise=True) == "₹3,99,480.00" and inr(0.5, paise=True) == "₹0.50"
     assert pdf_safe("₹5 C01 Invoice ↔ PO ≥") == "Rs. 5 C01 Invoice <-> PO >="
 
 
@@ -268,6 +269,16 @@ def test_api_unexpected_analysis_error_marks_package_failed(client, monkeypatch)
     r = client.post(f"/api/packages/{pid}/process")
     assert r.status_code == 422 and "Analysis failed" in r.json()["detail"]
     assert client.get(f"/api/packages/{pid}").json()["status"] == "failed"
+
+
+def test_c02_detail_keeps_case_and_indian_grouping(client):  # noqa: F811
+    inv_id = _upload_and_process(client, "PKG25")  # wrong GST math
+    c02 = next(c for c in client.get(f"/api/invoices/{inv_id}").json()["analysis"]["checks"]
+               if c["check_id"] == "C02")
+    assert c02["status"] == "fail" and c02["detail"].startswith("Taxable ₹") and " GST ₹" in c02["detail"]
+    import re
+
+    assert not re.search(r"₹\d{4,}|₹\d{1,3},\d{3},\d{3}", c02["detail"])  # no western grouping
 
 
 def test_api_dispute_pack_pdf_and_md(client):  # noqa: F811

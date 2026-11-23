@@ -89,9 +89,13 @@ def get_extractor(name: str) -> Extractor:
     raise ValueError(f"Unknown extractor {name!r}")
 
 
-def _usable(doc: Optional[BaseDoc], thr: float = 0.6) -> bool:
+def _usable(doc: Optional[BaseDoc], thr: Optional[float] = None) -> bool:
     if doc is None:
         return False
+    if thr is None:
+        from app.rules.config import get_config
+
+        thr = float(get_config()["extraction"]["uncertain_below"])
     for k in doc.__class__.model_fields:
         f = getattr(doc, k)
         if hasattr(f, "confidence") and f.value is not None and f.confidence >= thr:

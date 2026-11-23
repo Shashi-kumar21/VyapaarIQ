@@ -22,7 +22,9 @@ from app.matching.normalize import (
     party_similarity,
     refs_match,
 )
+from app.fmt import inr
 from app.rules.config import get_config
+from app.rules.due_date import MSMED_CLASSES
 from app.schemas import (
     F,
     BaseDoc,
@@ -93,7 +95,7 @@ def _combine(parts: list[CheckStatus]) -> CheckStatus:
 
 
 def _fmt(x: float) -> str:
-    return f"₹{x:,.2f}"
+    return inr(x, paise=True)
 
 
 class _Ctx:
@@ -183,7 +185,8 @@ def c02(x: _Ctx) -> Check:
     if status == PASS:
         detail = "Totals reconcile" + (" and are within the PO value." if x.po else ".")
     else:
-        detail = "; ".join(notes).capitalize() + "."
+        joined = "; ".join(notes)
+        detail = joined[:1].upper() + joined[1:] + "."
     return _mk("C02", status, BLOCKER, detail, ["inv", "po"] if x.po else ["inv"], **facts)
 
 
@@ -434,8 +437,8 @@ def c11(x: _Ctx) -> Check:
 def c12(x: _Ctx) -> Check:
     days, src, unc, _ = governing_terms(x)
     limit = int(x.cfg["msmed"]["max_terms_days"])
-    cls = x.cfg["supplier"]["enterprise_class"]
-    if cls not in ("micro", "small"):
+    cls = str(x.cfg["supplier"]["enterprise_class"]).lower()
+    if cls not in MSMED_CLASSES:
         return _mk("C12", PASS, WARNING, f"Not applicable to a {cls} enterprise.", [])
     if days is None:
         status = UNCERTAIN if unc else PASS
