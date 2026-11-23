@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { api } from '../lib/api.js'
 import { fileProblem } from '../lib/upload.js'
@@ -24,7 +24,7 @@ afterEach(cleanup)
 
 function renderAt(path, element) {
   return render(
-    <MemoryRouter initialEntries={[path]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <MemoryRouter initialEntries={[path]}>
       <Routes>
         <Route path="/" element={element} />
         <Route path="/packages/new" element={element} />

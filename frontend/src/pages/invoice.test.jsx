@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
-import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { api } from '../lib/api.js'
 import InvoiceDetail from './InvoiceDetail.jsx'
@@ -62,7 +62,7 @@ afterEach(cleanup)
 
 function renderInvoice(id = '61') {
   return render(
-    <MemoryRouter initialEntries={[`/invoices/${id}`]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <MemoryRouter initialEntries={[`/invoices/${id}`]}>
       <Routes><Route path="/invoices/:id" element={<InvoiceDetail />} /></Routes>
     </MemoryRouter>,
   )

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router'
 import DisputePackPanel from '../components/DisputePackPanel.jsx'
 import DocumentFields from '../components/DocumentFields.jsx'
 import EvidenceGraph from '../components/EvidenceGraph.jsx'

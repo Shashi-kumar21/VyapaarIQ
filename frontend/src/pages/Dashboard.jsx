@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import ForecastChart from '../components/ForecastChart.jsx'
 import { Card, Empty, ErrorBox, Loading, SeverityChip, Stat, TierBadge } from '../components/ui.jsx'
 import { api } from '../lib/api.js'
