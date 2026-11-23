@@ -60,6 +60,18 @@ def _doc_no_text(d: Optional[BaseDoc], thr: float) -> str:
     return ""
 
 
+_BAD_RANK = {CheckStatus.fail: 0, CheckStatus.uncertain: 1, CheckStatus.missing: 2}
+
+
+def _bad_checks(rel: list[Check]) -> list[Check]:
+    """Checks that explain a non-green edge, most serious first: fail, uncertain, missing.
+    Any severity counts (a failing info check also turns the edge red); a skipped check
+    (info + missing, e.g. C06/C07 with no challan) does not."""
+    bad = [c for c in rel if c.status != CheckStatus.passed
+           and not (c.severity.value == "info" and c.status == CheckStatus.missing)]
+    return sorted(bad, key=lambda c: _BAD_RANK.get(c.status, 3))  # stable: keeps EDGE_CHECKS order
+
+
 def _ordered_ids(bad: list, rel: list) -> list[str]:
     """Check ids for an edge, failing/uncertain ones first: the UI label shows the first id."""
     out: list[str] = []
@@ -119,7 +131,7 @@ def build_graph(pkg: ExtractedPackage, checks: list[Check], cfg: Optional[dict[s
         label = LABELS[node_id] + (f" {no_text}" if no_text else "")
         nodes.append(GraphNode(id=node_id, type=node_id, label=label, status=n_status,
                                doc_no=_doc_no(doc, thr)))
-        bad = [c for c in rel if c.status != CheckStatus.passed and c.severity.value != "info"]
+        bad = _bad_checks(rel)
         if node_id in party_bad and c04:
             bad.append(c04)
         note = (bad[0].detail if bad else (rel[0].detail if rel else ""))
