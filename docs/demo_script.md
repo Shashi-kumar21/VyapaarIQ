@@ -9,23 +9,30 @@ different, the setup differs: re-run it rather than reading out the numbers from
 Run the demo from the tag **`v0.1.1-demo`**. It has the evidence-graph click fix (B-11) and the
 phone layout. The older `v0.1-demo` draws a black focus box when the GRN link is clicked.
 
+The tag is checked out into a **separate folder** (a git worktree), so your own working copy
+stays on its branch. The commands assume the clone is called `VyapaarIQ`; adjust the name if yours differs.
+
 ```powershell
-# from the repo root, after the README quick start
-git fetch --tags; git checkout v0.1.1-demo   # detached HEAD is fine for a demo
+# from the repo root, after the README quick start (the .venv is reused from this clone)
+git fetch --tags; git worktree add ..\VyapaarIQ-demo v0.1.1-demo
+cd ..\VyapaarIQ-demo
+..\VyapaarIQ\.venv\Scripts\python samples\generate.py    # sample PDFs are not in git (deterministic)
+cd frontend; npm ci; cd ..
 $env:EXTRACTOR = "fixture"           # offline and reproducible; say so on stage
 $env:VYAPAARIQ_TODAY = "2026-11-23"  # pins "today" so due dates and interest match this script
 $env:VYAPAARIQ_DB = "$PWD\backend\data\demo.db"
 Remove-Item $env:VYAPAARIQ_DB -ErrorAction SilentlyContinue
-cd backend; ..\.venv\Scripts\python -m app.seed      # synthetic buyer history
-..\.venv\Scripts\uvicorn app.main:app                # API on :8000 (keep this terminal open)
+cd backend; ..\..\VyapaarIQ\.venv\Scripts\python -m app.seed   # synthetic buyer history
+..\..\VyapaarIQ\.venv\Scripts\uvicorn app.main:app             # API on :8000 (keep this terminal open)
 # second terminal
-cd frontend; npm run dev                             # UI on http://localhost:5173
+cd ..\VyapaarIQ-demo\frontend; npm run dev                  # UI on http://localhost:5173
+# after the demo, from the VyapaarIQ folder: git worktree remove ..\VyapaarIQ-demo
 ```
 
 Before going on stage:
 - Upload **PKG01** (clean) and **PKG20** (terms over 45 days) on *New package*, so the dashboard
   is not empty.
-- Keep `samples\out\PKG07\` open in Explorer: invoice, PO and challan, **no GRN**.
+- Keep `VyapaarIQ-demo\samples\out\PKG07\` open in Explorer: invoice, PO and challan, **no GRN**.
 - Browser at 100 % zoom, about 1366 px wide. Close other tabs.
 
 ## Script
