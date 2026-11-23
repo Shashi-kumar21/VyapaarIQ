@@ -59,14 +59,15 @@ def _norm(name: str, v: Any) -> Any:
 
 
 def field_outcome(name: str, want: Any, got_field, thr: float) -> str:
-    """correct | wrong (confident and different: the dangerous one) | uncertain | missed | spurious."""
+    """correct | correct_absent (both empty) | wrong (confident and different: the dangerous one) |
+    uncertain | missed | spurious."""
     st = state(got_field, thr)
     want_n = _norm(name, want)
     if st == "uncertain":
         return "uncertain"
     got_n = _norm(name, got_field.value)
     if want_n == got_n:
-        return "correct"
+        return "correct_absent" if want_n is None else "correct"
     if want_n is None:
         return "spurious"
     if got_n is None:
@@ -118,12 +119,16 @@ def run_mode(gt: dict, mode: str) -> dict:
 
         # checks
         got = {c.check_id: c.status.value for c in a.checks}
+        sev = {c.check_id: c.severity.value for c in a.checks}
         wrong_checks = []
         for cid, want in pkg["expected"]["checks"].items():
             g = got[cid]
             want_pos, got_pos = want in POSITIVE, g in POSITIVE
             c = checks[cid]
-            if g == "uncertain":
+            if want == g == "missing" and sev[cid] == "info":
+                # skipped (e.g. C06/C07 with no challan): a consequence of another check, not a detection
+                c["skipped"] += 1
+            elif g == "uncertain":
                 c["uncertain"] += 1
                 c["fn" if want_pos else "abstain_tn"] += 1
             elif want_pos and got_pos:
@@ -140,13 +145,15 @@ def run_mode(gt: dict, mode: str) -> dict:
             check_failures.append(f"{pid} {pkg['defects'] or ['clean']}: " + "; ".join(wrong_checks))
 
         # package-level
-        sev = {c.check_id: c.severity.value for c in a.checks}
         flagged = any(got[c] in POSITIVE and sev[c] == "blocker" for c in got)
         unsure_blocker = any(got[c] == "uncertain" and sev[c] == "blocker" for c in got)
+        # no confident blocker but an unreadable blocker check = the system abstained
+        verdict = "blocker" if flagged else "uncertain" if unsure_blocker else "clean"
         exp = pkg["expected"]
         pkg_rows.append({
             "package": pid, "defects": pkg["defects"], "scan": any(f["scan"] for f in pkg["files"]),
             "expected_blocker": exp["has_blocker"], "predicted_blocker": flagged, "uncertain_blocker": unsure_blocker,
+            "verdict": verdict,
             "due_expected": exp["due_date"], "due_got": a.due.due_date.isoformat() if a.due.due_date else None,
             "basis_expected": exp["acceptance_basis"], "basis_got": a.due.acceptance_basis,
             "score": a.score.score, "tier": a.score.tier.value, "ms": round(ms, 1),
@@ -163,7 +170,12 @@ def summarize(r: dict) -> dict:
         tot.update(c)
     n = sum(tot.values())
     pk = r["packages"]
-    blocker_ok = sum(p["expected_blocker"] == p["predicted_blocker"] for p in pk)
+    exp_v = lambda p: "blocker" if p["expected_blocker"] else "clean"  # noqa: E731
+    blocker_ok = sum(p["verdict"] == exp_v(p) for p in pk)
+    blocker_unsure = sum(p["verdict"] == "uncertain" for p in pk)
+    blocker_wrong = len(pk) - blocker_ok - blocker_unsure
+    defective = [p for p in pk if p["expected_blocker"]]
+    caught = sum(p["verdict"] == "blocker" for p in defective)
     due_ok = sum(p["due_expected"] == p["due_got"] for p in pk)
     basis_ok = sum(p["basis_expected"] == p["basis_got"] for p in pk)
     allc = Counter()
@@ -171,7 +183,7 @@ def summarize(r: dict) -> dict:
         allc.update(c)
     p, rec = _pr(allc["tp"], allc["fp"], allc["fn"])
     return {
-        "fields_total": n, "field_accuracy": tot["correct"] / n if n else None,
+        "fields_total": n, "field_accuracy": (tot["correct"] + tot["correct_absent"]) / n if n else None,
         "fields_wrong_confident": tot["wrong"] + tot["spurious"], "fields_uncertain": tot["uncertain"],
         "fields_missed": tot["missed"],
         "detect_precision": p, "detect_recall": rec, "checks_uncertain": allc["uncertain"],
@@ -180,7 +192,9 @@ def summarize(r: dict) -> dict:
             f"{cid} {pct(_pr(*(r['checks'].get(cid, {}).get(k, 0) for k in ('tp', 'fp', 'fn')))[0])} / "
             f"{pct(_pr(*(r['checks'].get(cid, {}).get(k, 0) for k in ('tp', 'fp', 'fn')))[1])}"
             for cid in ("C01", "C04")),
-        "packages": len(pk), "blocker_vs_clean_correct": blocker_ok, "due_date_correct": due_ok,
+        "packages": len(pk), "blocker_vs_clean_correct": blocker_ok, "blocker_uncertain": blocker_unsure,
+        "blocker_wrong": blocker_wrong, "defective_caught": caught, "defective": len(defective),
+        "fields_correct_absent": tot["correct_absent"], "due_date_correct": due_ok,
         "acceptance_basis_correct": basis_ok,
         "median_ms": statistics.median(x["ms"] for x in pk) if pk else None,
         "max_ms": max((x["ms"] for x in pk), default=None),
@@ -210,15 +224,22 @@ def write_report(results: list[dict], path: Path) -> str:
         L.append(f"| {label} | " + " | ".join(fn(s) for s in sums) + " |")
 
     row("Field extraction accuracy (exact, normalised)", lambda s: f"{pct(s['field_accuracy'])} of {s['fields_total']}")
+    row("… of which correct because the field is absent on both sides", lambda s: str(s["fields_correct_absent"]))
     row("**Wrong but confident** fields (the dangerous kind)", lambda s: str(s["fields_wrong_confident"]))
     row("Fields left `uncertain` (needs human check)", lambda s: str(s["fields_uncertain"]))
     row("Fields confidently reported absent but present", lambda s: str(s["fields_missed"]))
     row("Defect detection precision (all checks)", lambda s: pct(s["detect_precision"]))
-    row("Defect detection recall (uncertain counts as a miss)", lambda s: pct(s["detect_recall"]))
+    row("Defect detection recall (uncertain counts as a miss; skipped checks excluded)",
+        lambda s: pct(s["detect_recall"]))
     row("Cross-document match C01 / C04 (precision / recall)", lambda s: s["cross_doc"])
     row("False alarms (check failed on a good document)", lambda s: str(s["false_positives"]))
     row("Checks returned `uncertain`", lambda s: str(s["checks_uncertain"]))
-    row("Package blocker-vs-clean correct", lambda s: f"{s['blocker_vs_clean_correct']} / {s['packages']}")
+    row("Package verdict (blocker vs clean): confident and correct",
+        lambda s: f"{s['blocker_vs_clean_correct']} / {s['packages']}")
+    row("… abstained (a blocker check was `uncertain`, needs human check)",
+        lambda s: f"{s['blocker_uncertain']} / {s['packages']}")
+    row("… confidently wrong", lambda s: f"{s['blocker_wrong']} / {s['packages']}")
+    row("Defective packages flagged with a blocker", lambda s: f"{s['defective_caught']} / {s['defective']}")
     row("Due date correct", lambda s: f"{s['due_date_correct']} / {s['packages']}")
     row("Acceptance basis correct", lambda s: f"{s['acceptance_basis_correct']} / {s['packages']}")
     row("Median / max processing time per package", lambda s: f"{s['median_ms']:.0f} ms / {s['max_ms']:.0f} ms")
@@ -242,19 +263,25 @@ def write_report(results: list[dict], path: Path) -> str:
             L.append(f"| {dt} | {n} | {pct(c['correct'] / n if n else None)} | {c['wrong']} | {c['uncertain']} | "
                      f"{c['missed']} | {c['spurious']} |")
         L += ["", "### Defect detection by check", "",
-              "| Check | TP | FP | FN | TN | Uncertain | Precision | Recall |", "|---|---|---|---|---|---|---|---|"]
+              "| Check | TP | FP | FN | TN | Uncertain | Skipped | Precision | Recall |",
+              "|---|---|---|---|---|---|---|---|---|"]
         for cid in sorted(r["checks"]):
             c = Counter(r["checks"][cid])
             p, rec = _pr(c["tp"], c["fp"], c["fn"])
-            L.append(f"| {cid} | {c['tp']} | {c['fp']} | {c['fn']} | {c['tn']} | {c['uncertain']} | "
+            L.append(f"| {cid} | {c['tp']} | {c['fp']} | {c['fn']} | {c['tn']} | {c['uncertain']} | {c['skipped']} | "
                      f"{pct(p)} | {pct(rec)} |")
         L += ["", "_An `uncertain` result on a package that has the defect is counted as FN (a miss). On a "
-              "package without the defect it is counted in neither TN nor FP._"]
-        cm = Counter((p["expected_blocker"], p["predicted_blocker"]) for p in r["packages"])
+              "package without the defect it is counted in neither TN nor FP. *Skipped* = an info check reporting "
+              "`missing` because its input document is absent (e.g. C06/C07 with no challan). It agrees with the "
+              "ground truth but is not scored, since it is not an independent detection._"]
+        cm = Counter((p["expected_blocker"], p["verdict"]) for p in r["packages"])
+        unsure = [p["package"] for p in r["packages"] if p["verdict"] == "uncertain"]
         L += ["", "### Package classification (has a blocker?)", "",
-              "| | predicted blocker | predicted clean |", "|---|---|---|",
-              f"| **expected blocker** | {cm[(True, True)]} | {cm[(True, False)]} |",
-              f"| **expected clean** | {cm[(False, True)]} | {cm[(False, False)]} |", ""]
+              "| | predicted blocker | uncertain (abstained) | predicted clean |", "|---|---|---|---|",
+              f"| **expected blocker** | {cm[(True, 'blocker')]} | {cm[(True, 'uncertain')]} | {cm[(True, 'clean')]} |",
+              f"| **expected clean** | {cm[(False, 'blocker')]} | {cm[(False, 'uncertain')]} | {cm[(False, 'clean')]} |",
+              "", f"Abstained: {', '.join(unsure) or 'none'}. An abstention on a defective package is a miss "
+              "for the user until a person checks it.", ""]
         bad_due = [p for p in r["packages"] if p["due_expected"] != p["due_got"]]
         L += ["### Failure cases", ""]
         if not (r["check_failures"] or r["field_failures"] or bad_due):
@@ -279,7 +306,10 @@ def write_report(results: list[dict], path: Path) -> str:
           "`text` extractor at all, so it is always `uncertain` too. Together these account for every "
           "uncertain field on digital invoices.",
           "- The `claude` extractor is not in this report unless run with an API key (`--modes claude`).",
-          "- Processing time is measured in-process (no HTTP, no disk upload).", ""]
+          "- Processing time is measured in-process (no HTTP, no disk upload).",
+          "- C14 (duplicate) uses the ground-truth buyer code for its history lookup, so this harness does not "
+          "test buyer identification. The API resolves the buyer from the extracted GSTIN/name "
+          "(covered by `backend/tests/test_api.py`).", ""]
     text = "\n".join(L)
     path.write_text(text, encoding="utf-8")
     return text
@@ -294,7 +324,10 @@ def main(argv: Optional[list[str]] = None) -> int:
         print("samples/ground_truth.json missing", file=sys.stderr)
         return 2
     if not OUT_DIR.exists() or not any(OUT_DIR.glob("PKG*/*.pdf")):
-        subprocess.run([sys.executable, str(REPO / "samples" / "generate.py")], check=True)
+        # Not regenerated here: samples/generate.py also rewrites the committed ground_truth.json
+        # (scan PDFs are not byte-for-byte reproducible), which would change what is measured.
+        print("samples/out/ is empty. Run: .\\.venv\\Scripts\\python samples\\generate.py", file=sys.stderr)
+        return 2
     gt = json.loads(GT_PATH.read_text(encoding="utf-8"))
     results = [run_mode(gt, m.strip()) for m in args.modes.split(",") if m.strip()]
     out = Path(args.out)

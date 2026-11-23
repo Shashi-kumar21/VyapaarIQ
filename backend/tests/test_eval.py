@@ -41,10 +41,21 @@ def test_text_mode_is_never_confidently_wrong(ev, gt):
     assert s["fields_wrong_confident"] == 0, r["field_failures"][:5]
     assert s["false_positives"] == 0
     assert s["detect_precision"] == 1.0
-    # every package-level mistake is on a package with a scanned document
+    # abstaining is allowed, a confident wrong verdict is not; and only scanned packages abstain
+    assert s["blocker_wrong"] == 0
+    assert s["blocker_vs_clean_correct"] + s["blocker_uncertain"] == s["packages"]
     for p in r["packages"]:
-        if p["expected_blocker"] != p["predicted_blocker"] or p["due_expected"] != p["due_got"]:
+        if p["verdict"] == "uncertain" or p["due_expected"] != p["due_got"]:
             assert p["scan"], p
+
+
+def test_skipped_checks_are_not_scored_as_detections(ev, gt):
+    r = ev.run_mode(gt, "fixture")
+    # C06/C07 report "missing" (info) on the two packages without a challan: not true positives
+    assert r["checks"]["C06"]["skipped"] == 2 and r["checks"]["C07"]["skipped"] == 2
+    assert r["checks"]["C06"]["tp"] == 2  # the two real quantity-short packages
+    s = ev.summarize(r)
+    assert s["fields_correct_absent"] > 0  # reported separately, not hidden in the accuracy
 
 
 def test_report_is_written(ev, gt, tmp_path):
