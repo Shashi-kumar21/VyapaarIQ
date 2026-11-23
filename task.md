@@ -11,9 +11,9 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 ## Day 0 (before Day 1, 30–45 min) — Setup, A0 + you
 
 - [x] T0.1 Install Claude Code on Windows (`irm https://claude.ai/install.ps1 | iex`), run `claude --version` — done (DEV and QA sessions run in Claude Code)
-- [x] T0.2 Confirm Agent Bridge works with 4 terminals (A0–A3); do one ping-pong message test — done with 2 sessions (DEV + QA `shash-d2`); the A0–A3 split was replaced by DEV builds / QA reviews / owner merges (D-29)
+- [x] T0.2 Confirm Agent Bridge works with 4 terminals (A0–A3); do one ping-pong message test — done with 2 sessions (DEV + QA); the A0–A3 split was replaced by DEV builds / QA reviews / owner merges (D-29)
 - [x] T0.3 Decide `ANTHROPIC_API_KEY` availability (API credit is separate from Claude Pro). If none, default `EXTRACTOR=text` + `fixture` — **no key for the demo** (owner, D-35)
-- [~] T0.4 Create repo `vyapaariq`, add `BUILD_SPEC.md`, `task.md`, `.gitignore`, one branch per agent
+- [x] T0.4 Create repo `vyapaariq`, add `BUILD_SPEC.md`, `task.md`, `.gitignore`, one branch per agent — done: private GitHub repo (D-31) with these files; short-lived feature branches per PR replace per-agent branches (D-29)
 - [x] T0.5 Write `CLAUDE.md` (project rules for all agents): stack, ownership table (§17), commands to run/test, "deterministic first, LLM second", no secrets in git
 - [x] T0.6 Verify toolchain: Python 3.11+, Node 20+, `pip install fastapi uvicorn sqlmodel pymupdf pydantic reportlab pyyaml rapidfuzz python-multipart pytest anthropic`, `npm create vite@latest`
 
@@ -29,7 +29,7 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 - [x] T1.3 `backend/app/db`: SQLModel tables (§5), `init_db()`, session helper
 - [x] T1.4 `rules/config.yaml` skeleton: tolerances, penalties, thresholds, 45/15-day rules, e-way threshold, bank rate placeholder (marked VERIFY)
 - [x] T1.5 FastAPI app skeleton with `/api/health`, CORS, routers stubbed with fixture responses so frontend can start immediately
-- [x] T1.6 Message A1/A2/A3 when contracts are frozen — superseded: contracts frozen in `docs/api_contract.md` v1.0; changes go through PR + QA review
+- [~] T1.6 Message A1/A2/A3 when contracts are frozen — `docs/api_contract.md` v1.0 is in use (changes go through PR + QA review); **formal sign-off pending (owner)**
 
 ### A1 Document intelligence
 - [x] T1.7 `samples/generate.py` v1: reportlab generator for invoice, PO, challan, e-way, GRN with fictional companies
