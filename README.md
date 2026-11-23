@@ -16,6 +16,7 @@ invoice and cross-checks them. It shows the gaps and works out the MSMED Act tim
 - What to build: [`BUILD_SPEC.md`](BUILD_SPEC.md) · Plan and owners: [`task.md`](task.md)
 - REST API reference: [`docs/api_contract.md`](docs/api_contract.md) · Progress log: [`docs/progress.md`](docs/progress.md)
 - Architecture (one page + diagram): [`docs/architecture.md`](docs/architecture.md) · 3-minute demo: [`docs/demo_script.md`](docs/demo_script.md)
+- Sources and every design decision (who, when, why): [`docs/references.md`](docs/references.md)
 - Rules for contributors and AI agents: [`CLAUDE.md`](CLAUDE.md)
 
 ---
@@ -88,7 +89,7 @@ invoice and cross-checks them. It shows the gaps and works out the MSMED Act tim
 | REST API + SQLite: packages, invoices, graph, actions, buyers, forecast | ✅ tested |
 | Seed history, follow-up drafts, forecast, dispute pack | ✅ tested |
 | API contract ([`docs/api_contract.md`](docs/api_contract.md)) | ✅ v1.0 |
-| React frontend: dashboard, upload, invoice detail + evidence graph, follow-ups, dispute pack, buyers | ✅ tested (vitest + browser E2E) |
+| React frontend: dashboard, upload, invoice detail + evidence graph, follow-ups, dispute pack, buyers | ✅ tested (vitest unit/component tests + manual browser run-through) |
 | Evaluation script and report ([`eval/report.md`](eval/report.md)) | ✅ `text`: 0 confidently wrong fields, detection precision 100 % |
 
 ## Requirements
@@ -175,8 +176,8 @@ Every tolerance, penalty, threshold and legal parameter lives in
 |---|---|---|
 | `supplier.enterprise_class` | `small` | MSMED s.15/16 apply only to `micro` / `small`. |
 | `msmed.max_terms_days` / `no_agreement_days` | 45 / 15 | s.15 limits. |
-| `msmed.deemed_acceptance_offset_days` | 15 | Deemed acceptance = delivery + N days (**verify** against the Act). |
-| `rbi.bank_rate_pct` | 5.50 | **Verify** the current RBI bank rate before a demo. Interest uses 3× this rate. |
+| `msmed.deemed_acceptance_offset_days` | 0 | Deemed acceptance = delivery date + N days. 0 follows MSMED s.2(b): the delivery day itself when there is no written objection within 15 days (**verify** against the Act). |
+| `rbi.bank_rate_pct` | 5.75 (as of 2026-10-07) | **Verify** the current RBI bank rate before a demo. Interest uses 3× this rate. |
 | `extraction.uncertain_below` | 0.60 | Fields read below this confidence are `uncertain` and never used in calculations. |
 | `scoring.penalties` | blocker 25 (C10 = 30), warning 10, uncertain 5 | Score = 100 − Σ penalties. |
 | `scoring.tiers` | Low ≥ 85, Medium 60–84, High < 60 | |
@@ -247,7 +248,7 @@ returns `uncertain` rather than guessing.
 ## Due date, interest and score
 
 - **Acceptance date** is the GRN date if there is one, otherwise the received date on the
-  delivery challan, otherwise *deemed* acceptance (delivery + 15 days, configurable and labelled
+  delivery challan, otherwise *deemed* acceptance (the delivery date, per MSMED s.2(b); configurable and labelled
   "deemed / estimated").
 - **Due date** is acceptance + min(written terms, 45) days, or acceptance + 15 days when there are
   no written terms. The 45-day cap and the 15-day default are MSMED rules for micro/small
@@ -311,6 +312,7 @@ docs/
   api_contract.md        REST contract
   architecture.md        one-page architecture + diagram, results, limits
   demo_script.md         3-minute demo script with setup and recovery
+  references.md          sources (legal, rates) + design-decision log
   progress.md            one line per finished task
 frontend/                React + Vite + Tailwind: pages/, components/, lib/ (api client, formatting)
 eval/                    run_eval.py + report.md (field accuracy, check precision/recall, due dates, timing)

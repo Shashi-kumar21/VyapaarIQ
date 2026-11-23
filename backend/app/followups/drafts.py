@@ -136,10 +136,11 @@ def _body(step: int, tone: str, ctx: FollowupContext, send_on: date,
         subject = f"Second reminder: invoice {inv} overdue by {step} days"
         law = ""
         if ctx.msmed_applies:
+            deduction_rule = cfg.get("legal_refs", {}).get("buyer_deduction_rule", "the Income-tax Act")
             who = ("As a Udyam-registered micro/small supplier, we" if ctx.udyam_on_record
                    else "For reference, we")
             law = (f"{who} would note that the MSMED Act, 2006 (s.15) limits payment to micro and small "
-                   f"suppliers to {max_days} days from acceptance, and s.43B(h) of the Income-tax Act "
+                   f"suppliers to {max_days} days from acceptance, and {deduction_rule} "
                    "allows the buyer's deduction for such dues only on payment (please verify with your "
                    "advisers).")
         if firm:

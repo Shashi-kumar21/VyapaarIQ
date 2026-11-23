@@ -86,6 +86,9 @@ def test_followup_cadence_and_required_content():
     assert "the GRN or a written acceptance" in drafts[0].text  # D-7 asks the buyer for it
     assert buyer_requests(["C02", "C14"]) == []  # supplier-side fixes are not asked of the buyer
     assert "45 days" in drafts[3].text and "verify" in drafts[3].text  # D+10 cites the rule politely
+    # the Income-tax reference comes from config legal_refs (Income-tax Act, 2025 numbering)
+    assert "section 37(2)(g) of the Income-tax Act, 2025" in drafts[3].text
+    assert "s.43B(h) of the Income-tax Act" not in drafts[3].text
     assert "ODR portal" in drafts[4].text and "not legal advice" in drafts[4].text
 
 

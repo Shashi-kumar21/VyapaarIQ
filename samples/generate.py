@@ -30,10 +30,22 @@ OUT = ROOT / "out"
 GT_PATH = ROOT / "ground_truth.json"
 
 GST_RATE = 0.18
-EWAY_THRESHOLD = 50000
-DEEMED_OFFSET = 15
-MAX_TERMS = 45
-NO_TERMS_DAYS = 15
+
+
+def _rules() -> dict:
+    """Rule values from backend/app/rules/config.yaml, so the ground truth always uses the same
+    rules as the engine (CLAUDE.md rule 2). Read as YAML; the backend itself is not imported."""
+    import yaml
+
+    with (ROOT.parent / "backend" / "app" / "rules" / "config.yaml").open(encoding="utf-8") as fh:
+        return yaml.safe_load(fh)
+
+
+_CFG = _rules()
+EWAY_THRESHOLD = _CFG["eway"]["threshold_inr"]
+DEEMED_OFFSET = int(_CFG["msmed"]["deemed_acceptance_offset_days"])
+MAX_TERMS = int(_CFG["msmed"]["max_terms_days"])
+NO_TERMS_DAYS = int(_CFG["msmed"]["no_agreement_days"])
 ALL_CHECKS = [f"C{i:02d}" for i in range(1, 15)]
 
 # --------------------------------------------------------------------------

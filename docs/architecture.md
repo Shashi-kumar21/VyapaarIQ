@@ -2,6 +2,7 @@
 
 > One page and one diagram (task T5.11). The detail lives in [`BUILD_SPEC.md`](../BUILD_SPEC.md),
 > [`docs/api_contract.md`](api_contract.md) and [`eval/report.md`](../eval/report.md).
+> Sources and the decision log: [`docs/references.md`](references.md).
 > Demo on synthetic data with fictional companies. Scores are illustrative and legal figures are
 > estimates, not legal advice.
 
@@ -87,7 +88,7 @@ flowchart LR
   check" or `[to be verified]`. The evaluation measures this: 0 confidently wrong fields.
 - **Law is configuration.** The 45/15-day rules, deemed-acceptance offset, bank rate and every
   penalty live in `backend/app/rules/config.yaml` and are marked *verify*. The UI reads its
-  thresholds from `/api/health` and never hard-codes them.
+  thresholds from `/api/health` (it falls back to 0.60 only if an older API omits the key).
 - **Explainable output.** Each score lists its penalties, each due date its rule, each interest
   figure its formula, and the forecast its heuristic.
 - **Local and simple.** SQLite, local files, no Docker, no auth (out of scope). Documents leave the
@@ -103,7 +104,7 @@ flowchart LR
 | Defect detection precision / recall | 100 % / 88.5 % | 100 % / 100 % |
 | Package verdicts: correct / abstained / wrong | 24 / 4 / 0 | 28 / 0 / 0 |
 | Due date correct | 27 / 28 | 28 / 28 |
-| Median processing time | 12 ms | 11 ms |
+| Median processing time | tens of milliseconds (exact figure in `eval/report.md`; it varies per run) | same |
 
 Every abstention is on a phone-scan-style package: `text` cannot read a scan, so it says so
 instead of guessing.
