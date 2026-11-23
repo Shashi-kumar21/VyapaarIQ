@@ -81,3 +81,9 @@ Tests:
 
 - **vitest:** Dashboard phone cards, the overdue text, `deadlineText` cases, the chart/table toggle on phones, the trend glyph, and the seeded-invoice state.
 - **Run-through:** 28/28, exit 0.
+
+## Found while recording the backup video
+
+| ID | Sev | Owner | Where | Bug | Fix |
+|---|---|---|---|---|---|
+| B-11 | P1 | A3 | Evidence graph, any edge | A mouse click on an edge (the demo clicks the dashed GRN link) drew the browser's black focus box around the whole curve's bounding box. This is visible on stage and present in `v0.1-demo` | Edges and nodes use `focus:outline-none`. Keyboard focus (`:focus-visible`) thickens the edge pill or node border instead, so the graph stays keyboard-accessible. Checked in the browser: no box after a click, and the pill stroke is 3 px on Tab |

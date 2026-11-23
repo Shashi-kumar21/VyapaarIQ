@@ -40,10 +40,11 @@ function Node({ node, x, y, selected, onSelect }) {
       role="button" tabIndex={0} aria-label={`${node.label}: ${s.label}`}
       onClick={() => onSelect({ kind: 'node', node })}
       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onSelect({ kind: 'node', node })}
-      className="cursor-pointer focus:outline-none" data-status={node.status} data-node={node.id}
+      className="group cursor-pointer focus:outline-none" data-status={node.status} data-node={node.id}
     >
       <rect x={x} y={y} width={NODE_W} height={NODE_H} rx={10} fill={s.fill} stroke={s.stroke}
-            strokeWidth={selected ? 3 : 1.5} strokeDasharray={s.dashed ? '6 4' : undefined} />
+            strokeWidth={selected ? 3 : 1.5} strokeDasharray={s.dashed ? '6 4' : undefined}
+            className="group-focus-visible:[stroke-width:3]" />
       <circle cx={x + 22} cy={y + NODE_H / 2} r={11} fill={s.stroke} />
       <text x={x + 22} y={y + NODE_H / 2 + 4.5} textAnchor="middle" fontSize="13" fontWeight="700" fill="#fff">
         {s.icon}
@@ -87,7 +88,7 @@ export default function EvidenceGraph({ graph, checks = [] }) {
           const my = (y1 + y2) / 2
           const isSel = selKey === `e:${e.to}`
           return (
-            <g key={`${e.from}-${e.to}`} role="button" tabIndex={0} className="cursor-pointer"
+            <g key={`${e.from}-${e.to}`} role="button" tabIndex={0} className="group cursor-pointer focus:outline-none"
                aria-label={`${e.from} to ${e.to}: ${e.status}. ${e.note}`} data-edge={e.to} data-status={e.status}
                onClick={() => setSelected({ kind: 'edge', edge: e })}
                onKeyDown={(ev) => (ev.key === 'Enter' || ev.key === ' ') && setSelected({ kind: 'edge', edge: e })}>
@@ -95,7 +96,9 @@ export default function EvidenceGraph({ graph, checks = [] }) {
                     strokeWidth={isSel ? 4 : 2.5} strokeDasharray={st.dashed ? '7 5' : undefined} />
               {/* wide invisible hit area */}
               <path d={`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`} fill="none" stroke="transparent" strokeWidth={14} />
-              <rect x={mx - 52} y={my - 11} width={104} height={22} rx={11} fill="#fff" stroke={st.stroke} />
+              {/* no browser focus box around the whole curve (B-11); keyboard focus thickens the pill instead */}
+              <rect x={mx - 52} y={my - 11} width={104} height={22} rx={11} fill="#fff" stroke={st.stroke}
+                    className="group-focus-visible:[stroke-width:3]" />
               <text x={mx} y={my + 4} textAnchor="middle" fontSize="11" fill={st.stroke} fontWeight="600">
                 {e.status}{e.check_ids?.length ? ` · ${e.check_ids[0]}${e.check_ids.length > 1 ? '…' : ''}` : ''}
               </text>
