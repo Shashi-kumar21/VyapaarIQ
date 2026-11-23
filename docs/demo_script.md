@@ -68,4 +68,5 @@ Before going on stage:
 A captioned, silent recording of the whole script is made by `frontend/scripts/record_demo.mjs`.
 It uses the same setup, with PKG01 and PKG20 already uploaded, and produces a WebM of about 2 minutes.
 Narrate over it live if needed. Keep the video next to the slides, outside the repo, and never commit it.
+**Do not save it inside `VyapaarIQ-demo`**: `git worktree remove --force` deletes untracked files there.
 You can also record a run yourself with the Windows Game Bar (`Win+Alt+R`).
