@@ -105,8 +105,8 @@ reviewed by QA. All dates are 2026-11-23 unless stated.
 
 ## 3. Verify before any real use
 
-- [ ] Bank Rate on rbi.org.in (D-12, R-1)
-- [ ] Deemed-acceptance reading of s.2(b), and the 15-day default (within 15 days vs by the appointed day) (D-11, R-2)
-- [ ] s.37(2)(g) numbering in the Income-tax Act, 2025 text (D-13, R-4)
-- [ ] Current ODR portal filing process (R-5)
-- [ ] The opening statistic in `docs/demo_script.md` (needs a real, sourced figure)
+- [ ] Bank Rate on rbi.org.in (D-12, R-1): **checked by DEV 2026-11-24, confirmed on the primary source.** RBI PR 2026-2027/1264 (7 Oct 2026): MSF = Bank Rate = 5.75 % (`docs/tutorial.md` L-1). Owner to tick
+- [ ] Deemed-acceptance reading of s.2(b), and the 15-day default (within 15 days vs by the appointed day) (D-11, R-2): **checked 2026-11-24 against the Act text.** Deemed acceptance = the day of actual delivery; s.15 says pay *before* the appointed day (= within 15 days); s.16 interest runs from the appointed day (L-2). Open: whether a 2026 amendment has been enacted. Owner to tick
+- [ ] s.37(2)(g) numbering in the Income-tax Act, 2025 text (D-13, R-4): **checked 2026-11-24.** Every source found says 37(2)(g); none says 55(h). The official consolidated PDF could not be opened automatically, so read it once (L-3). Owner to tick
+- [ ] Current ODR portal filing process (R-5): **partly checked 2026-11-24.** Launched 27 Jun 2025; new cases filed on ODR from 15 Oct 2025 (Ministry annual report). The exact current steps are not verified; check on odr.msme.gov.in (L-4)
+- [ ] The opening statistic in `docs/demo_script.md` (needs a real, sourced figure): **candidates researched 2026-11-24**. S-1 is PIB, June 2026 (Samadhaan: 2,56,892 applications, ₹55,244.29 crore claimed); S-2 is GAME–FISME–C2FO (₹7.34 lakh crore, March 2024). See `docs/tutorial.md` §14. The owner chooses one
