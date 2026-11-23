@@ -5,12 +5,17 @@
  * and the dispute pack never disagree by a rupee: 22922.5 -> 22922, 22923.5 -> 22924.
  */
 export function roundHalfEven(x, digits = 0) {
-  const f = 10 ** digits
-  const scaled = x * f
-  const floor = Math.floor(scaled)
-  const diff = scaled - floor
-  if (Math.abs(diff - 0.5) < 1e-9) return (floor % 2 === 0 ? floor : floor + 1) / f
-  return Math.round(scaled) / f
+  const sign = x < 0 ? -1 : 1
+  const a = Math.abs(x)
+  // toFixed() rounds the exact binary value correctly but sends exact ties up. Find ties on the
+  // exact decimal expansion: 2.675 is really 2.67499… (-> 2.67, like Python), whereas 0.125 and
+  // 22922.5 are exact ties (-> even). Multiplying by 10^digits first would hide this.
+  const [, frac = ''] = a.toFixed(20).split('.')
+  const tie = /^50*$/.test(frac.slice(digits))
+  const up = Number(a.toFixed(digits)) // nearest; the larger one on an exact tie
+  if (!tie) return sign * up
+  const lastDigit = Math.round(up * 10 ** digits) % 10
+  return sign * (lastDigit % 2 === 0 ? up : up - 10 ** -digits)
 }
 
 /** Indian digit grouping, whole rupees: 240000 -> "₹2,40,000"; null -> "—". */

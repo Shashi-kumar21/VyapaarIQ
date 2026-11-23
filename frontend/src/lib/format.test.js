@@ -14,6 +14,8 @@ describe('inr', () => {
     expect(inr(22922.5)).toBe('₹22,922')
     expect(inr(22923.5)).toBe('₹22,924')
     expect(inr(0.125, { paise: true })).toBe('₹0.12')
+    expect(inr(2.675, { paise: true })).toBe('₹2.67') // not a real tie in binary; Python agrees
+    expect(inr(1.005, { paise: true })).toBe('₹1.00')
     expect(roundHalfEven(2.5)).toBe(2)
     expect(roundHalfEven(3.5)).toBe(4)
     expect(roundHalfEven(2.6)).toBe(3)
