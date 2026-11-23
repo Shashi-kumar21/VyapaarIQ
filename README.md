@@ -19,6 +19,7 @@ invoice and cross-checks them. It shows the gaps and works out the MSMED Act tim
 - Sources and every design decision (who, when, why): [`docs/references.md`](docs/references.md)
 - Full UI run-through of all packages and the bug log: [`docs/bugs.md`](docs/bugs.md)
 - Release checks for `v0.1-demo` (tests, secrets, dependency audit): [`docs/release.md`](docs/release.md)
+- Shareable hosted demo on Render (password-protected, synthetic data): [`docs/deploy.md`](docs/deploy.md)
 - Rules for contributors and AI agents: [`CLAUDE.md`](CLAUDE.md)
 
 ---
@@ -291,6 +292,7 @@ in **[`docs/api_contract.md`](docs/api_contract.md)**.
 backend/
   app/
     main.py              FastAPI app, CORS, startup
+    deploy.py            hosted demo only: password gate, same-origin UI, demo bootstrap (env-gated)
     api/routes.py        HTTP routes (thin)
     services.py          glue: upload, process, persistence, follow-ups, forecast, pack
     pipeline.py          extracted package → checks → score → due date → actions → graph

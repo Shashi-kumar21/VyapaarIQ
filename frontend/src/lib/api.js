@@ -1,5 +1,6 @@
 // Thin client for the VyapaarIQ API. Contract: docs/api_contract.md.
-// Base URL from VITE_API_BASE (see .env.example); defaults to the local backend.
+// Base URL from VITE_API_BASE (see .env.example); defaults to the local backend. Use "/" for a
+// build served by the backend itself (same origin, docs/deploy.md).
 
 export const API_BASE = (import.meta.env.VITE_API_BASE || 'http://localhost:8000').replace(/\/$/, '')
 
@@ -23,7 +24,7 @@ async function request(path, { method = 'GET', body, raw = false } = {}) {
   try {
     res = await fetch(`${API_BASE}/api${path}`, { method, body })
   } catch {
-    throw new ApiError(0, `Cannot reach the backend at ${API_BASE}. Is uvicorn running?`)
+    throw new ApiError(0, `Cannot reach the backend at ${API_BASE || window.location.origin}. Is uvicorn running?`)
   }
   if (!res.ok) {
     let payload = null

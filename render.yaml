@@ -1,0 +1,17 @@
+# Render Blueprint for the hosted demo (docs/deploy.md, owner decision D-41).
+# One free web service built from ./Dockerfile. The demo defaults (fixture extractor, pinned date,
+# bootstrap, same-origin UI) are baked into the image; only the login is set here.
+services:
+  - type: web
+    name: vyapaariq-demo
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health   # the only path without the password
+    autoDeploy: false              # deploy on purpose, after a PR is merged and checked
+    envVars:
+      - key: DEMO_USER
+        value: demo
+      - key: DEMO_PASSWORD         # secret: entered in the Render dashboard, never committed
+        sync: false
