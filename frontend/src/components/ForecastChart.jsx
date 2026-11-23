@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { inr } from '../lib/format.js'
+import { PHONE, useMediaQuery } from '../lib/useMediaQuery.js'
 
 // Cash-at-risk forecast chart (BUILD_SPEC §9, task T4.11).
 // Form: one series of amounts over ordered buckets -> horizontal bars in their natural order,
@@ -32,9 +33,8 @@ function barPath(x0, y, w, h, r = 4) {
 export default function ForecastChart({ forecast }) {
   const [hover, setHover] = useState(null)
   // On a phone the 1000-unit chart scales its text below 7px, so the table is the default view there.
-  const [table, setTable] = useState(() => {
-    try { return window.matchMedia('(max-width: 639px)').matches } catch { return false }
-  })
+  const phone = useMediaQuery(PHONE)
+  const [table, setTable] = useState(phone)
   const buckets = forecast.buckets.filter((b) => BUCKET_LABEL[b.key])
   const max = Math.max(...buckets.map((b) => b.amount), 0)
   const open = forecast.totals.open || 0
@@ -45,6 +45,7 @@ export default function ForecastChart({ forecast }) {
 
   return (
     <div>
+      {!(phone && table) && (
       <div className="overflow-x-auto">
         <svg viewBox={`0 0 ${W} ${H}`} className="w-full min-w-[480px] h-auto" role="img"
              aria-label={`Open receivables by expected payment bucket, as of ${forecast.as_of}`}>
@@ -73,12 +74,13 @@ export default function ForecastChart({ forecast }) {
           })}
         </svg>
       </div>
+      )}
       <div className="min-h-5 text-xs text-slate-700" aria-live="polite">{hover ? hover.tip : ' '}</div>
       <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 mt-1">
         <abbr title={forecast.formula} className="cursor-help">How is this calculated?</abbr>
         <span>As of {forecast.as_of} · buckets by expected payment date</span>
         <button type="button" onClick={() => setTable((t) => !t)} className="underline">
-          {table ? 'Hide table' : 'Show as table'}
+          {table ? (phone ? 'Show chart' : 'Hide table') : 'Show as table'}
         </button>
       </div>
       {table && (

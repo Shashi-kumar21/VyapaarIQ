@@ -141,6 +141,15 @@ describe('Invoice detail', () => {
     expect(screen.getByText('buyer unverified')).toBeTruthy()
   })
 
+  it('shows a calm state, not an error, for a seeded invoice without checks (B-10)', async () => {
+    api.getInvoice.mockResolvedValue({ ...INVOICE, id: 3, invoice_no: 'SPC/HIST/003', synthetic: true, analysis: null })
+    renderInvoice('3')
+    expect(await screen.findByText('Invoice SPC/HIST/003 has no checks')).toBeTruthy()
+    expect(screen.getByText(/seeded \(synthetic\) payment history/)).toBeTruthy()
+    expect(screen.queryByText('Try again')).toBeNull()
+    expect(screen.queryByRole('alert')).toBeNull()
+  })
+
   it('shows a clear not-found error', async () => {
     api.getInvoice.mockRejectedValue(Object.assign(new Error('Invoice not found.'), { status: 404 }))
     renderInvoice('999')

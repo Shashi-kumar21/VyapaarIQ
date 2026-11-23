@@ -11,7 +11,8 @@ const LABEL_STYLE = {
   Slow: { icon: '!', cls: 'bg-red-100 text-red-800' },
   'Insufficient history': { icon: '–', cls: 'bg-slate-100 text-slate-600' },
 }
-const TREND = { worsening: '↗ worsening', improving: '↘ improving', stable: '→ stable' }
+// U+FE0E asks for the text glyph: without it Windows draws some arrows as colour emoji (B-9).
+const TREND = { worsening: '\u2197\uFE0E worsening', improving: '\u2198\uFE0E improving', stable: '\u2192\uFE0E stable' }
 
 function num(x, suffix = '') {
   return x === null || x === undefined ? '—' : `${x}${suffix}`

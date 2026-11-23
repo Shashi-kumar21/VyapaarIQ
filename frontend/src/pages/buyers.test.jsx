@@ -33,7 +33,7 @@ describe('Buyers page', () => {
     expect(within(slow).getByText('Slow')).toBeTruthy()
     expect(within(slow).getByText('42.5')).toBeTruthy()
     expect(within(slow).getByText('70%')).toBeTruthy()
-    expect(within(slow).getByText('↗ worsening')).toBeTruthy()
+    expect(within(slow).getByText('↗︎ worsening')).toBeTruthy() // text glyph, never a colour emoji (B-9)
     const fresh = container.querySelector('[data-buyer="9"]')
     expect(within(fresh).getByText('Insufficient history')).toBeTruthy()
     expect(within(fresh).getAllByText('—').length).toBeGreaterThanOrEqual(3)

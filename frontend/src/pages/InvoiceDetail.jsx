@@ -4,8 +4,9 @@ import DisputePackPanel from '../components/DisputePackPanel.jsx'
 import DocumentFields from '../components/DocumentFields.jsx'
 import EvidenceGraph from '../components/EvidenceGraph.jsx'
 import FollowupsPanel from '../components/FollowupsPanel.jsx'
-import { Card, ErrorBox, Loading, SeverityChip, TierBadge } from '../components/ui.jsx'
+import { Card, Empty, ErrorBox, Loading, SeverityChip, TierBadge } from '../components/ui.jsx'
 import { api } from '../lib/api.js'
+import { deadlineText } from '../lib/deadline.js'
 import { date, inr } from '../lib/format.js'
 import { useApi } from '../lib/useApi.js'
 
@@ -148,7 +149,7 @@ function ActionsAndScore({ a }) {
                   <p className="font-medium">{x.title}</p>
                   <p className="text-slate-600">{x.rationale}</p>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    {x.check_id} · owner: {x.owner_role.replace('_', ' ')} · due by {date(x.due_by)}
+                    {x.check_id} · owner: {x.owner_role.replace('_', ' ')} · {deadlineText(x.due_by, a.due?.due_date)}
                   </p>
                 </div>
               </li>
@@ -195,7 +196,18 @@ export default function InvoiceDetail() {
   const { invoice: inv, threshold } = data
   const a = inv.analysis
   if (!a) {
-    return <ErrorBox error={new Error('This invoice has not been processed yet.')} onRetry={reload} />
+    // B-10: seeded history invoices (and any invoice without an analysis) have nothing to check;
+    // that is a state, not an error, so no "Try again".
+    return (
+      <div className="space-y-3">
+        <Empty title={`Invoice ${inv.invoice_no || `#${inv.id}`} has no checks`}>
+          {inv.synthetic
+            ? 'It is part of the seeded (synthetic) payment history used for buyer profiles, so it has no document package.'
+            : 'Its document package has not been processed yet. Upload and process it on New package.'}
+        </Empty>
+        <Link to="/" className="text-blue-700 underline text-sm">Back to the dashboard</Link>
+      </div>
+    )
   }
 
   return (

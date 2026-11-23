@@ -62,3 +62,20 @@ A second full run after the fixes was clean: 28/28, no issues.
 - **Duplicate invoices** (PKG23/24 re-use 0117/0118) appear twice in the invoice table. C14 flags them, and the forecast and tier card leave them out ("2 invoice(s) left out"), as D-7 intends.
 - **PKG27 changes the dashboard** once uploaded (due 17 Nov 2026, now overdue, D-11). The demo script does not use it, and its recovery table says so.
 - **High tier shows 0 invoices** while ₹80 lakh is "at risk". The tier comes from the readiness score; at-risk also counts invoices whose expected payment date has passed or falls after the window (D-6). Both labels say what they measure.
+
+## P2 fixes after the demo tag
+
+All P2 items from the run-through are fixed. B-9 and B-10 were found while checking the React Router 7 upgrade.
+
+| ID | Fix |
+|---|---|
+| B-6 | Below 640 px the Dashboard lists invoices as **cards**: number and tier, buyer, then amount · due (est.) · score. There is no sideways table |
+| B-7 | On a phone the forecast **table replaces the chart**. A "Show chart" button brings the chart back |
+| B-8 | An action whose invoice due date has passed reads **"act now · payment overdue since 13 Oct 2026"** instead of "due by <today>". This applies on the Dashboard and in the Actions tab (`lib/deadline.js`) |
+| B-9 | Trend arrows carry U+FE0E (text presentation), so ↗ → ↘ all render as text glyphs on Windows |
+| B-10 | An invoice without an analysis, such as seeded history, shows a calm "has no checks" state that explains why. There is no error box and no "Try again" |
+
+Tests:
+
+- **vitest:** Dashboard phone cards, the overdue text, `deadlineText` cases, the chart/table toggle on phones, the trend glyph, and the seeded-invoice state.
+- **Run-through:** 28/28, exit 0.
