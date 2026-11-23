@@ -67,11 +67,12 @@ def analyze(pkg: ExtractedPackage, *, duplicate_lookup: Optional[DuplicateLookup
     if total is not None and total >= 0:
         interest = estimate_interest(total, due.due_date, today, cfg)
     else:
+        reason = ("the invoice total is negative (credit note?); check the document" if total is not None
+                  else "the invoice total could not be read reliably (needs human check)")
         bank = float(cfg["rbi"]["bank_rate_pct"]) * float(cfg["msmed"]["interest_multiplier"])
         interest = InterestEstimate(principal=0.0, due_date=due.due_date, as_of=today, days_late=0,
                                     annual_rate_pct=round(bank, 4), interest=None, computable=False,
-                                    formula="Not computable: the invoice total could not be read reliably "
-                                            "(needs human check).")
+                                    formula=f"Not computable: {reason}.")
     extractors = {d.extractor for d in pkg.documents if d.extractor}
     return Analysis(
         invoice_no=known_value(inv.invoice_no, thr) or known_value(inv.doc_no, thr),
@@ -82,7 +83,7 @@ def analyze(pkg: ExtractedPackage, *, duplicate_lookup: Optional[DuplicateLookup
         due=due,
         interest=interest,
         actions=build_actions(checks, due, today=today, cfg=cfg),
-        graph=build_graph(pkg, checks),
+        graph=build_graph(pkg, checks, cfg),
         extractor_used=",".join(sorted(extractors)) or None,
         fallback_used=any(getattr(d, "fallback", False) for d in pkg.documents),
     )
