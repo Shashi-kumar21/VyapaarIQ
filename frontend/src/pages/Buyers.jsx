@@ -1,4 +1,5 @@
-import { Card, Empty, ErrorBox, Loading } from '../components/ui.jsx'
+import { Users } from 'lucide-react'
+import { Card, Empty, ErrorBox, Loading, PageHeader } from '../components/ui.jsx'
 import { api } from '../lib/api.js'
 import { useApi } from '../lib/useApi.js'
 
@@ -6,10 +7,10 @@ import { useApi } from '../lib/useApi.js'
 // Labels carry an icon + text, never colour alone; history is labelled synthetic demo data.
 
 const LABEL_STYLE = {
-  Reliable: { icon: '✓', cls: 'bg-green-100 text-green-800' },
-  Mixed: { icon: '~', cls: 'bg-amber-100 text-amber-900' },
-  Slow: { icon: '!', cls: 'bg-red-100 text-red-800' },
-  'Insufficient history': { icon: '–', cls: 'bg-slate-100 text-slate-600' },
+  Reliable: { icon: '✓', cls: 'bg-green-50 text-green-800 ring-green-600/20' },
+  Mixed: { icon: '~', cls: 'bg-amber-50 text-amber-900 ring-amber-600/20' },
+  Slow: { icon: '!', cls: 'bg-red-50 text-red-800 ring-red-600/20' },
+  'Insufficient history': { icon: '–', cls: 'bg-paper text-muted ring-line' },
 }
 // U+FE0E asks for the text glyph: without it Windows draws some arrows as colour emoji (B-9).
 const TREND = { worsening: '\u2197\uFE0E worsening', improving: '\u2198\uFE0E improving', stable: '\u2192\uFE0E stable' }
@@ -21,7 +22,7 @@ function num(x, suffix = '') {
 export function LabelChip({ label }) {
   const s = LABEL_STYLE[label] || LABEL_STYLE['Insufficient history']
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${s.cls}`}>
+    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${s.cls}`}>
       <span aria-hidden="true">{s.icon}</span>{label}
     </span>
   )
@@ -39,45 +40,44 @@ export default function Buyers() {
   const data = res.buyers
   const anySynthetic = data.some((b) => b.synthetic)
   return (
-    <section className="space-y-4">
-      <h1 className="text-2xl font-semibold">Buyers</h1>
-      <p className="text-sm text-slate-600 max-w-3xl">
-        How each buyer has paid <b>this supplier</b> in the past: days late against the due date. It is not
+    <section className="space-y-5">
+      <PageHeader title="Buyers" tool="buyers">
+        How each buyer has paid <b className="text-ink">this supplier</b> in the past: days late against the due date. It is not
         a credit rating and does not predict whether a buyer will pay. A buyer needs enough paid
         {res.minHistory ? ` invoices for a label (minimum ${res.minHistory}, from the rule config).` : ' invoices for a label.'}
-      </p>
+      </PageHeader>
       {anySynthetic && (
-        <p role="note" className="text-sm bg-amber-50 text-amber-900 rounded-lg px-3 py-2">
+        <p role="note" className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm text-amber-900">
           Payment history marked “synthetic” is seeded demo data, not real payments.
         </p>
       )}
 
       {data.length === 0 ? (
-        <Empty title="No buyers yet">
+        <Empty title="No buyers yet" icon={Users}>
           Buyers appear after a package is processed, or run <code>python -m app.seed</code> for demo history.
         </Empty>
       ) : (
         <Card>
-          <div className="overflow-x-auto">
+          <div className="-mx-5 -mt-5 overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="text-left text-xs uppercase text-slate-500 border-b border-slate-200 whitespace-nowrap">
+              <thead className="whitespace-nowrap border-b border-line bg-paper text-left text-xs uppercase tracking-wide text-muted">
                 <tr>
-                  <th className="py-2 pr-3">Buyer</th><th className="pr-3">Reliability</th>
-                  <th className="pr-3 text-right">Invoices</th><th className="pr-3 text-right">Median days late</th>
-                  <th className="pr-3 text-right">Paid late</th><th className="pr-3 text-right">&gt; 30 days late</th>
-                  <th className="pr-3">Trend</th>
+                  <th className="py-2.5 pl-5 pr-3 font-medium">Buyer</th><th className="pr-3 font-medium">Reliability</th>
+                  <th className="pr-3 text-right font-medium">Invoices</th><th className="pr-3 text-right font-medium">Median days late</th>
+                  <th className="pr-3 text-right font-medium">Paid late</th><th className="pr-3 text-right font-medium">&gt; 30 days late</th>
+                  <th className="pr-5 font-medium">Trend</th>
                 </tr>
               </thead>
               <tbody style={{ fontVariantNumeric: 'tabular-nums' }}>
                 {data.map((b) => {
                   const p = b.profile
                   return (
-                    <tr key={b.id} className="border-b border-slate-100 last:border-0 align-top" data-buyer={b.id}>
-                      <td className="py-2 pr-3">
-                        <div className="font-medium">{b.name}</div>
-                        <div className="text-xs text-slate-500">
+                    <tr key={b.id} className="border-b border-line align-top last:border-0 hover:bg-paper/70" data-buyer={b.id}>
+                      <td className="py-2.5 pl-5 pr-3">
+                        <div className="font-medium text-ink">{b.name}</div>
+                        <div className="font-mono text-xs text-muted">
                           {b.gstin || 'GSTIN not recorded'}
-                          {b.synthetic && <span className="ml-2 px-1.5 rounded bg-slate-100 text-slate-600">synthetic</span>}
+                          {b.synthetic && <span className="ml-2 rounded bg-paper px-1.5 font-sans text-muted ring-1 ring-inset ring-line">synthetic</span>}
                         </div>
                       </td>
                       <td className="pr-3 py-2"><LabelChip label={p.label} /></td>
@@ -85,7 +85,7 @@ export default function Buyers() {
                       <td className="pr-3 py-2 text-right">{num(p.median_days_late)}</td>
                       <td className="pr-3 py-2 text-right">{num(p.pct_paid_late, '%')}</td>
                       <td className="pr-3 py-2 text-right">{num(p.pct_paid_over_30_late, '%')}</td>
-                      <td className="pr-3 py-2 whitespace-nowrap" title={p.trend_detail || ''}>
+                      <td className="whitespace-nowrap py-2 pr-5" title={p.trend_detail || ''}>
                         {p.trend ? TREND[p.trend] || p.trend : '—'}
                       </td>
                     </tr>
@@ -94,7 +94,7 @@ export default function Buyers() {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-slate-500 mt-3">{data[0]?.profile?.note}</p>
+          <p className="mt-4 text-xs text-muted">{data[0]?.profile?.note}</p>
         </Card>
       )}
     </section>

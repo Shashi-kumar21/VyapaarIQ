@@ -1,13 +1,45 @@
 @import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/jetbrains-mono";
 
-/* Status colours shared by chips, graph nodes and banners (§13 UI rules). */
+/* VyapaarIQ design tokens (D-43).
+   Layout: an ink sidebar "ledger spine" with the working area on cool paper; cards are white
+   sheets. One accent (royal blue) for interaction; status colours are separate and always come
+   with an icon or a word, never colour alone. Fonts are bundled (works offline for the demo). */
 @theme {
+  --font-sans: "Inter Variable", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans Variable", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, Consolas, monospace;
+
+  --color-ink: #101b30;        /* sidebar, headings */
+  --color-ink-2: #1b2a47;      /* sidebar hover / active */
+  --color-paper: #f4f6fb;      /* page background */
+  --color-surface: #ffffff;    /* cards */
+  --color-line: #e2e7f0;       /* borders, dividers */
+  --color-muted: #5d6781;      /* secondary text */
+  --color-accent: #2f5bea;     /* links, primary buttons, focus */
+  --color-accent-soft: #e9eefe;
+
+  /* status (unchanged meaning, §13 UI rules) */
   --color-ok: #15803d;
   --color-warn: #b45309;
   --color-bad: #b91c1c;
   --color-unsure: #d97706;
+
+  --shadow-card: 0 1px 2px rgb(16 27 48 / 0.04), 0 1px 1px rgb(16 27 48 / 0.03);
+  --shadow-pop: 0 12px 32px -8px rgb(16 27 48 / 0.22), 0 2px 6px rgb(16 27 48 / 0.08);
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  @apply bg-paper text-ink antialiased font-sans;
+  font-feature-settings: "cv11", "ss01";
+}
+
+h1, h2, h3 { text-wrap: balance; }
+
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
 }

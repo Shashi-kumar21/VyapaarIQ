@@ -2,11 +2,12 @@ import { BrowserRouter, Route, Routes } from 'react-router'
 import Layout from './components/Layout.jsx'
 import Buyers from './pages/Buyers.jsx'
 import Dashboard from './pages/Dashboard.jsx'
+import HowItWorks from './pages/HowItWorks.jsx'
 import InvoiceDetail from './pages/InvoiceDetail.jsx'
 import NewPackage from './pages/NewPackage.jsx'
 import NotFound from './pages/NotFound.jsx'
 
-// The four pages of BUILD_SPEC §13.
+// The four pages of BUILD_SPEC §13, plus How it works (D-43).
 export default function App() {
   return (
     <BrowserRouter>
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="packages/new" element={<NewPackage />} />
           <Route path="invoices/:id" element={<InvoiceDetail />} />
           <Route path="buyers" element={<Buyers />} />
+          <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

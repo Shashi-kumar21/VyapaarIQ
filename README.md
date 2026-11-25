@@ -87,8 +87,13 @@ The scale of the problem: as of June 2026, the government's MSME Samadhaan porta
 |---|---|
 | **Dashboard** | Open receivables, cash at risk in 30 and 60 days ("not expected by …"), expected in 30 days, the forecast chart, invoices by risk tier, the top 5 actions across all invoices, and the invoice list (cards on a phone). |
 | **New package** | Drop in the files for one invoice. Each file's type is detected and can be changed. **Process package** opens the result. |
-| **Invoice detail** | The header shows the amount, the estimated due date and its basis, readiness and tier, and the extractor used. *How the due date and interest were worked out* expands to show the reasoning and the formula. Below the header is the **evidence graph**, then five tabs: **Checks** (failing first; skipped ones grey), **Actions & score** (ranked actions and the penalty breakdown), **Documents** (every extracted field, amber when unsure), **Follow-ups** (generate drafts, switch tone or channel, copy) and **Dispute pack** (preview, download PDF or Markdown). |
+| **Invoice detail** | The header shows tiles for the amount, the estimated due date and its basis, readiness and tier, and the interest to date, plus the extractor used. *How the due date and interest were worked out* expands to show the reasoning and the formula. Below the header is the **evidence graph**, then five tabs: **Checks** (failing first; skipped ones grey), **Actions & score** (ranked actions and the penalty breakdown), **Documents** (every extracted field, amber when unsure), **Follow-ups** (generate drafts, switch tone or channel, copy) and **Dispute pack** (preview, download PDF or Markdown). |
 | **Buyers** | Each buyer's reliability label, invoice count, median days late, % paid late, % over 30 days late and trend. A notice says the history is synthetic. |
+| **How it works** | The whole flow on one page: five steps, the 14 checks, the MSMED due-date and interest rules, a card per tool, the PKG07 worked example and a glossary. |
+
+**Hover to learn.** Every tool explains itself: hover (or focus, or tap) a navigation item, an invoice tab, a KPI tile or a
+card's ⓘ to see what it does, its key rules and a *Learn more* link to the matching section of How it works. The
+descriptions live in one file, `frontend/src/lib/tools.js`.
 
 A banner on every page says: *synthetic data only · risk scores are illustrative · legal figures
 are estimates, not legal advice*. A status chip shows whether the API is reachable, the extractor

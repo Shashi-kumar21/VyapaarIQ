@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { api } from '../lib/api.js'
@@ -79,7 +79,9 @@ describe('Invoice detail', () => {
     expect(screen.getByText('from challan received date')).toBeTruthy()
     expect(screen.getAllByText('demo fallback').length).toBeGreaterThan(0)
     expect(screen.getByText('processed in 1.2 s')).toBeTruthy() // T3.10
-    expect(screen.getByText('₹452')).toBeTruthy()
+    // interest shows in the header tile (D-43 redesign) and in the worked-out details
+    expect(screen.getAllByText('₹452')).toHaveLength(2)
+    expect(screen.getByText('Interest to date')).toBeTruthy()
     expect(screen.getByText(/Not legal advice/)).toBeTruthy()
   })
 
@@ -137,6 +139,25 @@ describe('Invoice detail', () => {
     await screen.findByRole('heading', { name: 'SPC/26-27/0107' })
     fireEvent.click(screen.getByRole('tab', { name: 'Documents' }))
     expect(second.container.querySelectorAll('[data-unsure]').length).toBe(4)
+  })
+
+  it('explains each tab: a hover card per tab and a description line with Learn more (D-43)', async () => {
+    api.getInvoice.mockResolvedValue(INVOICE)
+    renderInvoice()
+    await screen.findByRole('img', { name: /Evidence graph/ })
+    // tab names stay exact (scripts and tests select tabs by name); the open-checks badge is aria-hidden
+    for (const name of ['Checks', 'Actions & score', 'Documents', 'Follow-ups', 'Dispute pack']) {
+      expect(screen.getByRole('tab', { name })).toBeTruthy()
+    }
+    expect(screen.getByText(/14 deterministic cross-checks/)).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Learn more' }).getAttribute('href')).toBe('/how-it-works#step-checks')
+    fireEvent.mouseEnter(screen.getByRole('tab', { name: 'Follow-ups' }))
+    const card = await screen.findByRole('group', { name: 'Follow-ups' })
+    expect(card.textContent).toContain('D−7, D−1, D+3, D+10 and D+25')
+    fireEvent.mouseLeave(screen.getByRole('tab', { name: 'Follow-ups' }))
+    await waitFor(() => expect(screen.queryByRole('group', { name: 'Follow-ups' })).toBeNull())
+    fireEvent.click(screen.getByRole('tab', { name: 'Dispute pack' }))
+    expect(screen.getByRole('link', { name: 'Learn more' }).getAttribute('href')).toBe('/how-it-works#tool-pack')
   })
 
   it('shows unverified amount and buyer instead of numbers', async () => {
