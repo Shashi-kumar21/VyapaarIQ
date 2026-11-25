@@ -58,6 +58,8 @@ async function main() {
     acceptDownloads: true })
   await ctx.addInitScript(OVERLAY)
   const page = await ctx.newPage()
+  // the page has other links with the same names (e.g. the Dashboard's New package button): use the nav
+  const nav = page.getByRole('navigation', { name: 'Main' })
   const caption = async (text) => {
     await page.evaluate((t) => {
       try { sessionStorage.setItem('rec-cap-text', t) } catch { /* no storage on about:blank */ }
@@ -82,7 +84,7 @@ async function main() {
   await wait(5000)
 
   // 0:30 New package -> PKG07
-  await click(page.getByRole('link', { name: 'New package' }))
+  await click(nav.getByRole('link', { name: 'New package' }))
   await caption("One invoice's paperwork: invoice, PO and delivery challan. Notice there is no GRN.")
   const files = fs.readdirSync(path.join(PKG, 'PKG07')).filter((f) => f.endsWith('.pdf')).map((f) => path.join(PKG, 'PKG07', f))
   await page.setInputFiles('[data-testid="file-input"]', files)
@@ -140,7 +142,7 @@ async function main() {
   await wait(3000)
 
   // 2:15 Dashboard
-  await click(page.getByRole('link', { name: 'Dashboard' }))
+  await click(nav.getByRole('link', { name: 'Dashboard' }))
   await page.getByText('Top actions due').waitFor()
   await caption('Across all open invoices: cash at risk in the next 30 and 60 days, and the top actions to work on first.')
   await moveTo(page.getByText(/Cash at risk · 30 days/))
@@ -151,7 +153,7 @@ async function main() {
   await wait(3500)
 
   // Buyers
-  await click(page.getByRole('link', { name: 'Buyers' }))
+  await click(nav.getByRole('link', { name: 'Buyers' }))
   await page.getByText('Reliable').first().waitFor()
   await caption("Buyer reliability from this supplier's own history. Seeded demo history, not a credit rating.")
   await moveTo(page.locator('table'))

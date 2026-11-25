@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { api } from '../lib/api.js'
 import { TOOLS, TOOL_ORDER } from '../lib/tools.js'
 import HowItWorks from '../pages/HowItWorks.jsx'
+import { MARGIN, placeCard } from '../lib/placement.js'
 import InfoHint from './InfoHint.jsx'
 import Layout from './Layout.jsx'
 
@@ -66,6 +67,54 @@ describe('InfoHint (hover card for a tool, after Watermelon Tooltip 11)', () => 
     fireEvent.mouseEnter(screen.getByText('Dashboard'))
     tick()
     expect(screen.getByRole('group', { name: 'Dashboard' })).toBeTruthy()
+  })
+})
+
+describe('placeCard keeps every hover card on screen (QA #31)', () => {
+  const card = { width: 288, height: 220 }
+  const phone = { width: 375, height: 812 }
+  const inside = (p, v = phone) =>
+    p.left >= MARGIN && p.top >= MARGIN && p.left + card.width <= v.width - MARGIN && p.top + card.height <= v.height - MARGIN
+
+  it('clamps a card whose trigger sits at the right edge of a phone', () => {
+    const trigger = { left: 330, right: 350, top: 200, bottom: 220 } // e.g. the (i) on a right-hand tile
+    const p = placeCard(trigger, card, phone, 'bottom', 'start')
+    expect(inside(p)).toBe(true)
+    expect(p.left).toBe(375 - MARGIN - 288)
+    expect(p.top).toBe(228) // below the trigger
+  })
+
+  it('flips above when there is no room below, and never leaves the viewport', () => {
+    const p = placeCard({ left: 20, right: 40, top: 760, bottom: 780 }, card, phone, 'bottom')
+    expect(p.top).toBe(760 - 8 - 220)
+    expect(inside(p)).toBe(true)
+    for (let x = 0; x <= 360; x += 15) {
+      for (let y = 0; y <= 790; y += 30) {
+        for (const side of ['bottom', 'top', 'right', 'auto']) {
+          for (const align of ['start', 'end', 'center']) {
+            const q = placeCard({ left: x, right: x + 16, top: y, bottom: y + 16 }, card, phone, side, align)
+            expect(inside(q), `${side}/${align} at ${x},${y}`).toBe(true)
+          }
+        }
+      }
+    }
+  })
+
+  it('auto: right of a desktop sidebar item, below it on a phone', () => {
+    const item = { left: 16, right: 240, top: 150, bottom: 186 }
+    expect(placeCard(item, card, { width: 1440, height: 900 }, 'auto')).toEqual({ left: 252, top: 150 })
+    expect(placeCard(item, card, phone, 'auto').top).toBe(194)
+  })
+})
+
+describe('only one card at a time', () => {
+  it('opening a card closes the one that is open', () => {
+    wrap(<><InfoHint tool="checks" /><InfoHint tool="buyers" /></>)
+    fireEvent.click(screen.getByRole('button', { name: 'About Checks' }))
+    expect(screen.getByRole('group', { name: 'Checks' })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'About Buyer reliability' }))
+    expect(screen.getByRole('group', { name: 'Buyer reliability' })).toBeTruthy()
+    expect(screen.queryByRole('group', { name: 'Checks' })).toBeNull()
   })
 })
 
