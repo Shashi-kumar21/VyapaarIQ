@@ -169,6 +169,40 @@ Spec: see `BUILD_SPEC.md`. Section numbers (§) refer to it.
 
 ---
 
+## Post-demo backlog (owner, 2026-11-26)
+
+Order set by the owner: quality gates first, then real-world accuracy, legal sign-off, product
+scale-up, and latency. Each item goes through a PR + QA verdict; the owner merges.
+
+### Quality gates
+- [~] T6.1 CI on GitHub Actions: backend pytest + eval, frontend lint + vitest + build, and a Docker build with a smoke test of the hosted image (health 200, 401 without the password, demo data preloaded) on every PR and push to `main`; remove the unused `components/Placeholder.jsx` (QA #34)
+- [ ] T6.2 Branch protection on `main` (owner, GitHub settings): require the CI checks and an approving review before merge, so a PR cannot be merged on a stale head or before QA re-approval
+
+### Real-world accuracy
+- [ ] T6.3 Collect ~20 anonymised real invoice packages (owner) and add them to the evaluation with their own ground truth
+- [ ] T6.4 Measure the `claude` extractor on scans and real documents (needs an API key, D-35); report precision, recall and confidently-wrong fields next to `text`/`fixture`
+
+### Legal sign-off (owner)
+- [ ] T6.5 Read the official ITA 2025 text for s.37(2)(g), the current ODR filing steps, and whether a 2026 MSMED amendment was enacted; tick `docs/references.md` §3
+
+### Product scale-up
+- [ ] T6.6 User accounts and per-supplier data (replace the shared demo password for real use)
+- [ ] T6.7 Postgres instead of SQLite, with migrations
+- [ ] T6.8 Tally / Zoho import of invoices and payments (replaces the seeded history)
+
+### Latency
+Measured baseline (2026-11-26): package processing ~13 ms (`eval/report.md`); hosted cold start
+30–60 s after 15 idle minutes (Render free plan); frontend JS 359 KB (111 KB gzip) in one bundle;
+`/api/health` fetched again on most pages; the Dashboard makes 4 API calls.
+- [ ] T6.9 Measure first: p50/p95 per API endpoint (logged), Web Vitals (LCP, INP) on the hosted demo at phone and desktop size; record the baseline in `docs/performance.md`
+- [ ] T6.10 Hosted cold start (biggest wait): owner decision between a paid always-on instance and a keep-warm ping on the free plan; measure time-to-first-page before and after
+- [ ] T6.11 Smaller, faster-starting image: try PyMuPDF 1.x (drops onnxruntime/numpy), re-run the extractor tests and eval; measure image size and startup time
+- [ ] T6.12 Compress and cache: GZip for API JSON; long-lived `Cache-Control: immutable` for hashed UI assets, `no-cache` for `index.html`
+- [ ] T6.13 Split the frontend bundle by route (lazy-load How it works, invoice detail, buyers); keep the first screen's JS under 150 KB
+- [ ] T6.14 Fewer requests: fetch `/api/health` once per session and share it; consider a combined dashboard endpoint (an API change: needs a schema-version bump, D-40)
+
+---
+
 ## Daily rhythm (all agents)
 
 - **Start of day:** A0 posts the day's goals; agents confirm ownership, no overlapping files.

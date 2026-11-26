@@ -502,7 +502,9 @@ measure. The full report, with failure cases, is in [`eval/report.md`](eval/repo
 ## Contributing workflow
 
 - Work on a feature branch from `main`. Never push directly to `main`, and don't stack PRs.
-- Run the full test suite, then open a pull request into `main`.
+- Run the full test suite, then open a pull request into `main`. **CI** (`.github/workflows/ci.yml`) runs on every PR
+  and push to `main`: backend pytest and the evaluation, frontend lint, vitest and build, and a build plus smoke test
+  of the hosted-demo Docker image. A PR is ready for review only when CI is green.
 - QA reviews the PR and posts `VERDICT: APPROVE` or `VERDICT: REQUEST_CHANGES`. **Once a verdict
   is posted, don't push to that PR.** Put follow-ups in a new PR, so the merged code is always the
   code that was reviewed.

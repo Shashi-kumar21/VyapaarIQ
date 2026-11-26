@@ -1,0 +1,95 @@
+# CI (T6.1, D-44): every pull request and every push to main runs the same checks the team ran by
+# hand. Actions are pinned to commit SHAs (supply chain); bump them on purpose, in a PR.
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (pytest + eval)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: backend/requirements*.txt
+      - name: Install
+        run: pip install -r backend/requirements.txt
+      - name: Generate the synthetic sample packages (not in git; deterministic)
+        run: python samples/generate.py
+      - name: Tests
+        working-directory: backend
+        run: python -m pytest -q
+      - name: Evaluation runs (text + fixture)
+        run: python eval/run_eval.py --out "$RUNNER_TEMP/report.md" && head -30 "$RUNNER_TEMP/report.md"
+
+  frontend:
+    name: Frontend (lint + vitest + build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --no-fund
+      - run: npm audit --omit=dev
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+
+  hosted-image:
+    name: Hosted demo image (build + smoke test)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Build the Dockerfile Render uses
+        run: docker build -t vyapaariq-demo:ci .
+      - name: Run it like Render does (PORT set, password from a secret-like env var)
+        run: |
+          docker run -d --name vq -p 8000:8000 -e PORT=8000 -e DEMO_PASSWORD=ci-only-password vyapaariq-demo:ci
+          for i in $(seq 1 60); do
+            curl -fsS http://localhost:8000/api/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          docker logs vq | tail -20
+      - name: Smoke test (health open, everything else behind the password, demo data preloaded)
+        run: |
+          set -e
+          H=http://localhost:8000
+          curl -fsS $H/api/health | tee /dev/stderr | grep -q '"extractor":"fixture"'
+          test "$(curl -s -o /dev/null -w '%{http_code}' $H/)" = 401
+          test "$(curl -s -o /dev/null -w '%{http_code}' $H/api/invoices)" = 401
+          test "$(curl -s -o /dev/null -w '%{http_code}' -u demo:wrong $H/api/invoices)" = 401
+          curl -sI $H/api/health | grep -qi '^strict-transport-security: max-age=31536000'
+          curl -fsS -u demo:ci-only-password $H/ | grep -q '<div id="root">'
+          curl -fsS -u demo:ci-only-password $H/how-it-works | grep -q '<div id="root">'
+          n=$(curl -fsS -u demo:ci-only-password "$H/api/invoices" | python3 -c 'import json,sys; print(len(json.load(sys.stdin)))')
+          echo "invoices preloaded: $n"; test "$n" -ge 2
+          if docker logs vq 2>&1 | grep -q 'ci-only-password'; then
+            echo 'the demo password appeared in the container logs'; exit 1
+          fi
+      - name: Container logs on failure
+        if: failure()
+        run: docker logs vq || true
