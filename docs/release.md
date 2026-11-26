@@ -47,6 +47,14 @@ Done in the first post-demo PR, **after** the tag:
 - `npm audit`: **0 vulnerabilities**.
 - Verified with vitest 40, eslint and build. The full run-through gave 28/28, exit 0, with no console errors or warnings. Routes, the 404 page, deep links and the back button were also checked in the browser.
 
+## Tags
+
+| Tag | Commit | What it is |
+|---|---|---|
+| `v0.1-demo` | `c5ec290` | First demo-verified build (the checks above) |
+| `v0.1.1-demo` | `283f137` | + evidence-graph click fix (B-11) and the updated demo script |
+| `v0.1.2-demo` | `4ca4d57` (tag object `641086f`) | + redesigned UI (D-43: sidebar, hover cards, How it works page; #31) and the demo script re-checked on it (#32). Contains `4c50dad`, `e4bdd71`, `445a3e5`. **Current demo build**; backup video re-recorded from it |
+
 ## Tagging (owner)
 
 ```powershell
