@@ -133,10 +133,10 @@ A step-by-step walk through one real example (PKG07: no GRN, score 70, due 13 Oc
 | Synthetic generator: 28 packages / 133 PDFs, 5 phone-scan style | ✅ deterministic |
 | REST API + SQLite: packages, invoices, graph, actions, buyers, forecast | ✅ tested; contract v1.0 frozen (D-40) |
 | Seed history, follow-up drafts, forecast, dispute pack | ✅ tested |
-| React frontend (React 19, React Router 7, Tailwind): all four screens, desktop and phone | ✅ vitest + scripted browser run-through of all 28 packages |
+| React frontend (React 19, React Router 7, Tailwind 4, lucide icons, bundled fonts): five screens incl. How it works, hover cards on every tool, desktop and phone | ✅ 56 vitest tests + scripted browser run-through of all 28 packages |
 | Evaluation ([`eval/report.md`](eval/report.md)) | ✅ `text`: 0 confidently wrong fields, detection precision 100 % |
 | Legal values (bank rate, MSMED s.2(b)/15/16, ITA 2025 s.37(2)(g), ODR) | ✅ researched 2026-11-24 (references L-1…L-4); final sign-off by the owner |
-| Hosted demo (Render Free, password gate, HSTS) | ✅ live; public checks pass ([`docs/deploy.md`](docs/deploy.md)) |
+| Hosted demo (Render Free, password gate, HSTS) | ✅ live; public checks pass. Auto-deploy is off: after each merge, **Manual Deploy → Deploy latest commit** ([`docs/deploy.md`](docs/deploy.md)) |
 | Releases | `v0.1-demo`, `v0.1.1-demo` and `v0.1.2-demo` (current demo build, redesigned UI) |
 
 ## Requirements
@@ -380,9 +380,9 @@ and a schema-version bump).
 - **Releases (tags).**
   - `v0.1-demo` (`c5ec290`): the first demo-verified build.
   - `v0.1.1-demo` (`283f137`): adds the evidence-graph click fix and the updated demo script.
-  - `v0.1.2-demo`: the redesigned UI (D-43: sidebar, hover cards, How it works page) with the demo
-    script re-checked on it. Tagged by the owner on the merge commit of the PR that updates the script.
-    **Use this one for the demo.**
+  - `v0.1.2-demo` (`4ca4d57`, tag object `641086f`): the redesigned UI (D-43: sidebar, hover cards,
+    How it works page) with the demo script re-checked on it (#31, #32). **Use this one for the demo.**
+    The backup video is recorded from this tag.
   - Release checks (tests, secret scan, dependency audit) are in [`docs/release.md`](docs/release.md).
 
 ## Project layout
@@ -410,9 +410,13 @@ backend/
   tests/                 pytest suite (124 tests)
   requirements*.txt      runtime / development installs; constraints-runtime.txt pins versions
 frontend/
-  src/pages/             Dashboard, NewPackage, InvoiceDetail, Buyers (+ tests)
-  src/components/        evidence graph, forecast chart, follow-ups, dispute pack, fields, UI kit
-  src/lib/               API client, INR/date formatting, hooks
+  src/pages/             Dashboard, NewPackage, InvoiceDetail, Buyers, HowItWorks, NotFound (+ tests)
+  src/components/        Layout (sidebar shell), InfoHint (hover cards), evidence graph, forecast chart,
+                         follow-ups, dispute pack, document fields, UI kit (ui.jsx)
+  src/lib/               API client, INR/date formatting, hooks, tools.js (one description per tool,
+                         used by hover cards and How it works), placement.js (keeps cards on screen),
+                         styles.js (button classes)
+  src/index.css          design tokens (colours, fonts, shadows; D-43)
   scripts/               manual tools: ui_runthrough.mjs (all 28 packages), record_demo.mjs (backup video)
 samples/
   generate.py            synthetic package generator (reportlab), deterministic
@@ -427,7 +431,7 @@ Dockerfile, render.yaml  hosted demo image and Render blueprint
 
 ```powershell
 cd backend; ..\.venv\Scripts\python -m pytest -q          # 124 tests
-cd frontend; npm test; npm run lint                       # 43 vitest tests + eslint (Node 22.12+)
+cd frontend; npm test; npm run lint                       # 56 vitest tests + eslint (Node 22.12+)
 .\.venv\Scripts\python eval\run_eval.py                    # from the repo root: rewrites eval/report.md
 ```
 
@@ -489,7 +493,8 @@ measure. The full report, with failure cases, is in [`eval/report.md`](eval/repo
   - HSTS is on every response, and `http://` redirects to `https://`.
   - WebSocket connections are refused.
   - The image runs as a non-root user, with pinned base images and Python versions.
-- **Dependencies.** `npm audit` reports 0 vulnerabilities and `pip-audit` is clean (as of 2026-11-24).
+- **Dependencies.** `npm audit` reports 0 vulnerabilities (re-checked 2026-11-26, after the UI redesign added
+  `lucide-react` and the Fontsource fonts) and `pip-audit` is clean (2026-11-24).
 - **Synthetic data only.** Sample companies, GSTINs and Udyam numbers are fictional. Don't commit
   or upload real invoices or customer documents.
 - If you find a secret in the history, rotate it first, then remove it from the history.
