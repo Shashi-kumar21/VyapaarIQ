@@ -85,7 +85,7 @@ export default function FollowupsPanel({ invoiceId }) {
         <Toggle label="Tone" options={TONES} value={tone} onChange={setTone} disabled={busy} />
         <Toggle label="Channel" options={CHANNELS} value={channel} onChange={setChannel} disabled={busy} />
         <button type="button" onClick={generate} disabled={busy}
-                className="px-3 py-1.5 rounded-md bg-slate-900 text-white text-sm disabled:opacity-40">
+                className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-white hover:bg-accent/90 disabled:opacity-40">
           {busy ? 'Generating…' : drafts.length ? 'Regenerate drafts' : 'Generate drafts'}
         </button>
         <span className="text-xs text-slate-500">Drafts only. Nothing is sent from VyapaarIQ.</span>
@@ -109,7 +109,7 @@ export default function FollowupsPanel({ invoiceId }) {
               <b>{d.step_label}</b>
               <span className="text-sm text-slate-600">send on {date(d.send_on)}</span>
               {d.past && <span className="px-2 py-0.5 rounded-full text-xs bg-slate-200 text-slate-700">date passed</span>}
-              <span className="px-2 py-0.5 rounded-full text-xs bg-blue-100 text-blue-800">draft, not sent</span>
+              <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs font-medium text-accent">draft, not sent</span>
               <span className="ml-auto flex gap-2">
                 {(() => {
                   const msg = splitDraft(d.draft_text).body

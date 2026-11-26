@@ -73,7 +73,7 @@ export default function DisputePackPanel({ invoiceId }) {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
         <button type="button" onClick={() => download('pdf')} disabled={!!busy}
-                className="px-3 py-1.5 rounded-md bg-slate-900 text-white text-sm disabled:opacity-40">
+                className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-white hover:bg-accent/90 disabled:opacity-40">
           {busy === 'pdf' ? 'Preparing…' : 'Download PDF'}
         </button>
         <button type="button" onClick={() => download('md')} disabled={!!busy}

@@ -1,8 +1,10 @@
+import { FileText, Loader2, Play, RotateCcw, UploadCloud, X } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { Card } from '../components/ui.jsx'
+import { Card, PageHeader } from '../components/ui.jsx'
 import { api } from '../lib/api.js'
 import { ALLOWED, DOC_TYPES, fileProblem } from '../lib/upload.js'
+import { btn } from '../lib/styles.js'
 
 const STAGES = {
   uploading: 'Uploading files…',
@@ -64,12 +66,11 @@ export default function NewPackage() {
   }
 
   return (
-    <section className="space-y-4 max-w-3xl">
-      <h1 className="text-2xl font-semibold">New package</h1>
-      <p className="text-sm text-slate-600">
+    <section className="max-w-3xl space-y-5">
+      <PageHeader title="New package" tool="upload">
         Add every document for one invoice: invoice, PO, delivery challan / LR, e-way bill, GRN and any
         contract. The type of each file is detected automatically; change it if it is wrong.
-      </p>
+      </PageHeader>
 
       <div
         role="button"
@@ -80,11 +81,14 @@ export default function NewPackage() {
         onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
         onDragLeave={() => setDragging(false)}
         onDrop={(e) => { e.preventDefault(); setDragging(false); if (!busy) addFiles(e.dataTransfer.files) }}
-        className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition ${
-          dragging ? 'border-blue-500 bg-blue-50' : 'border-slate-300 bg-white hover:bg-slate-50'}`}
+        className={`flex cursor-pointer flex-col items-center rounded-2xl border-2 border-dashed p-10 text-center transition-colors ${
+          dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface hover:border-accent/50 hover:bg-paper'}`}
       >
-        <p className="font-medium">Drop PDF / PNG / JPG files here</p>
-        <p className="text-xs text-slate-500 mt-1">or click to choose · max 15 MB each</p>
+        <span className="flex size-12 items-center justify-center rounded-full bg-accent-soft text-accent">
+          <UploadCloud aria-hidden="true" className="size-6" />
+        </span>
+        <p className="mt-3 font-display font-semibold text-ink">Drop PDF / PNG / JPG files here</p>
+        <p className="mt-1 text-xs text-muted">or click to choose · max 15 MB each</p>
         <input
           ref={inputRef} type="file" multiple accept={ALLOWED.join(',')} className="hidden"
           data-testid="file-input" onChange={(e) => { addFiles(e.target.files); e.target.value = '' }}
@@ -92,32 +96,33 @@ export default function NewPackage() {
       </div>
 
       {problems.length > 0 && (
-        <ul role="alert" className="text-sm text-red-700 list-disc pl-5">
+        <ul role="alert" className="list-disc rounded-xl border border-red-200 bg-red-50 py-2 pl-8 pr-4 text-sm text-red-800">
           {problems.map((p) => <li key={p}>{p}</li>)}
         </ul>
       )}
 
       {items.length > 0 && (
         <Card title={`Files (${items.length})`}>
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-line">
             {items.map((it, idx) => (
-              <li key={`${it.file.name}-${idx}`} className="py-2 flex flex-wrap items-center gap-3 text-sm">
-                <span className="flex-1 min-w-40 truncate" title={it.file.name}>{it.file.name}</span>
-                <span className="text-xs text-slate-500">{Math.max(1, Math.round(it.file.size / 1024))} KB</span>
+              <li key={`${it.file.name}-${idx}`} className="flex flex-wrap items-center gap-3 py-2.5 text-sm">
+                <FileText aria-hidden="true" className="size-4 shrink-0 text-muted" />
+                <span className="min-w-40 flex-1 truncate" title={it.file.name}>{it.file.name}</span>
+                <span className="text-xs tabular-nums text-muted">{Math.max(1, Math.round(it.file.size / 1024))} KB</span>
                 <select
                   aria-label={`Document type for ${it.file.name}`}
                   value={it.docType}
                   disabled={busy}
                   onChange={(e) => { setUploadedId(null); setItems((cur) => cur.map((c, j) => (j === idx ? { ...c, docType: e.target.value } : c))) }}
-                  className="border border-slate-300 rounded-md px-2 py-1"
+                  className="rounded-lg border border-line bg-surface px-2 py-1.5"
                 >
                   {DOC_TYPES.map(([v, label]) => <option key={v} value={v}>{label}</option>)}
                 </select>
                 <button
                   type="button" disabled={busy} aria-label={`Remove ${it.file.name}`}
                   onClick={() => { setUploadedId(null); setItems((cur) => cur.filter((_, j) => j !== idx)) }}
-                  className="text-slate-500 hover:text-red-700 px-2"
-                >✕</button>
+                  className="rounded-md p-1.5 text-muted hover:bg-red-50 hover:text-bad"
+                ><X aria-hidden="true" className="size-4" /></button>
               </li>
             ))}
           </ul>
@@ -125,28 +130,30 @@ export default function NewPackage() {
       )}
 
       <label className="block text-sm">
-        <span className="text-slate-700">Buyer name (optional)</span>
+        <span className="font-medium text-ink">Buyer name (optional)</span>
         <input
           value={buyerName} disabled={busy} onChange={(e) => { setUploadedId(null); setBuyerName(e.target.value) }}
           placeholder="Used only if the buyer cannot be read reliably from the invoice"
-          className="mt-1 w-full border border-slate-300 rounded-md px-3 py-2"
+          className="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 placeholder:text-muted/70"
         />
       </label>
 
       <div className="flex items-center gap-4">
         <button
           type="button" onClick={process} disabled={busy || items.length === 0}
-          className="px-4 py-2 rounded-md bg-slate-900 text-white disabled:opacity-40"
+          className={btn.primary}
         >
+          {busy ? <Loader2 aria-hidden="true" className="size-4 animate-spin" />
+            : uploadedId !== null ? <RotateCcw aria-hidden="true" className="size-4" /> : <Play aria-hidden="true" className="size-4" />}
           {busy ? 'Processing…' : uploadedId !== null ? 'Retry processing' : 'Process package'}
         </button>
         {stage && stage !== 'failed' && (
-          <span role="status" className="text-sm text-slate-600">{STAGES[stage]}</span>
+          <span role="status" className="text-sm text-muted">{STAGES[stage]}</span>
         )}
       </div>
 
       {error && (
-        <div role="alert" className="border border-red-200 bg-red-50 text-red-800 rounded-lg p-3 text-sm">
+        <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">
           {error}
         </div>
       )}

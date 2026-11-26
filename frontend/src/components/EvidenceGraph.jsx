@@ -23,7 +23,8 @@ const ROW = 84
 const LEFT_X = 20
 const RIGHT_X = W - NODE_W - 20
 
-function wrap(text, max = 30) {
+// ~178 units of text width per node at 13px Inter (the bundled UI font, D-43) fit about 26 characters
+function wrap(text, max = 24) {
   if (!text) return ['']
   if (text.length <= max) return [text]
   const cut = text.lastIndexOf(' ', max)
