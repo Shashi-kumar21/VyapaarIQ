@@ -31,7 +31,7 @@ The scale of the problem: as of June 2026, the government's MSME Samadhaan porta
 | Understand how everything works, with every term defined | **[`docs/tutorial.md`](docs/tutorial.md)** |
 | Try it without installing anything | The hosted demo (password-protected; ask the owner for the link and password). See [`docs/deploy.md`](docs/deploy.md) |
 | Run it on your laptop | [Quick start](#quick-start) (about 10 minutes) |
-| Give the 3-minute demo | [`docs/demo_script.md`](docs/demo_script.md), run from the tag `v0.1.1-demo` |
+| Give the 3-minute demo | [`docs/demo_script.md`](docs/demo_script.md), run from the tag `v0.1.2-demo` |
 | See the architecture on one page | [`docs/architecture.md`](docs/architecture.md) |
 | Call the API | [`docs/api_contract.md`](docs/api_contract.md) (v1.0, frozen) |
 | Check a legal value, a source or a design decision | [`docs/references.md`](docs/references.md) (sources R-1…R-7, decisions D-1…D-42) |
@@ -137,7 +137,7 @@ A step-by-step walk through one real example (PKG07: no GRN, score 70, due 13 Oc
 | Evaluation ([`eval/report.md`](eval/report.md)) | ✅ `text`: 0 confidently wrong fields, detection precision 100 % |
 | Legal values (bank rate, MSMED s.2(b)/15/16, ITA 2025 s.37(2)(g), ODR) | ✅ researched 2026-11-24 (references L-1…L-4); final sign-off by the owner |
 | Hosted demo (Render Free, password gate, HSTS) | ✅ live; public checks pass ([`docs/deploy.md`](docs/deploy.md)) |
-| Releases | `v0.1-demo` and `v0.1.1-demo` (current demo build) |
+| Releases | `v0.1-demo`, `v0.1.1-demo` and `v0.1.2-demo` (current demo build, redesigned UI) |
 
 ## Requirements
 
@@ -259,7 +259,7 @@ Every tolerance, penalty, threshold and legal parameter lives in
 ## Running a demo end to end
 
 **In the browser:** follow [`docs/demo_script.md`](docs/demo_script.md). It checks out
-`v0.1.1-demo` into a separate folder, seeds the database, preloads two packages, and walks through
+`v0.1.2-demo` into a separate folder, seeds the database, preloads two packages, and walks through
 PKG07 in 3 minutes. It also covers recovery steps. A captioned backup video can be recorded with
 `frontend/scripts/record_demo.mjs`.
 
@@ -380,6 +380,8 @@ and a schema-version bump).
 - **Releases (tags).**
   - `v0.1-demo` (`c5ec290`): the first demo-verified build.
   - `v0.1.1-demo` (`283f137`): adds the evidence-graph click fix and the updated demo script.
+  - `v0.1.2-demo`: the redesigned UI (D-43: sidebar, hover cards, How it works page) with the demo
+    script re-checked on it. Tagged by the owner on the merge commit of the PR that updates the script.
     **Use this one for the demo.**
   - Release checks (tests, secret scan, dependency audit) are in [`docs/release.md`](docs/release.md).
 

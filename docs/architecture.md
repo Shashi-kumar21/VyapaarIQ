@@ -108,7 +108,7 @@ flowchart LR
 | | Local (development, live demo) | Hosted (shareable link) |
 |---|---|---|
 | Processes | `uvicorn` on :8000 + `npm run dev` on :5173 | One Docker container (`Dockerfile`) serving the API **and** the built UI on `$PORT` |
-| Where | The laptop. The live demo runs from the tag `v0.1.1-demo` in a separate git worktree (`docs/demo_script.md`) | Render free web service from `render.yaml`; manual deploys only |
+| Where | The laptop. The live demo runs from the tag `v0.1.2-demo` in a separate git worktree (`docs/demo_script.md`) | Render free web service from `render.yaml`; manual deploys only |
 | Data | `backend/data/` SQLite file + uploads (git-ignored) | `/tmp` SQLite; reset on every restart, then re-seeded with PKG01 and PKG20 preloaded |
 | Access | localhost | HTTP Basic auth (`DEMO_PASSWORD`, host secret) on everything except `/api/health`; HSTS; http → https |
 | Extractor / date | Any (`text` by default) | `fixture`, demo date 2026-11-23 |
