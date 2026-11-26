@@ -6,15 +6,16 @@ different, the setup differs: re-run it rather than reading out the numbers from
 
 ## Setup (once, about 5 minutes before)
 
-Run the demo from the tag **`v0.1.1-demo`**. It has the evidence-graph click fix (B-11) and the
-phone layout. The older `v0.1-demo` draws a black focus box when the GRN link is clicked.
+Run the demo from the tag **`v0.1.2-demo`**. It has the redesigned UI (D-43): ink sidebar, header tiles,
+hover cards on every tool and the *How it works* page. The older `v0.1.1-demo` has the previous layout
+(same numbers), and `v0.1-demo` also draws a black focus box when the GRN link is clicked.
 
 The tag is checked out into a **separate folder** (a git worktree), so your own working copy
 stays on its branch. The commands assume the clone is called `VyapaarIQ`; adjust the name if yours differs.
 
 ```powershell
 # from the repo root, after the README quick start (the .venv is reused from this clone)
-git fetch --tags; git worktree add ..\VyapaarIQ-demo v0.1.1-demo
+git fetch --tags; git worktree add ..\VyapaarIQ-demo v0.1.2-demo
 cd ..\VyapaarIQ-demo
 ..\VyapaarIQ\.venv\Scripts\python samples\generate.py    # sample PDFs are not in git (deterministic)
 cd frontend; npm ci; cd ..
@@ -42,12 +43,12 @@ Before going on stage:
 | **0:00–0:30** | Dashboard | "MSME suppliers sell on credit and wait. When a buyer stalls, the supplier must prove order, delivery and acceptance, and the proof is scattered across PDFs and WhatsApp. As of June 2026, the government's MSME Samadhaan portal had logged over **2.5 lakh delayed-payment applications** from micro and small suppliers, with claims worth **₹55,244 crore**." *(Source: PIB, "From Enterprise to Empowerment: The MSME Story", 26 Jun 2026. These are claims filed since 2017, not amounts proven; say "claims", not "owed".)* | Point to the banner: synthetic demo data, illustrative, not legal advice |
 | **0:30–1:30** | New package → Invoice detail | "Here is one invoice's paperwork: invoice, PO, challan. Notice there's no GRN." | Drag in the 3 PDFs from `PKG07` → **Process package** → it opens the invoice |
 | | Evidence graph | "VyapaarIQ reads each document and cross-checks them. PO matched, challan matched, but **the GRN link is missing**: there is no written acceptance from the buyer." | Click the dashed **GRN** link: *"No GRN or written acceptance… acceptance can only be deemed"* |
-| | Header | "That weakens the claim. Readiness is **70, Medium**, and every point lost is listed." | *Actions & score* tab: **C10 missing (blocker) −30** |
+| | Header | "That weakens the claim. Readiness is **70, Medium**, and every point lost is listed." | Point to the *Readiness* tile, then the *Actions & score* tab: **C10 missing (blocker) −30** |
 | | Actions | "The first thing to do: request the GRN or acceptance from the buyer's receiving team. The payment is already overdue since 13 October." | Point to action 1: *act now · payment overdue since 13 Oct 2026* |
-| **1:30–2:15** | Header → details | "The statutory due date is **13 Oct 2026**: acceptance from the challan's received date plus 30 days of written terms. It is an estimate, and it shows the rule it used. Estimated MSMED interest to today is about **₹452** (3 × the 5.75 % bank rate), with the formula shown. Not legal advice." | Expand *How the due date and interest were worked out* |
+| **1:30–2:15** | Header → details | "The statutory due date is **13 Oct 2026**: acceptance from the challan's received date plus 30 days of written terms. It is an estimate, and it shows the rule it used. Estimated MSMED interest to today is about **₹452** (3 × the 5.75 % bank rate), with the formula shown. Not legal advice." | Point to the *Due date* and *Interest to date* tiles (₹452), then expand *How the due date and interest were worked out* |
 | | Follow-ups tab | "Drafts for D−7 through D+25, friendly or firm. They are never sent." | **Generate drafts** → switch **Firm** → show D+10 citing the 45-day rule → **Copy body** |
 | | Dispute pack tab | "And a dispute-ready evidence pack: timeline, document index, checks, due date, interest, missing evidence." | Scroll the preview → **Download PDF** |
-| **2:15–2:45** | Dashboard | "Across all open invoices: what is at risk in the next 30 and 60 days, and the top actions to work on first." | Point to the *cash at risk* tiles, the forecast chart (hover the overdue bar), *Top actions* |
+| **2:15–2:45** | Dashboard | "Across all open invoices: what is at risk in the next 30 and 60 days, and the top actions to work on first." | Point to the *cash at risk* tiles; hover the ⓘ next to *Cash at risk* ("every tool explains itself"); hover the overdue bar; *Top actions* |
 | | Buyers | "Reliability from this supplier's own history. Seeded demo history, not a credit rating." | Show the Reliable / Mixed / Slow rows |
 | **2:45–3:00** | `eval/report.md` | "We measured it on 28 synthetic packages. Real extraction got every field right or flagged it for a human: **zero confidently wrong fields**, 100 % precision on defects. Scans need the Claude extractor, which isn't measured yet. Next: Tally/Zoho sync, WhatsApp sending with consent, and ODR filing support." | Show the summary table |
 
@@ -60,7 +61,8 @@ Before going on stage:
 | Numbers differ from this page | `VYAPAARIQ_TODAY` or `EXTRACTOR` is not set in the uvicorn terminal. Fix it and re-upload |
 | PKG07 shows up as a duplicate (C14) | It was uploaded twice into the same DB. Delete the demo DB and re-seed (Setup) |
 | PKG27 changes the dashboard | Since D-11 (deemed acceptance = delivery date) PKG27 is due 17 Nov 2026, so on the demo date it is overdue and moves into *at risk*. The script does not use it; if it was uploaded, delete the demo DB and re-seed |
-| A black box appears around a graph link after a click | You are on `v0.1-demo`. Check out `v0.1.1-demo` (Setup). On stage, a click on an empty part of the page removes it |
+| A black box appears around a graph link after a click | You are on `v0.1-demo`. Check out `v0.1.2-demo` (Setup). On stage, a click on an empty part of the page removes it |
+| No dark sidebar, no hover cards | You are on `v0.1.1-demo` (older layout; the numbers are the same). Check out `v0.1.2-demo` for the redesigned UI |
 | A live upload fails | Use the backup recording (below) |
 
 ## Backup recording
